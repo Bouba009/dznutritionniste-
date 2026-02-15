@@ -5,323 +5,384 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DZ Nutritionniste</title>
     
-    <!-- Fonts & Icons -->
+    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Firebase Compat (Auth, Firestore, Storage) -->
+    <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     
-    <!-- SweetAlert2 -->
+    <!-- مكتبة التنبيهات -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
-            --primary: #2E7D32; --secondary: #43A047; --accent: #FFC107;
-            --dark: #1a1a1a; --light: #f8f9fa; --white: #ffffff;
+            --primary: #2E7D32;
+            --secondary: #43A047;
+            --accent: #FFC107;
+            --dark: #121212;
+            --light: #F5F7FA;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.95);
             --radius: 12px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
             --bg-url: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061');
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--light); color: var(--dark); overflow-x: hidden; padding-bottom: 60px; }
+        
+        body { background: var(--light); color: var(--dark); overflow-x: hidden; padding-bottom: 70px; min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* Helpers */
+        /* Loader */
+        #loader { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #eee; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Utility Classes */
         .hidden { display: none !important; }
         .flex { display: flex; }
         .center { align-items: center; justify-content: center; }
         .w-full { width: 100%; }
         .grid-responsive { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         
-        /* Loader */
-        #loader { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .spinner { width: 40px; height: 40px; border: 4px solid #eee; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
         /* Navbar */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 10px 5%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            padding: 0 5%; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            height: 60px;
+            height: 60px; transition: 0.3s;
         }
-        .logo img { height: 35px; }
-        .logo span { font-weight: 900; color: var(--primary); font-size: 1.1rem; margin: 0 10px; }
+        .logo img { height: 35px; border-radius: 5px; }
+        .logo span { font-weight: 900; color: var(--primary); font-size: 1.1rem; margin: 0 8px; }
 
         /* Sidebar */
         .sidebar {
-            position: fixed; top: 0; right: -100%; width: 85%; max-width: 300px; height: 100vh;
-            background: white; z-index: 1001; padding: 20px; box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-            display: flex; flex-direction: column; transition: 0.3s ease;
+            position: fixed; top: 0; right: -100%; width: 85%; max-width: 320px; height: 100vh;
+            background: white; z-index: 1002; padding: 25px 20px; box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+            display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .sidebar.active { right: 0; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1001; display: none; backdrop-filter: blur(2px); }
         .sidebar-overlay.active { display: block; }
-        .menu-item { padding: 15px; margin: 5px 0; border-radius: 10px; cursor: pointer; color: #555; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .menu-item:hover { background: #e8f5e9; color: var(--primary); }
+        .menu-item { padding: 12px 15px; margin: 8px 0; border-radius: 10px; cursor: pointer; color: #444; font-weight: 600; display: flex; align-items: center; gap: 15px; transition: 0.2s; }
+        .menu-item:hover { background: #e8f5e9; color: var(--primary); transform: translateX(-5px); }
+        .menu-item i { width: 25px; text-align: center; }
 
-        /* Hero */
-        #landing { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; }
+        /* Hero & Landing */
+        #landing { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; padding: 20px; min-height: 80vh; }
         .bg-anim { position: absolute; inset: 0; background-image: var(--bg-url); background-size: cover; background-position: center; animation: zoom 20s infinite alternate; z-index: -1; }
-        .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(46, 125, 50, 0.9), rgba(0,0,0,0.4)); z-index: 0; }
-        .hero-text { position: relative; z-index: 1; color: white; padding: 20px; }
-        .hero-text h1 { font-size: 2.5rem; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(46, 125, 50, 0.85), rgba(0,0,0,0.5)); z-index: 0; }
+        .hero-text { position: relative; z-index: 1; color: white; width: 100%; max-width: 600px; }
+        .hero-text h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 4px 15px rgba(0,0,0,0.3); line-height: 1.2; }
         @keyframes zoom { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-        .btn-main { padding: 12px 30px; border-radius: 50px; background: var(--accent); color: #000; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); animation: pulse 2s infinite; font-size: 1rem; }
 
-        /* Forms & Dash */
-        .dash-container { max-width: 1200px; margin: 80px auto 30px; padding: 0 15px; }
-        .profile-card { background: white; padding: 15px; border-radius: var(--radius); box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .profile-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-        .stat-card { background: white; padding: 20px; border-radius: var(--radius); box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; color: white; }
-        .stat-card.blue { background: linear-gradient(45deg, #2196F3, #21CBF3); }
-        .stat-card.green { background: linear-gradient(45deg, #4CAF50, #8BC34A); }
-        .stat-card.orange { background: linear-gradient(45deg, #FF9800, #FFC107); }
-        .stat-val { font-size: 2rem; font-weight: 900; }
-        
-        .form-box { max-width: 500px; margin: 100px auto; background: white; padding: 25px; border-radius: var(--radius); box-shadow: 0 5px 20px rgba(0,0,0,0.1); width: 95%; }
-        .input-ui { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; margin-bottom: 10px; font-size: 16px; }
-        .file-upload { border: 2px dashed #ccc; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 10px; cursor: pointer; color: #666; }
+        .btn-main {
+            padding: 12px 35px; border-radius: 50px; background: var(--accent); color: #000; font-weight: bold; border: none; cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.4); animation: pulse 2s infinite; font-size: 1.1rem; transition: 0.3s; display: inline-block;
+        }
+        .btn-main:active { transform: scale(0.95); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 193, 7, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); } }
 
-        /* Lists & Tables */
-        .pro-item { background: white; padding: 15px; border-radius: var(--radius); box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .pro-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; }
-        .stars { color: #FFC107; font-size: 0.9rem; }
-        .table-wrap { overflow-x: auto; background: white; border-radius: var(--radius); box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        /* Dashboards */
+        .dash-container { max-width: 1200px; margin: 80px auto 30px; padding: 0 15px; width: 100%; flex: 1; }
         
+        .profile-card { background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .profile-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); }
+
+        .stat-card {
+            background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);
+            text-align: center; color: white; position: relative; overflow: hidden;
+        }
+        .stat-card h3 { font-size: 2.2rem; margin: 5px 0; }
+        .stat-card span { font-size: 0.9rem; opacity: 0.9; }
+        .bg-blue { background: linear-gradient(135deg, #2196F3, #21CBF3); }
+        .bg-green { background: linear-gradient(135deg, #4CAF50, #8BC34A); }
+        .bg-orange { background: linear-gradient(135deg, #FF9800, #FFC107); }
+        .bg-red { background: linear-gradient(135deg, #F44336, #FF5252); }
+
+        /* List & Tables */
+        .pro-item { background: white; padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; transition: 0.3s; border: 1px solid #eee; }
+        .pro-item:hover { transform: translateY(-3px); }
+        .pro-item img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #eee; }
+        .stars { color: #FFC107; font-size: 0.85rem; cursor: pointer; }
+        
+        .table-wrap { overflow-x: auto; background: white; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 25px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 15px; text-align: right; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+        th { background: #f9f9f9; color: var(--primary); font-weight: 700; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Forms */
+        .form-container { max-width: 450px; margin: 100px auto; background: white; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); width: 95%; }
+        .input-ui { width: 100%; padding: 12px 15px; border: 2px solid #eee; border-radius: 10px; outline: none; margin-bottom: 15px; font-size: 1rem; transition: 0.3s; background: #fdfdfd; }
+        .input-ui:focus { border-color: var(--primary); background: white; }
+        .file-box { border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 15px; cursor: pointer; background: #fafafa; color: #666; transition: 0.3s; }
+        .file-box:hover { border-color: var(--primary); color: var(--primary); background: #e8f5e9; }
+
         /* Footer */
-        footer { background: #333; color: #fff; padding: 30px 20px; margin-top: auto; text-align: center; width: 100%; }
-        footer a { color: #fff; margin: 0 10px; text-decoration: none; font-size: 0.9rem; }
-        
-        /* Modal */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
-        .modal-content { background: white; padding: 20px; border-radius: var(--radius); width: 90%; max-width: 450px; max-height: 90vh; overflow-y: auto; position: relative; }
-        
-        /* Rate */
-        .rate-stars { display: flex; flex-direction: row-reverse; justify-content: center; }
-        .rate-stars input { display: none; }
-        .rate-stars label { font-size: 30px; color: #ccc; cursor: pointer; }
-        .rate-stars input:checked ~ label { color: #FFC107; }
+        footer { background: #222; color: #ccc; padding: 30px 20px; margin-top: auto; text-align: center; }
+        footer a { color: #fff; margin: 0 10px; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        footer a:hover { color: var(--accent); }
 
-        @media (max-width: 480px) { .hero-text h1 { font-size: 1.8rem; } .grid-responsive { grid-template-columns: 1fr; } }
+        /* Modals */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 25px; border-radius: var(--radius); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; animation: zoomIn 0.3s; }
+        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.2rem; cursor: pointer; color: #999; }
+
+        /* Rating Stars */
+        .rate-stars { display: flex; flex-direction: row-reverse; justify-content: center; gap: 5px; margin: 10px 0; }
+        .rate-stars input { display: none; }
+        .rate-stars label { font-size: 30px; color: #ddd; cursor: pointer; transition: 0.2s; }
+        .rate-stars input:checked ~ label, .rate-stars label:hover, .rate-stars label:hover ~ label { color: #FFC107; }
+
+        @media (max-width: 480px) {
+            .hero-text h1 { font-size: 2rem; }
+            .grid-responsive { grid-template-columns: 1fr; }
+            .dash-container { padding: 0 10px; margin-top: 70px; }
+        }
     </style>
 </head>
 <body>
 
     <!-- Loader -->
-    <div id="loader">
-        <div class="spinner"></div>
-        <p style="margin-top:10px">جار التحميل...</p>
-    </div>
+    <div id="loader"><div class="spinner"></div></div>
 
     <!-- Navbar -->
     <nav>
-        <div onclick="toggleSidebar()" style="cursor: pointer;"><i class="fas fa-bars fa-lg"></i></div>
+        <div onclick="toggleSidebar()" style="cursor: pointer; padding: 5px;"><i class="fas fa-bars fa-lg"></i></div>
         <div class="logo flex center" id="nav-logo">
             <i class="fas fa-leaf fa-lg" style="color:var(--primary)"></i>
             <span data-i18n="app_name">DZ Nutritionniste</span>
         </div>
         <div class="flex center" style="gap:10px">
+            <!-- Notification Bell -->
             <div onclick="clearNotifs()" style="position:relative; cursor:pointer;" id="notif-btn" class="hidden">
                 <i class="fas fa-bell fa-lg" style="color:var(--primary)"></i>
-                <span id="notif-badge" style="position:absolute; top:-5px; right:-5px; background:red; color:white; font-size:10px; padding:2px 5px; border-radius:10px; display:none">0</span>
+                <span id="notif-badge" style="position:absolute; top:-6px; right:-6px; background:red; color:white; font-size:10px; padding:2px 5px; border-radius:10px; display:none; border:2px solid white;">0</span>
             </div>
-            <button onclick="toggleLang()" style="border:1px solid var(--primary); background:transparent; border-radius:15px; padding:2px 8px; font-weight:bold; font-size:0.8rem">AR/FR</button>
+            <!-- Language Switcher -->
+            <button onclick="toggleLang()" style="border:1px solid var(--primary); background:transparent; border-radius:20px; padding:4px 10px; font-weight:bold; font-size:0.8rem; color:var(--primary)">AR / FR</button>
         </div>
     </nav>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Overlay & Menu -->
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
-        <div class="flex center" style="justify-content:space-between; margin-bottom:20px">
-            <h3 data-i18n="menu">القائمة</h3>
-            <i class="fas fa-times" onclick="toggleSidebar()"></i>
+        <div class="flex center" style="justify-content:space-between; margin-bottom:30px; border-bottom:1px solid #eee; padding-bottom:15px">
+            <h3 style="color:var(--primary)" data-i18n="menu">القائمة</h3>
+            <i class="fas fa-times fa-lg" onclick="toggleSidebar()" style="cursor:pointer; color:#999"></i>
         </div>
+        
+        <!-- Public Menu -->
         <div id="menu-public">
             <div class="menu-item" onclick="navTo('landing')"><i class="fas fa-home"></i> <span data-i18n="home">الرئيسية</span></div>
-            <div class="menu-item" onclick="navTo('login')"><i class="fas fa-sign-in-alt"></i> <span data-i18n="login">دخول</span></div>
+            <div class="menu-item" onclick="navTo('login')"><i class="fas fa-sign-in-alt"></i> <span data-i18n="login">تسجيل الدخول</span></div>
         </div>
+
+        <!-- Private Menu (User/Pro/Admin) -->
         <div id="menu-private" class="hidden">
             <div class="menu-item" onclick="navToDash()"><i class="fas fa-th-large"></i> <span data-i18n="dashboard">لوحة التحكم</span></div>
-            <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-circle"></i> <span data-i18n="profile">الملف</span></div>
-            <div class="menu-item" onclick="handleLogout()" style="color:red; margin-top:auto"><i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">خروج</span></div>
+            <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-circle"></i> <span data-i18n="profile">الملف الشخصي</span></div>
+            <div class="menu-item" onclick="logout()" style="color:#d32f2f; margin-top:20px; border-top:1px solid #eee; padding-top:20px"><i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">تسجيل الخروج</span></div>
         </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- MAIN CONTENT -->
     <main>
         
-        <!-- 1. Landing -->
+        <!-- 1. LANDING PAGE -->
         <section id="landing">
             <div class="bg-anim"></div>
             <div class="overlay"></div>
             <div class="hero-text animate__animated animate__fadeInUp">
                 <h1 data-i18n="hero_title">غير حياتك للأفضل</h1>
+                <p style="color:#eee; margin-bottom:20px; font-size:1.1rem" data-i18n="hero_sub">منصة حجز مواعيد مع أخصائيي التغذية في الجزائر</p>
                 <button class="btn-main" onclick="navTo('register')" data-i18n="start_now">إبدأ الآن</button>
             </div>
-            <footer id="main-footer">
-                <div class="flex center" style="flex-wrap:wrap; gap:10px; margin-bottom:10px">
+            
+            <footer>
+                <div class="flex center" style="flex-wrap:wrap; gap:15px; margin-bottom:15px">
                     <a href="#" onclick="openStatic('about')" data-i18n="about">من نحن</a>
-                    <a href="#" onclick="openStatic('privacy')" data-i18n="privacy">الخصوصية</a>
+                    <a href="#" onclick="openStatic('privacy')" data-i18n="privacy">سياسة الخصوصية</a>
                     <a href="#" onclick="openLocation()" data-i18n="location">مقرنا</a>
                     <a href="#" onclick="openReport()" data-i18n="report">اتصل بنا</a>
                 </div>
-                <small>© 2024 DZ Nutritionniste</small>
+                <small style="opacity:0.7">© 2024 DZ Nutritionniste</small>
             </footer>
         </section>
 
-        <!-- 2. Auth -->
+        <!-- 2. AUTH PAGES -->
         <section id="login" class="hidden">
-            <div class="form-box">
+            <div class="form-container animate__animated animate__fadeIn">
                 <h2 class="text-center mb-4" data-i18n="login">تسجيل الدخول</h2>
                 <form onsubmit="handleLogin(event)">
-                    <input type="email" id="log-email" class="input-ui" placeholder="Email" required>
-                    <input type="password" id="log-pass" class="input-ui" placeholder="Password" required>
-                    <button class="btn-main w-full" style="animation:none" data-i18n="login_btn">دخول</button>
+                    <input type="email" id="log-email" class="input-ui" placeholder="البريد الإلكتروني" required>
+                    <input type="password" id="log-pass" class="input-ui" placeholder="كلمة المرور" required>
+                    <button class="btn-main w-full" style="animation:none; border-radius:10px" data-i18n="login_btn">دخول</button>
                 </form>
+                <p class="text-center mt-3" style="font-size:0.9rem; color:var(--primary); cursor:pointer" onclick="navTo('register')" data-i18n="no_account">ليس لديك حساب؟</p>
             </div>
         </section>
 
         <section id="register" class="hidden">
-            <div class="form-box">
+            <div class="form-container animate__animated animate__fadeIn">
                 <h2 class="text-center mb-4" data-i18n="register">حساب جديد</h2>
-                <div class="flex" style="gap:10px; margin-bottom:15px">
-                    <button id="role-user" onclick="setRole('user')" class="w-full" style="padding:10px; background:#eee; border:none; border-radius:8px">مستخدم</button>
-                    <button id="role-pro" onclick="setRole('pro')" class="w-full" style="padding:10px; background:white; border:1px solid #eee; border-radius:8px">مختص</button>
+                <div class="flex" style="gap:10px; margin-bottom:20px">
+                    <button id="role-user" onclick="setRole('user')" class="w-full" style="padding:10px; background:#eee; border:none; border-radius:8px; font-weight:bold">مستخدم</button>
+                    <button id="role-pro" onclick="setRole('pro')" class="w-full" style="padding:10px; background:white; border:1px solid #ddd; border-radius:8px; font-weight:bold">مختص</button>
                 </div>
                 <form onsubmit="handleRegister(event)">
-                    <input type="text" id="reg-name" class="input-ui" placeholder="Full Name" required>
-                    <input type="tel" id="reg-phone" class="input-ui" placeholder="Phone" required>
-                    <input type="email" id="reg-email" class="input-ui" placeholder="Email" required>
-                    <input type="password" id="reg-pass" class="input-ui" placeholder="Password" required>
+                    <input type="text" id="reg-name" class="input-ui" placeholder="الاسم الكامل" required>
+                    <input type="tel" id="reg-phone" class="input-ui" placeholder="رقم الهاتف" required>
+                    <input type="email" id="reg-email" class="input-ui" placeholder="البريد الإلكتروني" required>
+                    <input type="password" id="reg-pass" class="input-ui" placeholder="كلمة المرور" required>
                     <div class="flex" style="gap:10px">
-                        <input type="number" id="reg-age" class="input-ui" placeholder="Age" required>
-                        <select id="reg-gender" class="input-ui"><option value="m">Male</option><option value="f">Female</option></select>
+                        <input type="number" id="reg-age" class="input-ui" placeholder="السن" required>
+                        <select id="reg-gender" class="input-ui"><option value="m">ذكر</option><option value="f">أنثى</option></select>
                     </div>
                     
-                    <div id="pro-fields" class="hidden">
-                        <input type="text" id="reg-wilaya" class="input-ui" placeholder="Wilaya">
-                        <div class="file-upload" onclick="document.getElementById('reg-cert-file').click()">
+                    <div id="pro-fields" class="hidden animate__animated animate__fadeIn">
+                        <input type="text" id="reg-wilaya" class="input-ui" placeholder="الولاية">
+                        <div class="file-box" onclick="document.getElementById('reg-cert-file').click()">
+                            <i class="fas fa-cloud-upload-alt fa-2x"></i><br>
                             <span data-i18n="upload_cert">رفع الشهادة (صورة)</span>
-                            <input type="file" id="reg-cert-file" class="hidden" accept="image/*">
+                            <input type="file" id="reg-cert-file" class="hidden" accept="image/*" onchange="convertBase64(this, 'cert-preview')">
                         </div>
-                        <div id="cert-status" style="font-size:0.8rem; color:green"></div>
+                        <input type="hidden" id="cert-preview">
                     </div>
-                    <button class="btn-main w-full" style="animation:none" id="reg-btn" data-i18n="register_btn">تسجيل</button>
+                    <button class="btn-main w-full" style="animation:none; border-radius:10px" data-i18n="register_btn">تسجيل</button>
                 </form>
             </div>
         </section>
 
-        <!-- 3. Dashboards (User, Pro, Admin) -->
-        <!-- User -->
+        <!-- 3. USER DASHBOARD -->
         <section id="dash-user" class="dash-container hidden">
             <div class="profile-card">
-                <img id="u-img" src="https://via.placeholder.com/50" class="profile-img">
-                <div><h3 id="u-name">User</h3><small data-i18n="welcome">Welcome</small></div>
+                <img id="u-img" src="https://via.placeholder.com/60" class="profile-img">
+                <div>
+                    <h3 id="u-name">User</h3>
+                    <small style="color:#666" data-i18n="welcome">أهلاً بك</small>
+                </div>
             </div>
+
             <div class="grid-responsive mb-4">
-                <div class="stat-card blue"><div class="stat-val" id="u-total">0</div><div class="stat-label" data-i18n="total_req">Requests</div></div>
-                <div class="stat-card orange"><div class="stat-val" id="u-pending">0</div><div class="stat-label" data-i18n="pending">Pending</div></div>
-                <div class="stat-card green"><div class="stat-val" id="u-accepted">0</div><div class="stat-label" data-i18n="accepted">Accepted</div></div>
+                <div class="stat-card bg-blue"><h3><span id="u-total">0</span></h3><span data-i18n="total_req">اجمالي الطلبات</span></div>
+                <div class="stat-card bg-orange"><h3><span id="u-pending">0</span></h3><span data-i18n="pending">قيد الانتظار</span></div>
+                <div class="stat-card bg-green"><h3><span id="u-accepted">0</span></h3><span data-i18n="accepted">مقبولة</span></div>
             </div>
-            <h3 class="mb-2" data-i18n="available_pros">المختصين المتاحين</h3>
+
+            <h3 class="mb-3" style="color:var(--primary); border-bottom:2px solid #eee; padding-bottom:10px" data-i18n="available_pros">المختصين المتاحين</h3>
             <div id="pros-list" class="grid-responsive"></div>
+
             <div class="table-wrap">
-                <h3 data-i18n="my_requests">طلباتي</h3>
+                <h3 style="padding:15px" data-i18n="my_requests">سجل طلباتي</h3>
                 <table id="u-history-table"><thead><tr><th data-i18n="pro">المختص</th><th data-i18n="status">الحالة</th><th data-i18n="action">اجراء</th></tr></thead><tbody></tbody></table>
             </div>
         </section>
 
-        <!-- Pro -->
+        <!-- 4. PRO DASHBOARD -->
         <section id="dash-pro" class="dash-container hidden">
             <div class="profile-card">
                 <img id="p-img" src="" class="profile-img">
-                <div><h3 id="p-name">Dr.</h3><small id="p-code">Code</small></div>
+                <div>
+                    <h3 id="p-name">Dr. Name</h3>
+                    <small style="background:#eee; padding:3px 8px; border-radius:5px; font-weight:bold" id="p-code">Code</small>
+                </div>
             </div>
+
             <div class="grid-responsive mb-4">
-                <div class="stat-card blue"><div class="stat-val" id="p-new">0</div><div class="stat-label" data-i18n="new_req">New</div></div>
-                <div class="stat-card green"><div class="stat-val" id="p-total">0</div><div class="stat-label" data-i18n="total_clients">Clients</div></div>
-                <div class="stat-card orange"><div class="stat-val" id="p-points">0</div><div class="stat-label" data-i18n="my_points">Points</div></div>
+                <div class="stat-card bg-blue"><h3><span id="p-new">0</span></h3><span data-i18n="new_req">طلبات جديدة</span></div>
+                <div class="stat-card bg-green"><h3><span id="p-total">0</span></h3><span data-i18n="total_clients">الزبائن</span></div>
+                <div class="stat-card bg-orange"><h3><span id="p-points">0</span></h3><span data-i18n="my_points">نقاطي</span></div>
             </div>
+
             <div class="table-wrap">
-                <h3 data-i18n="incoming_req">طلبات واردة</h3>
+                <h3 style="padding:15px" data-i18n="incoming_req">الطلبات الواردة</h3>
                 <table><thead><tr><th>الاسم</th><th>السن</th><th>اجراء</th></tr></thead><tbody id="p-req-body"></tbody></table>
             </div>
             <div class="table-wrap">
-                <h3 data-i18n="accepted_clients">زبائن حاليين</h3>
+                <h3 style="padding:15px" data-i18n="accepted_clients">قائمة الزبائن</h3>
                 <table><thead><tr><th>الاسم</th><th>الهاتف</th><th>الايميل</th></tr></thead><tbody id="p-clients-body"></tbody></table>
             </div>
         </section>
 
-        <!-- Admin -->
+        <!-- 5. ADMIN DASHBOARD -->
         <section id="dash-admin" class="dash-container hidden">
             <h2 class="mb-4">Admin Dashboard</h2>
             <div class="grid-responsive mb-4">
-                <div class="stat-card blue"><div class="stat-val" id="adm-users">0</div><div class="stat-label">Users</div></div>
-                <div class="stat-card green"><div class="stat-val" id="adm-pros">0</div><div class="stat-label">Pros</div></div>
-                <div class="stat-card orange"><div class="stat-val" id="adm-sessions">0</div><div class="stat-label">Sessions</div></div>
+                <div class="stat-card bg-blue"><h3><span id="adm-users">0</span></h3><span>Users</span></div>
+                <div class="stat-card bg-green"><h3><span id="adm-pros">0</span></h3><span>Pros</span></div>
+                <div class="stat-card bg-orange"><h3><span id="adm-sessions">0</span></h3><span>Success Sessions</span></div>
             </div>
-            <div class="flex" style="gap:10px; overflow-x:auto; padding-bottom:10px; margin-bottom:20px">
-                <button class="btn-main" onclick="showAdmTab('users')" style="padding:5px 15px; font-size:0.8rem">المستخدمين</button>
-                <button class="btn-main" onclick="showAdmTab('sessions')" style="padding:5px 15px; font-size:0.8rem">الجلسات</button>
-                <button class="btn-main" onclick="showAdmTab('cms')" style="padding:5px 15px; font-size:0.8rem">CMS</button>
-                <button class="btn-main" onclick="showAdmTab('notif')" style="padding:5px 15px; font-size:0.8rem">اشعارات</button>
+
+            <div class="flex" style="gap:10px; overflow-x:auto; padding-bottom:10px; margin-bottom:20px; white-space:nowrap">
+                <button class="btn-main" onclick="showAdmTab('users')" style="padding:8px 20px; font-size:0.9rem">المستخدمين</button>
+                <button class="btn-main" onclick="showAdmTab('sessions')" style="padding:8px 20px; font-size:0.9rem">الجلسات</button>
+                <button class="btn-main" onclick="showAdmTab('cms')" style="padding:8px 20px; font-size:0.9rem">CMS</button>
+                <button class="btn-main" onclick="showAdmTab('notif')" style="padding:8px 20px; font-size:0.9rem">اشعارات</button>
             </div>
+
+            <!-- Admin Tabs -->
             <div id="adm-tab-users" class="adm-tab">
-                <input type="text" class="input-ui" placeholder="بحث" onkeyup="filterAdmin(this)">
+                <input type="text" class="input-ui" placeholder="بحث (اسم، ايميل، كود)" onkeyup="filterAdmin(this)">
                 <div class="table-wrap">
                     <table><thead><tr><th>الاسم</th><th>الكود</th><th>نقاط</th><th>اجراء</th></tr></thead><tbody id="adm-users-body"></tbody></table>
                 </div>
             </div>
+
             <div id="adm-tab-sessions" class="adm-tab hidden">
                 <div class="table-wrap">
-                    <table><thead><tr><th>الزبون</th><th>المختص</th><th>تاريخ</th></tr></thead><tbody id="adm-sessions-body"></tbody></table>
+                    <table><thead><tr><th>الزبون</th><th>المختص</th><th>معلومات الاتصال</th><th>التاريخ</th></tr></thead><tbody id="adm-sessions-body"></tbody></table>
                 </div>
             </div>
+
             <div id="adm-tab-cms" class="adm-tab hidden">
-                <div class="form-box" style="margin:0; width:100%">
-                    <h3>تعديل الشعار</h3>
-                    <div class="file-upload" onclick="document.getElementById('cms-logo-file').click()">رفع شعار<input type="file" id="cms-logo-file" class="hidden" accept="image/*" onchange="uploadToStorage(this.files[0], 'logo', 'cms-logo-url')"></div>
-                    <input type="hidden" id="cms-logo-url">
-                    <button class="btn-main" onclick="saveCMS()">حفظ</button>
+                <div class="form-container" style="margin:0; width:100%">
+                    <h3>تعديل الشعار (Logo)</h3>
+                    <div class="file-box" onclick="document.getElementById('cms-logo-file').click()">
+                        <i class="fas fa-image fa-2x"></i><br>رفع شعار جديد
+                        <input type="file" id="cms-logo-file" class="hidden" accept="image/*" onchange="convertBase64(this, 'cms-logo-val')">
+                    </div>
+                    <input type="hidden" id="cms-logo-val">
+                    <button class="btn-main w-full" style="animation:none" onclick="saveCMS()">حفظ التعديلات</button>
                 </div>
             </div>
+            
              <div id="adm-tab-notif" class="adm-tab hidden">
-                <div class="form-box" style="margin:0; width:100%">
-                    <input id="notif-ar" class="input-ui" placeholder="نص عربي">
-                    <input id="notif-fr" class="input-ui" placeholder="نص فرنسي">
-                    <button class="btn-main" onclick="sendNotif()">ارسال</button>
+                <div class="form-container" style="margin:0; width:100%">
+                    <h3>ارسال اشعار</h3>
+                    <input id="notif-ar" class="input-ui" placeholder="نص الاشعار (عربي)">
+                    <input id="notif-fr" class="input-ui" placeholder="نص الاشعار (فرنسي)">
+                    <button class="btn-main w-full" style="animation:none" onclick="sendNotif()">ارسال للجميع</button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Modals -->
+    <!-- MODALS -->
+    <!-- Profile Edit -->
     <div id="modal-profile" class="modal">
         <div class="modal-content">
-            <span style="position:absolute; top:10px; right:10px; cursor:pointer" onclick="closeModal('modal-profile')">✖</span>
-            <h3 data-i18n="edit_profile">تعديل الملف</h3>
-            <div class="file-upload" onclick="document.getElementById('prof-img-file').click()">
-                تغيير الصورة
-                <input type="file" id="prof-img-file" class="hidden" accept="image/*" onchange="uploadToStorage(this.files[0], 'profile', 'prof-img-url')">
+            <span class="close-modal" onclick="closeModal('modal-profile')">✖</span>
+            <h3 data-i18n="edit_profile" class="mb-3">تعديل الملف</h3>
+            <div class="file-box" onclick="document.getElementById('prof-img-file').click()" style="padding:10px">
+                <i class="fas fa-camera"></i> تغيير الصورة
+                <input type="file" id="prof-img-file" class="hidden" accept="image/*" onchange="convertBase64(this, 'prof-img-val')">
             </div>
-            <input type="hidden" id="prof-img-url">
-            <input id="prof-name" class="input-ui" placeholder="Name">
-            <input id="prof-pass" class="input-ui" type="password" placeholder="New Password">
-            <button class="btn-main w-full" onclick="updateProfile()">حفظ</button>
+            <input type="hidden" id="prof-img-val">
+            <input id="prof-name" class="input-ui" placeholder="الاسم">
+            <input id="prof-pass" class="input-ui" type="password" placeholder="كلمة مرور جديدة">
+            <button class="btn-main w-full" onclick="updateProfile()" style="animation:none">حفظ</button>
         </div>
     </div>
 
+    <!-- Rating -->
     <div id="modal-rate" class="modal">
-        <div class="modal-content">
-            <span style="position:absolute; top:10px; right:10px; cursor:pointer" onclick="closeModal('modal-rate')">✖</span>
+        <div class="modal-content text-center">
+            <span class="close-modal" onclick="closeModal('modal-rate')">✖</span>
             <h3 data-i18n="rate_pro">تقييم المختص</h3>
             <div class="rate-stars">
                 <input type="radio" id="star5" name="rate" value="5" /><label for="star5">★</label>
@@ -330,44 +391,49 @@
                 <input type="radio" id="star2" name="rate" value="2" /><label for="star2">★</label>
                 <input type="radio" id="star1" name="rate" value="1" /><label for="star1">★</label>
             </div>
-            <textarea id="rate-comment" class="input-ui" placeholder="تعليق..."></textarea>
+            <textarea id="rate-comment" class="input-ui" placeholder="اكتب تعليقك هنا..." style="height:80px"></textarea>
             <input type="hidden" id="rate-pro-id">
-            <button class="btn-main w-full" onclick="submitRate()">ارسال</button>
+            <button class="btn-main w-full" onclick="submitRate()" style="animation:none">ارسال التقييم</button>
         </div>
     </div>
     
+    <!-- Reviews -->
     <div id="modal-reviews" class="modal">
         <div class="modal-content">
-            <span style="position:absolute; top:10px; right:10px; cursor:pointer" onclick="closeModal('modal-reviews')">✖</span>
+            <span class="close-modal" onclick="closeModal('modal-reviews')">✖</span>
             <h3 data-i18n="reviews">التعليقات</h3>
-            <div id="reviews-list" style="margin-top:10px"></div>
+            <div id="reviews-list" style="margin-top:15px; max-height:300px; overflow-y:auto"></div>
         </div>
     </div>
 
+    <!-- Static Info -->
     <div id="modal-static" class="modal">
         <div class="modal-content">
-            <span style="position:absolute; top:10px; right:10px; cursor:pointer" onclick="closeModal('modal-static')">✖</span>
-            <h3 id="static-title"></h3>
-            <p id="static-body"></p>
+            <span class="close-modal" onclick="closeModal('modal-static')">✖</span>
+            <h3 id="static-title" style="color:var(--primary); margin-bottom:10px"></h3>
+            <p id="static-body" style="line-height:1.6; color:#555"></p>
         </div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // 1. Firebase Configuration
+        // 1. FIREBASE CONFIGURATION (Placeholder - Replace with yours if needed)
         const firebaseConfig = {
             apiKey: "AIzaSyCW3xXtNcSAqoEB3MTiTkBH6faZy4U2MMs",
             authDomain: "sstore-6a68a.firebaseapp.com",
             projectId: "sstore-6a68a",
-            storageBucket: "sstore-6a68a.firebasestorage.app", // Added bucket
+            storageBucket: "sstore-6a68a.firebasestorage.app",
             messagingSenderId: "624495077479",
             appId: "1:624495077479:web:7b299982afeb1c5bce4cc2"
         };
-        firebase.initializeApp(firebaseConfig);
+        
+        // Init Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
-        const auth = firebase.auth();
-        const storage = firebase.storage();
 
-        // 2. State & Localization
+        // 2. STATE & TRANSLATIONS
         let currentUser = null;
         let lang = localStorage.getItem('lang') || 'ar';
         let regRole = 'user';
@@ -375,229 +441,291 @@
         const i18nData = {
             ar: {
                 app_name: "DZ Nutritionniste", menu: "القائمة", home: "الرئيسية", login: "دخول", dashboard: "لوحة التحكم", 
-                profile: "الملف الشخصي", logout: "خروج", hero_title: "غير حياتك للأفضل", start_now: "إبدأ الآن",
+                profile: "الملف الشخصي", logout: "تسجيل خروج", hero_title: "غير حياتك للأفضل", hero_sub: "منصة حجز مواعيد مع أخصائيي التغذية في الجزائر", start_now: "إبدأ الآن",
                 about: "من نحن", privacy: "سياسة الخصوصية", location: "مقرنا", report: "اتصل بنا",
-                login_btn: "دخول", register: "حساب جديد", register_btn: "تسجيل",
+                login_btn: "دخول", register: "حساب جديد", register_btn: "تسجيل", no_account: "ليس لديك حساب؟",
                 welcome: "مرحباً", total_req: "الطلبات", pending: "قيد الانتظار", accepted: "مقبولة",
-                available_pros: "المختصين المتاحين", my_requests: "طلباتي", status: "الحالة", action: "اجراء",
+                available_pros: "المختصين المتاحين", my_requests: "سجل طلباتي", status: "الحالة", action: "اجراء",
                 new_req: "طلبات جديدة", total_clients: "اجمالي الزبائن", my_points: "نقاطي",
-                incoming_req: "طلبات واردة", accepted_clients: "الزبائن", upload_cert: "رفع شهادة",
+                incoming_req: "طلبات واردة", accepted_clients: "قائمة الزبائن", upload_cert: "رفع شهادة",
                 rate_pro: "تقييم المختص", reviews: "التعليقات", pro: "المختص", edit_profile: "تعديل الملف"
             },
             fr: {
                 app_name: "DZ Nutritionniste", menu: "Menu", home: "Accueil", login: "Connexion", dashboard: "Tableau de bord",
-                profile: "Profil", logout: "Déconnexion", hero_title: "Changez votre vie pour le mieux", start_now: "Commencer",
+                profile: "Profil", logout: "Déconnexion", hero_title: "Changez votre vie pour le mieux", hero_sub: "Plateforme de rendez-vous avec des nutritionnistes en Algérie", start_now: "Commencer",
                 about: "À propos", privacy: "Confidentialité", location: "Localisation", report: "Contactez-nous",
-                login_btn: "Connexion", register: "Inscription", register_btn: "S'inscrire",
+                login_btn: "Connexion", register: "Inscription", register_btn: "S'inscrire", no_account: "Pas de compte?",
                 welcome: "Bienvenue", total_req: "Demandes", pending: "En attente", accepted: "Acceptées",
                 available_pros: "Nutritionnistes Disponibles", my_requests: "Mes demandes", status: "Statut", action: "Action",
                 new_req: "Nouvelles", total_clients: "Clients", my_points: "Mes Points",
-                incoming_req: "Demandes reçues", accepted_clients: "Clients", upload_cert: "Télécharger Certificat",
+                incoming_req: "Demandes reçues", accepted_clients: "Liste des Clients", upload_cert: "Télécharger Certificat",
                 rate_pro: "Évaluer", reviews: "Avis", pro: "Pro", edit_profile: "Modifier Profil"
             }
         };
 
+        // 3. UTILITY FUNCTIONS
         function t(key) { return i18nData[lang][key] || key; }
+        
         function translateUI() {
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            document.querySelectorAll('[data-i18n]').forEach(el => { el.innerText = t(el.getAttribute('data-i18n')); });
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const k = el.getAttribute('data-i18n');
+                el.innerText = t(k);
+            });
+            // Update placeholders dynamically
+            if(lang==='fr') {
+                document.getElementById('reg-name').placeholder = "Nom complet";
+                document.getElementById('reg-phone').placeholder = "Téléphone";
+                document.getElementById('log-email').placeholder = "Email";
+                document.getElementById('log-pass').placeholder = "Mot de passe";
+            } else {
+                document.getElementById('reg-name').placeholder = "الاسم الكامل";
+                document.getElementById('reg-phone').placeholder = "رقم الهاتف";
+                document.getElementById('log-email').placeholder = "البريد الإلكتروني";
+                document.getElementById('log-pass').placeholder = "كلمة المرور";
+            }
         }
-        function toggleLang() { lang = lang === 'ar' ? 'fr' : 'ar'; localStorage.setItem('lang', lang); translateUI(); }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.querySelector('.sidebar-overlay').classList.toggle('active'); }
+
+        function toggleLang() {
+            lang = lang === 'ar' ? 'fr' : 'ar';
+            localStorage.setItem('lang', lang);
+            translateUI();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
         function navTo(id) {
             document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.getElementById('sidebar').classList.remove('active');
             document.querySelector('.sidebar-overlay').classList.remove('active');
         }
+
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // 3. Storage Logic
-        async function uploadToStorage(file, folder, hiddenInputId) {
-            if(!file) return;
-            document.getElementById('loader').style.display = 'flex';
-            const ref = storage.ref().child(`${folder}/${Date.now()}_${file.name}`);
-            try {
-                await ref.put(file);
-                const url = await ref.getDownloadURL();
-                document.getElementById(hiddenInputId).value = url;
-                Swal.fire('Success', 'File Uploaded', 'success');
-            } catch(e) {
-                Swal.fire('Error', e.message, 'error');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
+        // Convert File to Base64 (For Image Upload)
+        function convertBase64(input, targetId) {
+            const file = input.files[0];
+            if (file) {
+                // Limit size check (optional)
+                if(file.size > 1000000) { alert("File too big! Max 1MB"); return; }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetId).value = e.target.result;
+                    Swal.fire({title: 'تم', text: 'تم رفع الصورة بنجاح', icon: 'success', timer: 1500, showConfirmButton: false});
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        // 4. Auth & Session Management (Firebase Auth)
-        auth.onAuthStateChanged(user => {
-            document.getElementById('loader').style.display = 'none';
-            if (user) {
-                // Fetch User Details from Firestore
-                db.collection('users').doc(user.uid).onSnapshot(doc => {
-                    if(doc.exists) {
-                        currentUser = { id: doc.id, ...doc.data() };
-                        if(currentUser.status === 'banned') {
-                            auth.signOut();
-                            Swal.fire('Banned', 'Account banned', 'error');
-                            return;
-                        }
-                        setupUserUI();
-                        // If Admin
-                        if(currentUser.role === 'admin') initAdmin();
-                        else if(currentUser.role === 'pro') initPro();
-                        else initUser();
-                    } else {
-                        // Could be legacy admin or not fully created
-                        if(user.email === 'admin@dz.com') { // Example admin check
-                            currentUser = {role: 'admin', name: 'Admin'};
-                            setupUserUI();
-                            initAdmin();
-                        }
+        // 4. INITIALIZATION & AUTH Logic
+        async function initApp() {
+            // Loader
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+
+            // Load CMS Settings (Logo)
+            db.collection('settings').doc('config').onSnapshot(doc => {
+                if(doc.exists && doc.data().logo) {
+                    document.querySelector('#nav-logo i').classList.add('hidden');
+                    let img = document.querySelector('#nav-logo img');
+                    if(!img) {
+                        img = document.createElement('img');
+                        document.querySelector('#nav-logo').prepend(img);
                     }
-                });
-            } else {
-                currentUser = null;
-                document.getElementById('menu-public').classList.remove('hidden');
-                document.getElementById('menu-private').classList.add('hidden');
-                document.getElementById('notif-btn').classList.add('hidden');
-                navTo('landing');
+                    img.src = doc.data().logo;
+                    img.classList.remove('hidden');
+                }
+            });
+
+            // Check Session
+            const uid = localStorage.getItem('uid');
+            if(uid) {
+                if(uid === 'admin') {
+                    currentUser = {role:'admin', name:'Admin'};
+                    setupUserUI();
+                } else {
+                    try {
+                        const doc = await db.collection('users').doc(uid).get();
+                        if(doc.exists) {
+                            currentUser = {id: doc.id, ...doc.data()};
+                            setupUserUI();
+                        } else {
+                            logout(); // User deleted
+                        }
+                    } catch(e) { console.error(e); logout(); }
+                }
             }
             translateUI();
-        });
+        }
+
+        function setRole(r) {
+            regRole = r;
+            document.getElementById('role-user').style.background = r==='user'?'#ddd':'white';
+            document.getElementById('role-pro').style.background = r==='pro'?'#ddd':'white';
+            if(r==='pro') document.getElementById('pro-fields').classList.remove('hidden');
+            else document.getElementById('pro-fields').classList.add('hidden');
+        }
 
         async function handleRegister(e) {
             e.preventDefault();
             const email = document.getElementById('reg-email').value;
-            const pass = document.getElementById('reg-pass').value;
-            
-            // Cert check for pro
-            if(regRole === 'pro' && !document.getElementById('reg-cert-file').files[0]) {
-                return Swal.fire('Error', 'Certificate required', 'warning');
+            const data = {
+                name: document.getElementById('reg-name').value,
+                email: email,
+                phone: document.getElementById('reg-phone').value,
+                pass: document.getElementById('reg-pass').value,
+                age: document.getElementById('reg-age').value,
+                gender: document.getElementById('reg-gender').value,
+                role: regRole,
+                status: regRole==='user'?'active':'pending',
+                joined: Date.now()
+            };
+
+            if(regRole === 'pro') {
+                data.wilaya = document.getElementById('reg-wilaya').value;
+                data.cert = document.getElementById('cert-preview').value;
+                data.code = "T" + Math.floor(10000 + Math.random() * 90000);
+                data.points = 0;
+                data.lastAcceptedAt = 0; // For cooldown logic
             }
 
-            document.getElementById('loader').style.display = 'flex';
-            
             try {
-                // 1. Create Auth User
-                const userCred = await auth.createUserWithEmailAndPassword(email, pass);
-                const uid = userCred.user.uid;
-
-                // 2. Upload Cert if Pro
-                let certUrl = "";
-                if(regRole === 'pro') {
-                    const file = document.getElementById('reg-cert-file').files[0];
-                    const ref = storage.ref().child(`certs/${uid}_${file.name}`);
-                    await ref.put(file);
-                    certUrl = await ref.getDownloadURL();
-                }
-
-                // 3. Create Firestore Doc
-                const data = {
-                    name: document.getElementById('reg-name').value,
-                    email: email,
-                    phone: document.getElementById('reg-phone').value,
-                    age: document.getElementById('reg-age').value,
-                    gender: document.getElementById('reg-gender').value,
-                    role: regRole,
-                    status: regRole==='user'?'active':'pending',
-                    joined: Date.now(),
-                    img: ""
-                };
-                if(regRole === 'pro') {
-                    data.wilaya = document.getElementById('reg-wilaya').value;
-                    data.cert = certUrl;
-                    data.code = "T" + Math.floor(10000 + Math.random() * 90000);
-                    data.points = 0;
-                    data.lastAcceptedAt = 0;
-                }
-
-                await db.collection('users').doc(uid).set(data);
-                Swal.fire('تم', 'تم التسجيل بنجاح', 'success');
-                
-            } catch(error) {
-                Swal.fire('Error', error.message, 'error');
-                document.getElementById('loader').style.display = 'none';
-            }
+                await db.collection('users').add(data);
+                Swal.fire({
+                    title: 'تم التسجيل', 
+                    text: regRole==='pro' ? 'انتظر تفعيل حسابك من الإدارة' : 'يمكنك تسجيل الدخول الآن', 
+                    icon: 'success'
+                });
+                navTo('login');
+            } catch(e) { Swal.fire('Error', e.message, 'error'); }
         }
 
         async function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('log-email').value;
             const pass = document.getElementById('log-pass').value;
-            try {
-                await auth.signInWithEmailAndPassword(email, pass);
-            } catch(e) { Swal.fire('Error', e.message, 'error'); }
+
+            // Admin Login
+            if(email === 'admin' && pass === 'abobob123') {
+                currentUser = {role:'admin', name:'Admin'};
+                localStorage.setItem('uid', 'admin');
+                setupUserUI();
+                return;
+            }
+
+            // Normal User/Pro Login
+            const snap = await db.collection('users').where('email','==',email).where('pass','==',pass).get();
+            if(snap.empty) return Swal.fire('خطأ', 'بيانات غير صحيحة', 'error');
+            
+            const user = {id: snap.docs[0].id, ...snap.docs[0].data()};
+            
+            if(user.status === 'banned') return Swal.fire('محظور', 'تم حظر حسابك', 'error');
+            if(user.status === 'pending') return Swal.fire('انتظار', 'حسابك قيد المراجعة', 'warning');
+            if(user.status === 'rejected') return Swal.fire('مرفوض', 'تم رفض طلبك', 'error');
+
+            currentUser = user;
+            localStorage.setItem('uid', user.id); // Stay logged in
+            setupUserUI();
         }
 
-        function handleLogout() { auth.signOut(); }
-
         function setupUserUI() {
+            // Update Menu
             document.getElementById('menu-public').classList.add('hidden');
             document.getElementById('menu-private').classList.remove('hidden');
             document.getElementById('notif-btn').classList.remove('hidden');
-            
-            // Notifs
-            const role = currentUser.role;
+
+            // Route to Dash
+            if(currentUser.role === 'admin') initAdmin();
+            else if(currentUser.role === 'pro') initPro();
+            else initUser();
+
+            // Notification Listener
+            const role = currentUser.role === 'admin' ? 'admin' : currentUser.role;
             db.collection('notifications').where('target','in',['all', role]).onSnapshot(snap => {
                 const badge = document.getElementById('notif-badge');
                 if(!snap.empty) {
                     badge.innerText = snap.size;
                     badge.style.display = 'block';
-                    badge.onclick = () => {
-                        const n = snap.docs[0].data();
-                        Swal.fire(lang==='ar'?"إشعار":"Notification", lang==='ar'?n.text_ar:n.text_fr, 'info');
+                    // Click to show latest notification
+                    badge.parentElement.onclick = () => {
+                        const n = snap.docs[snap.size-1].data(); // Show last
+                        const txt = lang==='ar' ? n.text_ar : n.text_fr;
+                        Swal.fire({title: lang==='ar'?"إشعار":"Notification", text: txt, icon: 'info'});
+                        badge.style.display = 'none'; // "Read" behavior
                     }
                 }
             });
         }
-        function clearNotifs() { document.getElementById('notif-badge').style.display = 'none'; }
-        function setRole(r) { regRole = r; document.getElementById('role-user').style.background = r==='user'?'#eee':'white'; document.getElementById('role-pro').style.background = r==='pro'?'#eee':'white'; if(r==='pro') document.getElementById('pro-fields').classList.remove('hidden'); else document.getElementById('pro-fields').classList.add('hidden'); }
 
-        // 5. User Logic
+        function clearNotifs() {
+             document.getElementById('notif-badge').style.display = 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('uid');
+            location.reload();
+        }
+
+        function navToDash() {
+            if(currentUser.role==='admin') navTo('dash-admin');
+            else if(currentUser.role==='pro') navTo('dash-pro');
+            else navTo('dash-user');
+        }
+
+        // 5. USER LOGIC
         function initUser() {
             navTo('dash-user');
             document.getElementById('u-name').innerText = currentUser.name;
-            document.getElementById('u-img').src = currentUser.img || "https://via.placeholder.com/50";
+            document.getElementById('u-img').src = currentUser.img || "https://via.placeholder.com/60";
 
-            // List Pros (Cooldown logic)
+            // Load Pros with Cooldown Logic
             db.collection('users').where('role','==','pro').where('status','==','active').onSnapshot(snap => {
                 const list = document.getElementById('pros-list');
                 list.innerHTML = "";
+                const now = Date.now();
+                const oneHour = 3600000;
+                
                 let pros = [];
                 snap.forEach(d => pros.push({id:d.id, ...d.data()}));
-                
-                // Sort by cooldown
-                const now = Date.now();
+
+                // Sort: Those who accepted recently (<1h) go to bottom
                 pros.sort((a,b) => {
-                    const aCool = (now - (a.lastAcceptedAt||0)) < 3600000;
-                    const bCool = (now - (b.lastAcceptedAt||0)) < 3600000;
-                    if(aCool && !bCool) return 1;
+                    const aCool = (now - (a.lastAcceptedAt||0)) < oneHour;
+                    const bCool = (now - (b.lastAcceptedAt||0)) < oneHour;
+                    if(aCool && !bCool) return 1; // a is cooling down, put after b
                     if(!aCool && bCool) return -1;
                     return 0;
                 });
 
                 pros.forEach(p => {
-                    list.innerHTML += `
-                    <div class="pro-item">
+                   list.innerHTML += `
+                   <div class="pro-item animate__animated animate__fadeIn">
                         <img src="${p.img || 'https://via.placeholder.com/70'}">
                         <h4>${p.name}</h4>
-                        <div class="stars" onclick="showReviews('${p.id}')" style="cursor:pointer">⭐⭐⭐⭐ (Reviews)</div>
-                        <button class="btn-main" style="padding:5px 15px; font-size:0.8rem" onclick="reqAppt('${p.id}')">Request</button>
-                    </div>`;
+                        <div class="stars" onclick="showReviews('${p.id}')">⭐⭐⭐⭐ (Reviews)</div>
+                        <button class="btn-main" style="padding:6px 20px; font-size:0.85rem; margin-top:5px" onclick="reqAppt('${p.id}')">Request</button>
+                   </div>`;
                 });
             });
 
-            // Requests
+            // User History
             db.collection('appointments').where('userId','==',currentUser.id).onSnapshot(snap => {
                 const tbody = document.querySelector('#u-history-table tbody');
                 tbody.innerHTML = "";
                 let tot=0, pen=0, acc=0;
                 snap.forEach(d => {
                     const r = d.data();
-                    tot++; if(r.status==='pending') pen++; if(r.status==='accepted') acc++;
-                    let action = r.status;
-                    if(r.status==='accepted') action = `<button onclick="openRate('${r.proId}')">Rate</button>`;
+                    tot++;
+                    if(r.status==='pending') pen++;
+                    if(r.status==='accepted') acc++;
+                    
+                    let action = `<span style="padding:5px 10px; border-radius:10px; background:#eee">${r.status}</span>`;
+                    if(r.status==='accepted') action = `<button class="btn-main" style="padding:4px 10px; font-size:0.8rem" onclick="openRate('${r.proId}')">Rate</button>`;
+                    
                     tbody.innerHTML += `<tr><td>${r.proName}</td><td>${r.status}</td><td>${action}</td></tr>`;
                 });
                 document.getElementById('u-total').innerText = tot;
@@ -605,31 +733,40 @@
                 document.getElementById('u-accepted').innerText = acc;
             });
         }
+
         async function reqAppt(pid) {
-            await db.collection('appointments').add({userId: currentUser.id, userName: currentUser.name, userAge: currentUser.age, userGender: currentUser.gender, proId: pid, status: 'pending', date: Date.now()});
-            Swal.fire('Sent', 'Request Sent', 'success');
+            await db.collection('appointments').add({
+                userId: currentUser.id, userName: currentUser.name, userAge: currentUser.age, userGender: currentUser.gender,
+                proId: pid, status: 'pending', date: Date.now()
+            });
+            Swal.fire('Success', 'Request Sent', 'success');
         }
 
-        // 6. Pro Logic
+        // 6. PRO LOGIC
         function initPro() {
             navTo('dash-pro');
             document.getElementById('p-name').innerText = currentUser.name;
             document.getElementById('p-code').innerText = currentUser.code;
             document.getElementById('p-points').innerText = currentUser.points || 0;
-            document.getElementById('p-img').src = currentUser.img || "https://via.placeholder.com/50";
+            document.getElementById('p-img').src = currentUser.img || "https://via.placeholder.com/60";
 
             db.collection('appointments').where('proId','==',currentUser.id).onSnapshot(snap => {
                 const rb = document.getElementById('p-req-body');
                 const cb = document.getElementById('p-clients-body');
                 rb.innerHTML = ""; cb.innerHTML = "";
                 let n=0, t=0;
+
                 snap.forEach(doc => {
                     const d = doc.data();
                     if(d.status === 'pending') {
                         n++;
-                        rb.innerHTML += `<tr><td>${d.userName}</td><td>${d.userAge}</td><td><button onclick="updStatus('${doc.id}','accepted','${d.userId}')">✔</button> <button onclick="updStatus('${doc.id}','rejected',null)">✖</button></td></tr>`;
+                        rb.innerHTML += `<tr><td>${d.userName}</td><td>${d.userAge}</td><td>
+                            <button style="border:none; background:#4CAF50; color:white; padding:5px 10px; border-radius:5px; cursor:pointer" onclick="updStatus('${doc.id}','accepted','${d.userId}')">✔</button>
+                            <button style="border:none; background:#F44336; color:white; padding:5px 10px; border-radius:5px; cursor:pointer" onclick="updStatus('${doc.id}','rejected',null)">✖</button>
+                        </td></tr>`;
                     } else if(d.status === 'accepted') {
                         t++;
+                        // Fetch client details
                         db.collection('users').doc(d.userId).get().then(u => {
                             if(u.exists) cb.innerHTML += `<tr><td>${u.data().name}</td><td>${u.data().phone}</td><td>${u.data().email}</td></tr>`;
                         });
@@ -639,68 +776,129 @@
                 document.getElementById('p-total').innerText = t;
             });
         }
+
         async function updStatus(aid, st, uid) {
             await db.collection('appointments').doc(aid).update({status:st});
             if(st === 'accepted') {
+                // 1. Update Cooldown
                 await db.collection('users').doc(currentUser.id).update({lastAcceptedAt: Date.now()});
+                // 2. Add to Global Sessions Stats
                 await db.collection('stats').doc('sessions').set({count: firebase.firestore.FieldValue.increment(1)}, {merge:true});
             }
         }
 
-        // 7. Admin Logic
+        // 7. ADMIN LOGIC
         function initAdmin() {
             navTo('dash-admin');
             showAdmTab('users');
+            
+            // Stats & Users Table
             db.collection('users').onSnapshot(snap => {
                 let u=0, p=0;
                 const tbody = document.getElementById('adm-users-body');
                 tbody.innerHTML = "";
+                
                 snap.forEach(doc => {
                     const d = doc.data();
-                    if(d.role === 'user') u++; if(d.role === 'pro') p++;
+                    if(d.role === 'user') u++;
+                    if(d.role === 'pro') p++;
+                    
                     if(d.role !== 'admin') {
-                        let acts = `<button onclick="toggleBan('${doc.id}','${d.status}')">${d.status==='banned'?'Unban':'Ban'}</button>`;
-                        if(d.role==='pro') {
-                            if(d.status==='pending') acts += ` <button onclick="admApprove('${doc.id}')">Approve</button> <a href="${d.cert}" target="_blank">Cert</a>`;
-                            acts += ` <button onclick="editPoints('${doc.id}', ${d.points||0})">Points</button>`;
+                        let actionBtns = `<button onclick="toggleBan('${doc.id}','${d.status}')" style="font-size:0.7rem; padding:3px 6px">${d.status==='banned'?'فك':'حظر'}</button>`;
+                        
+                        if(d.role === 'pro') {
+                             if(d.status === 'pending') {
+                                 actionBtns += ` <button onclick="admApprove('${doc.id}')" style="background:green; color:white; border:none; border-radius:3px; padding:3px">قبول</button> 
+                                 <button onclick="viewCert('${d.cert}')" style="background:#2196F3; color:white; border:none; border-radius:3px; padding:3px">الشهادة</button>`;
+                             }
+                             actionBtns += ` <button onclick="editPoints('${doc.id}', ${d.points||0})" style="background:#FF9800; color:white; border:none; border-radius:3px; padding:3px">نقاط</button>`;
                         }
-                        tbody.innerHTML += `<tr><td>${d.name}<br><small>${d.email}</small></td><td>${d.code||'-'}</td><td>${d.points||0}</td><td>${acts}</td></tr>`;
+
+                        tbody.innerHTML += `<tr>
+                            <td>${d.name}<br><small style="color:#888">${d.email}</small></td>
+                            <td>${d.code || '-'}</td>
+                            <td>${d.points || 0}</td>
+                            <td>${actionBtns}</td>
+                        </tr>`;
                     }
                 });
-                document.getElementById('adm-users').innerText = u; document.getElementById('adm-pros').innerText = p;
+                document.getElementById('adm-users').innerText = u;
+                document.getElementById('adm-pros').innerText = p;
             });
+            
+            // Success Sessions
             db.collection('appointments').where('status','==','accepted').onSnapshot(snap => {
                 document.getElementById('adm-sessions').innerText = snap.size;
-                const b = document.getElementById('adm-sessions-body'); b.innerHTML = "";
-                snap.forEach(d => { const x = d.data(); b.innerHTML += `<tr><td>${x.userName}</td><td>${x.proName}</td><td>${new Date(x.date).toLocaleDateString()}</td></tr>`; });
+                const b = document.getElementById('adm-sessions-body');
+                b.innerHTML = "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    // In real app, fetch Pro email too. Here simplified.
+                    b.innerHTML += `<tr><td>${d.userName}</td><td>${d.proName}</td><td>${d.userId} / ${d.proId}</td><td>${new Date(d.date).toLocaleDateString()}</td></tr>`;
+                });
             });
-            db.collection('settings').doc('config').get().then(doc => { if(doc.exists && doc.data().logo) document.getElementById('cms-logo-url').value = doc.data().logo; });
         }
-        function showAdmTab(id) { document.querySelectorAll('.adm-tab').forEach(t => t.classList.add('hidden')); document.getElementById('adm-tab-'+id).classList.remove('hidden'); }
-        async function editPoints(uid, curr) { const { value: p } = await Swal.fire({input: 'number', inputValue: curr, title: 'Points'}); if(p) await db.collection('users').doc(uid).update({points: parseInt(p)}); }
+
+        function showAdmTab(id) {
+            document.querySelectorAll('.adm-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById('adm-tab-'+id).classList.remove('hidden');
+        }
+
+        function filterAdmin(inp) {
+            const v = inp.value.toLowerCase();
+            const rows = document.getElementById('adm-users-body').querySelectorAll('tr');
+            rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(v) ? '' : 'none');
+        }
+
+        async function editPoints(uid, curr) {
+            const { value: p } = await Swal.fire({input: 'number', inputValue: curr, title: 'تعديل النقاط'});
+            if(p) await db.collection('users').doc(uid).update({points: parseInt(p)});
+        }
+        
         async function admApprove(id) { await db.collection('users').doc(id).update({status:'active'}); }
         async function toggleBan(id, st) { await db.collection('users').doc(id).update({status: st==='banned'?'active':'banned'}); }
-        function filterAdmin(inp) { const v = inp.value.toLowerCase(); const r = document.getElementById('adm-users-body').querySelectorAll('tr'); r.forEach(x => x.style.display = x.innerText.toLowerCase().includes(v) ? '' : 'none'); }
-        async function saveCMS() { const l = document.getElementById('cms-logo-url').value; if(l) await db.collection('settings').doc('config').set({logo:l}, {merge:true}); Swal.fire('Saved'); }
-        async function sendNotif() { await db.collection('notifications').add({text_ar: document.getElementById('notif-ar').value, text_fr: document.getElementById('notif-fr').value, target: 'all'}); Swal.fire('Sent'); }
+        function viewCert(c) { Swal.fire({imageUrl: c, imageWidth: '90%', confirmButtonText:'غلق'}); }
+        
+        async function saveCMS() {
+            const l = document.getElementById('cms-logo-val').value;
+            if(l) await db.collection('settings').doc('config').set({logo: l}, {merge:true});
+            Swal.fire('Saved');
+        }
 
-        // 8. General
-        function openProfile() { document.getElementById('prof-name').value = currentUser.name; document.getElementById('modal-profile').style.display = 'flex'; }
+        async function sendNotif() {
+            await db.collection('notifications').add({
+                text_ar: document.getElementById('notif-ar').value,
+                text_fr: document.getElementById('notif-fr').value,
+                target: 'all'
+            });
+            Swal.fire('Sent');
+        }
+
+        // 8. GENERAL FEATURES
+        function openProfile() {
+            document.getElementById('prof-name').value = currentUser.name;
+            document.getElementById('modal-profile').style.display = 'flex';
+        }
         async function updateProfile() {
             const n = document.getElementById('prof-name').value;
             const p = document.getElementById('prof-pass').value;
-            const i = document.getElementById('prof-img-url').value;
+            const i = document.getElementById('prof-img-val').value;
             const upd = {name: n};
+            if(p) upd.pass = p;
             if(i) upd.img = i;
-            if(p) {
-                const u = auth.currentUser;
-                await u.updatePassword(p);
-            }
             await db.collection('users').doc(currentUser.id).update(upd);
+            currentUser.name = n; // Optimistic update
+            if(i) currentUser.img = i;
             closeModal('modal-profile');
             Swal.fire('Updated');
         }
-        function openRate(pid) { document.getElementById('rate-pro-id').value = pid; document.getElementById('modal-rate').style.display = 'flex'; }
+
+        // Rating
+        function openRate(pid) {
+            document.getElementById('rate-pro-id').value = pid;
+            document.getElementById('modal-rate').style.display = 'flex';
+        }
+        
         async function submitRate() {
             const pid = document.getElementById('rate-pro-id').value;
             const star = document.querySelector('input[name="rate"]:checked')?.value;
@@ -710,23 +908,54 @@
             closeModal('modal-rate');
             Swal.fire('Thanks');
         }
+        
         function showReviews(pid) {
-            const list = document.getElementById('reviews-list'); list.innerHTML = "Loading...";
+            const list = document.getElementById('reviews-list');
+            list.innerHTML = "Loading...";
             document.getElementById('modal-reviews').style.display = 'flex';
             db.collection('reviews').where('proId','==',pid).get().then(snap => {
-                list.innerHTML = ""; if(snap.empty) list.innerHTML = "No reviews yet.";
-                snap.forEach(d => list.innerHTML += `<div style="border-bottom:1px solid #eee; padding:5px"><b>${d.data().user}</b>: ${"⭐".repeat(d.data().stars)}<br>${d.data().comment}</div>`);
+                list.innerHTML = "";
+                if(snap.empty) list.innerHTML = "No reviews yet.";
+                snap.forEach(d => {
+                    const r = d.data();
+                    list.innerHTML += `
+                    <div style="border-bottom:1px solid #eee; padding:10px; margin-bottom:5px">
+                        <div class="flex" style="justify-content:space-between">
+                            <strong>${r.user || 'User'}</strong>
+                            <span style="color:#FFC107">${"★".repeat(r.stars)}</span>
+                        </div>
+                        <p style="font-size:0.9rem; color:#666">${r.comment}</p>
+                    </div>`;
+                });
             });
         }
-        function openStatic(type) {
-            const title = type; // Simplify
-            const body = "Lorem ipsum content for " + type; // Placeholders
-            document.getElementById('static-title').innerText = t(type);
-            document.getElementById('static-body').innerText = body;
+
+        // Static Pages
+        function openStatic(key) {
+            const titles = {
+                about: lang==='ar'?"من نحن":"À propos",
+                privacy: lang==='ar'?"سياسة الخصوصية":"Confidentialité"
+            };
+            const bodies = {
+                about: lang==='ar'
+                    ? "نحن منصة جزائرية رائدة تربط بين أخصائيي التغذية والمرضى لتسهيل عملية المتابعة الصحية."
+                    : "Nous sommes une plateforme algérienne leader reliant nutritionnistes et patients.",
+                privacy: lang==='ar'
+                    ? "نحن نحترم خصوصيتك. جميع بياناتك مشفرة ومحفوظة بأمان."
+                    : "Nous respectons votre vie privée. Toutes vos données sont cryptées."
+            };
+            
+            document.getElementById('static-title').innerText = titles[key] || key;
+            document.getElementById('static-body').innerText = bodies[key] || "...";
             document.getElementById('modal-static').style.display = 'flex';
         }
-        function openLocation() { window.open("https://maps.google.com"); }
-        function openReport() { window.location.href = "mailto:support@dz.com"; }
+
+        function openLocation() { window.open("https://www.google.com/maps/search/?api=1&query=Algiers", "_blank"); }
+        function openReport() { window.location.href = "mailto:support@dz-nutri.dz?subject=Report"; }
+
+        // START APP
+        window.addEventListener('DOMContentLoaded', initApp);
+
     </script>
 </body>
 </html>
