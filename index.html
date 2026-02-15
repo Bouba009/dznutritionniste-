@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DZ Nutritionniste</title>
+    <!-- خطوط عربية واجنبية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #81C784;
+            --dark: #1a1a1a;
+            --light: #f4f4f4;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --text-color: #333;
+            --bg-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2053&auto=format&fit=crop');
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Poppins', sans-serif; transition: all 0.3s ease; }
+        
+        body { background: var(--light); color: var(--text-color); overflow-x: hidden; }
+        
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .center { align-items: center; justify-content: center; }
+        .grid { display: grid; gap: 20px; }
+        
+        /* Animations */
+        @keyframes zoomBg { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes glow { 0% { box-shadow: 0 0 5px var(--primary); } 50% { box-shadow: 0 0 20px var(--primary), 0 0 10px #fff; } 100% { box-shadow: 0 0 5px var(--primary); } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Loader */
+        #loader { position: fixed; inset: 0; background: var(--dark); z-index: 9999; display: flex; justify-content: center; align-items: center; color: var(--primary); font-size: 2rem; }
+
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--secondary); display: flex; align-items: center; gap: 10px; }
+        .lang-switch { cursor: pointer; border: 1px solid var(--secondary); padding: 5px 10px; border-radius: 20px; font-weight: bold; }
+        
+        /* Sidebar */
+        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: white; z-index: 101; box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 80px 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar.active { right: 0; }
+        .menu-btn { cursor: pointer; font-size: 1.5rem; z-index: 102; }
+        .sidebar-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .sidebar-item:hover { background: var(--light); color: var(--primary); padding-right: 25px; }
+
+        /* Landing Page */
+        #landing { height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
+        .bg-zoom { position: absolute; inset: 0; background-image: var(--bg-image); background-size: cover; background-position: center; animation: zoomBg 20s infinite alternate; z-index: -1; }
+        .overlay { position: absolute; inset: 0; background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(46, 125, 50, 0.6)); z-index: 0; }
+        .hero-content { z-index: 1; position: relative; animation: slideUp 1s ease-out; }
+        .hero-title { font-size: 3rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .btn-glow { background: var(--primary); color: white; padding: 15px 40px; border: none; border-radius: 50px; font-size: 1.2rem; cursor: pointer; animation: glow 2s infinite; font-weight: bold; text-decoration: none; display: inline-block; }
+        
+        /* Forms & Containers */
+        .container { max-width: 1200px; margin: 100px auto; padding: 20px; min-height: 80vh; animation: fadeIn 0.5s; }
+        .auth-box { max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; position: relative; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); }
+        .toggle-type { display: flex; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .toggle-btn { flex: 1; padding: 10px; border: none; background: #f9f9f9; cursor: pointer; font-weight: 600; }
+        .toggle-btn.active { background: var(--primary); color: white; }
+
+        /* Dashboard Common */
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .profile-pic { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 4px solid var(--primary); }
+        .stat-num { font-size: 2rem; font-weight: bold; color: var(--secondary); }
+        .banner-slider { width: 100%; height: 200px; background: #ddd; border-radius: 10px; margin-bottom: 20px; position: relative; overflow: hidden; }
+        .banner-img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Lists & Tables */
+        .data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .data-table th, .data-table td { padding: 15px; text-align: right; border-bottom: 1px solid #eee; }
+        .data-table th { background: var(--secondary); color: white; }
+        .status-badge { padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; color: white; }
+        .status-pending { background: var(--warning); color: #333; }
+        .status-approved { background: var(--primary); }
+        .status-rejected { background: var(--danger); }
+
+        /* Popups */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; animation: slideUp 0.3s; position: relative; }
+        .close-modal { position: absolute; top: 10px; left: 10px; cursor: pointer; font-size: 1.2rem; }
+        .free-consult-popup { position: fixed; bottom: 20px; left: 20px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-right: 5px solid var(--primary); animation: slideUp 0.5s; z-index: 150; max-width: 300px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        /* Admin Specific */
+        .admin-grid { grid-template-columns: repeat(3, 1fr); }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader"><i class="fas fa-carrot fa-spin"></i> &nbsp; DZ Nutritionniste</div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <div class="logo"><i class="fas fa-leaf"></i> DZ Nutritionniste</div>
+        <div class="lang-switch" onclick="toggleLang()">AR | FR</div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-item" onclick="navigate('landing'); toggleSidebar()" data-i18n="home">الصفحة الرئيسية</div>
+        <div class="sidebar-item" onclick="navigate('login-page'); toggleSidebar()" data-i18n="login">تسجيل الدخول</div>
+        <div style="margin-top: auto;">
+            <div class="sidebar-item" onclick="openModal('about-modal')" data-i18n="about">من نحن</div>
+            <div class="sidebar-item" onclick="openModal('privacy-modal')" data-i18n="privacy">سياسة الخصوصية</div>
+            <div class="sidebar-item" onclick="openModal('location-modal')" data-i18n="location">مقرنا</div>
+            <div class="sidebar-item" onclick="openModal('report-modal')" data-i18n="report">الابلاغ عن مشكلة</div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="app">
+        <!-- 1. Landing Page -->
+        <section id="landing">
+            <div class="bg-zoom"></div>
+            <div class="overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title" data-i18n="hero_text">غير حياتك للأفضل</h1>
+                <button class="btn-glow" onclick="navigate('register-page')" data-i18n="start_now">إبدأ الآن</button>
+            </div>
+        </section>
+
+        <!-- 2. Auth Pages -->
+        <section id="login-page" class="container hidden">
+            <div class="auth-box">
+                <h2 class="text-center mb-4" data-i18n="login">تسجيل الدخول</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label data-i18n="email">البريد الإلكتروني</label>
+                        <input type="text" id="login-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="password">كلمة المرور</label>
+                        <input type="password" id="login-pass" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn-glow" style="width:100%" data-i18n="login">دخول</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="register-page" class="container hidden">
+            <div class="auth-box">
+                <div class="toggle-type">
+                    <button class="toggle-btn active" onclick="setRegType('user')" id="btn-user" data-i18n="normal_account">حساب عادي</button>
+                    <button class="toggle-btn" onclick="setRegType('pro')" id="btn-pro" data-i18n="pro_account">مختص تغذية</button>
+                </div>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group"><label data-i18n="fullname">الاسم الكامل</label><input type="text" id="reg-name" class="form-control" required></div>
+                    <div class="form-group"><label data-i18n="phone">رقم الهاتف</label><input type="tel" id="reg-phone" class="form-control" required></div>
+                    <div class="form-group"><label data-i18n="email">البريد الإلكتروني</label><input type="email" id="reg-email" class="form-control" required></div>
+                    <div class="form-group"><label data-i18n="password">كلمة المرور</label><input type="password" id="reg-pass" class="form-control" required></div>
+                    
+                    <div class="flex" style="gap:10px">
+                        <div class="form-group" style="flex:1"><label data-i18n="gender">الجنس</label><select id="reg-gender" class="form-control"><option value="male">ذكر</option><option value="female">أنثى</option></select></div>
+                        <div class="form-group" style="flex:1"><label data-i18n="age">السن</label><input type="number" id="reg-age" class="form-control" required></div>
+                    </div>
+
+                    <!-- Pro Only Fields -->
+                    <div id="pro-fields" class="hidden">
+                        <div class="form-group"><label data-i18n="wilaya">الولاية</label><input type="text" id="reg-wilaya" class="form-control"></div>
+                        <div class="form-group">
+                            <label data-i18n="marital">الحالة الاجتماعية</label>
+                            <select id="reg-marital" class="form-control" onchange="checkMarital(this.value)">
+                                <option value="single">أعزب</option>
+                                <option value="married">متزوج</option>
+                                <option value="divorced">مطلق</option>
+                            </select>
+                        </div>
+                        <div id="children-opt" class="hidden form-group">
+                             <label data-i18n="children">هل لديك أولاد؟</label>
+                             <select id="reg-children" class="form-control"><option value="yes">نعم</option><option value="no">لا</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="certificate">رفع الشهادة (اختصاص التغذية)</label>
+                            <input type="file" id="reg-cert" class="form-control">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-glow" style="width:100%" data-i18n="register">تسجيل</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3. Normal User Dashboard -->
+        <section id="user-dash" class="container hidden">
+            <div class="dash-header">
+                <div class="flex center" style="gap:10px">
+                    <img src="https://via.placeholder.com/50" class="profile-pic" id="user-img">
+                    <h3 id="user-name-disp">مرحباً</h3>
+                </div>
+                <div class="flex" style="gap:10px">
+                    <i class="fas fa-bell fa-lg" style="color:var(--primary)"></i>
+                    <button class="status-rejected" onclick="logout()" data-i18n="logout">خروج</button>
+                </div>
+            </div>
+            
+            <!-- Banner Slider -->
+            <div class="banner-slider">
+                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1000" class="banner-img" id="user-banner">
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 3fr;">
+                <!-- Mini Stats -->
+                <div class="flex-col" style="gap:20px">
+                    <div class="stat-card">
+                        <h4 data-i18n="total_deals">المعاملات</h4>
+                        <span class="stat-num" id="user-total-deals">0</span>
+                    </div>
+                    <div class="stat-card" style="border-color: var(--warning)">
+                        <h4 data-i18n="pending">قيد الانتظار</h4>
+                        <span class="stat-num" id="user-pending-deals">0</span>
+                    </div>
+                </div>
+
+                <!-- Nutritionists List & History -->
+                <div>
+                    <h3 class="mb-4" data-i18n="available_nutritionists">المختصون المتاحون</h3>
+                    <div id="nutritionist-list" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                        <!-- Dynamic Content -->
+                    </div>
+
+                    <h3 class="mt-4 mb-2" data-i18n="history">سجل الطلبات</h3>
+                    <div id="user-history"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Nutritionist Dashboard -->
+        <section id="pro-dash" class="container hidden">
+            <div class="dash-header">
+                <h3>لوحة المختص - <span id="pro-name-disp"></span></h3>
+                <button class="status-rejected" onclick="logout()">خروج</button>
+            </div>
+            
+            <div class="banner-slider"><img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1000" class="banner-img"></div>
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 20px;">
+                <div class="stat-card" style="background:#e8f5e9">
+                    <h4 data-i18n="new_requests">طلبات جديدة</h4><span class="stat-num" id="pro-new-req">0</span>
+                </div>
+                <div class="stat-card" style="background:#e3f2fd">
+                    <h4 data-i18n="total_requests">الإجمالي</h4><span class="stat-num" id="pro-total-req">0</span>
+                </div>
+            </div>
+
+            <h3 data-i18n="new_requests">طلبات واردة</h3>
+            <table class="data-table">
+                <thead>
+                    <tr><th data-i18n="name">الاسم</th><th data-i18n="age">السن</th><th data-i18n="gender">الجنس</th><th data-i18n="action">إجراء</th></tr>
+                </thead>
+                <tbody id="pro-requests-table"></tbody>
+            </table>
+            
+            <h3 class="mt-4" data-i18n="accepted_clients">زبائن حاليون</h3>
+            <table class="data-table">
+                <thead>
+                    <tr><th data-i18n="name">الاسم</th><th data-i18n="contact">الاتصال</th></tr>
+                </thead>
+                <tbody id="pro-accepted-table"></tbody>
+            </table>
+        </section>
+
+        <!-- 5. Admin Dashboard -->
+        <section id="admin-dash" class="container hidden">
+            <div class="dash-header">
+                <h2>Admin Panel</h2>
+                <button class="status-rejected" onclick="logout()">Logout</button>
+            </div>
+
+            <!-- Admin Grid 3x3 -->
+            <div class="grid admin-grid" style="margin-bottom: 30px;">
+                <div class="stat-card" style="border-color:#2196F3"><h4>Users</h4><span class="stat-num" id="adm-users-count">0</span></div>
+                <div class="stat-card" style="border-color:#4CAF50"><h4>Nutritionists</h4><span class="stat-num" id="adm-pros-count">0</span></div>
+                <div class="stat-card" style="border-color:#FF9800"><h4>Clients</h4><span class="stat-num" id="adm-clients-count">0</span></div>
+                <div class="stat-card" style="border-color:#9C27B0"><h4>Success Sessions</h4><span class="stat-num" id="adm-success-count">0</span></div>
+                <div class="stat-card" style="border-color:#607D8B"><h4>Daily Visits</h4><span class="stat-num">124</span></div>
+                <div class="stat-card" style="border-color:#795548"><h4>Monthly Visits</h4><span class="stat-num">3,502</span></div>
+            </div>
+
+            <!-- Sections -->
+            <div class="flex" style="gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                <button class="btn-glow" onclick="showAdminTab('users')">Users Mgmt</button>
+                <button class="btn-glow" onclick="showAdminTab('approvals')">Approvals</button>
+                <button class="btn-glow" onclick="showAdminTab('reports')">Reports</button>
+                <button class="btn-glow" onclick="showAdminTab('settings')">Settings (CMS)</button>
+            </div>
+
+            <div id="admin-users" class="admin-tab">
+                <h3>User Management</h3>
+                <input type="text" placeholder="Filter..." class="form-control mb-2">
+                <table class="data-table">
+                    <thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody id="admin-users-table"></tbody>
+                </table>
+            </div>
+
+            <div id="admin-approvals" class="admin-tab hidden">
+                <h3>Pending Nutritionists</h3>
+                <table class="data-table">
+                    <thead><tr><th>Name</th><th>Certificate</th><th>Action</th></tr></thead>
+                    <tbody id="admin-approvals-table"></tbody>
+                </table>
+            </div>
+            
+             <div id="admin-reports" class="admin-tab hidden">
+                <h3>Reports</h3>
+                <table class="data-table">
+                    <thead><tr><th>User</th><th>Desc</th><th>Email</th></tr></thead>
+                    <tbody id="admin-reports-table"></tbody>
+                </table>
+            </div>
+
+            <div id="admin-settings" class="admin-tab hidden">
+                <h3>CMS Settings</h3>
+                <div class="form-group">
+                    <label>Update Background URL</label>
+                    <input type="text" id="cms-bg" class="form-control">
+                    <button class="btn-glow mt-2" onclick="updateCMS()">Update</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modals -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <i class="fas fa-check-circle fa-4x" style="color:var(--primary); margin-bottom:15px; animation: glow 1s infinite"></i>
+            <h3 id="success-msg">تمت العملية بنجاح</h3>
+            <p id="success-sub">انتظر حتى نعالج ملفك لتصبح من عائلتنا 💙</p>
+            <button class="btn-glow mt-2" onclick="closeModal('success-modal')">حسناً</button>
+        </div>
+    </div>
+
+    <div id="report-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('report-modal')">&times;</span>
+            <h3 data-i18n="report">الابلاغ عن مشكلة</h3>
+            <input type="text" id="rep-name" placeholder="Name" class="form-control mb-2">
+            <input type="email" id="rep-email" placeholder="Email" class="form-control mb-2">
+            <textarea id="rep-desc" placeholder="Description" class="form-control mb-2"></textarea>
+            <button class="btn-glow" onclick="submitReport()">ارسال</button>
+        </div>
+    </div>
+    
+    <div id="location-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('location-modal')">&times;</span>
+            <h3>مقرنا</h3>
+            <p>الجزائر العاصمة، بئر مراد رايس</p>
+            <a href="#" target="_blank">رابط الموقع (Maps)</a>
+        </div>
+    </div>
+
+    <div id="offer-popup" class="free-consult-popup hidden">
+        <span class="close-modal" style="top:5px; left:5px; font-size:1rem" onclick="document.getElementById('offer-popup').classList.add('hidden')">&times;</span>
+        <h4 style="color:var(--primary)">عرض خاص! 🔥</h4>
+        <p>استفد من 15 دقيقة استشارة مجانية مع مختصة.</p>
+    </div>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, updateDoc, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCW3xXtNcSAqoEB3MTiTkBH6faZy4U2MMs",
+            authDomain: "sstore-6a68a.firebaseapp.com",
+            projectId: "sstore-6a68a",
+            storageBucket: "sstore-6a68a.firebasestorage.app",
+            messagingSenderId: "624495077479",
+            appId: "1:624495077479:web:7b299982afeb1c5bce4cc2",
+            measurementId: "G-FC9T1DHW27"
+        };
+
+        // Initialize
+        let app, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            const analytics = getAnalytics(app);
+            console.log("Firebase Connected");
+        } catch (e) {
+            console.error("Firebase Error:", e);
+            alert("Error connecting to database. Please check console.");
+        }
+
+        // Global State
+        window.currentUser = null;
+        let currentLang = 'ar';
+        let regType = 'user';
+
+        // --- Translations ---
+        const translations = {
+            ar: {
+                home: "الرئيسية", login: "تسجيل الدخول", start_now: "إبدأ الآن",
+                hero_text: "غير حياتك للأفضل", fullname: "الاسم الكامل", phone: "رقم الهاتف",
+                email: "الايميل", password: "كلمة المرور", gender: "الجنس", age: "السن",
+                wilaya: "الولاية", marital: "الحالة الاجتماعية", children: "أولاد؟",
+                certificate: "شهادة الاختصاص", register: "تسجيل", normal_account: "حساب عادي",
+                pro_account: "مختص تغذية", available_nutritionists: "المختصون المتاحون",
+                total_deals: "اجمالي المعاملات", pending: "قيد الانتظار", new_requests: "طلبات جديدة",
+                accepted_clients: "زبائن حاليون", report: "الابلاغ عن مشكلة", about: "من نحن",
+                privacy: "سياسة الخصوصية", location: "مقرنا"
+            },
+            fr: {
+                home: "Accueil", login: "Connexion", start_now: "Commencer",
+                hero_text: "Changez votre vie pour le mieux", fullname: "Nom complet", phone: "Téléphone",
+                email: "Email", password: "Mot de passe", gender: "Sexe", age: "Age",
+                wilaya: "Wilaya", marital: "État civil", children: "Enfants?",
+                certificate: "Certificat", register: "S'inscrire", normal_account: "Compte Normal",
+                pro_account: "Nutritionniste", available_nutritionists: "Nutritionnistes Disponibles",
+                total_deals: "Total Transactions", pending: "En attente", new_requests: "Nouvelles Demandes",
+                accepted_clients: "Clients Actuels", report: "Signaler un problème", about: "À propos",
+                privacy: "Confidentialité", location: "Localisation"
+            }
+        };
+
+        // --- UI Functions ---
+        window.toggleLang = () => {
+            currentLang = currentLang === 'ar' ? 'fr' : 'ar';
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[currentLang][key]) el.innerText = translations[currentLang][key];
+            });
+        };
+
+        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('active');
+        
+        window.navigate = (viewId) => {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+        };
+
+        window.openModal = (id) => document.getElementById(id).classList.remove('hidden');
+        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
+
+        window.setRegType = (type) => {
+            regType = type;
+            document.getElementById('btn-user').className = `toggle-btn ${type === 'user' ? 'active' : ''}`;
+            document.getElementById('btn-pro').className = `toggle-btn ${type === 'pro' ? 'active' : ''}`;
+            document.getElementById('pro-fields').className = type === 'pro' ? '' : 'hidden';
+        };
+
+        window.checkMarital = (val) => {
+            document.getElementById('children-opt').className = (val === 'married' || val === 'divorced') ? 'form-group' : 'hidden form-group';
+        };
+
+        // --- Logic Functions ---
+
+        // 1. Register
+        window.handleRegister = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-pass').value; // In real app, createAuthUser
+            const name = document.getElementById('reg-name').value;
+            
+            // Simulation of upload
+            const certFile = document.getElementById('reg-cert').value; 
+
+            const userData = {
+                name, email, password, 
+                phone: document.getElementById('reg-phone').value,
+                gender: document.getElementById('reg-gender').value,
+                age: document.getElementById('reg-age').value,
+                role: regType,
+                status: regType === 'user' ? 'active' : 'pending',
+                joined: new Date().toISOString()
+            };
+
+            if(regType === 'pro') {
+                userData.wilaya = document.getElementById('reg-wilaya').value;
+                userData.marital = document.getElementById('reg-marital').value;
+                userData.cert = certFile ? "uploaded_cert.pdf" : "";
+                userData.promoCode = "DZ-" + Math.floor(Math.random()*10000);
+            }
+
+            try {
+                // Save to Firestore (Simulating Auth + DB save)
+                // Note: In real world, use createUserWithEmailAndPassword then setDoc
+                await addDoc(collection(db, "users"), userData);
+                
+                document.getElementById('success-msg').innerText = "تم التسجيل بنجاح";
+                if(regType === 'pro') document.getElementById('success-sub').innerText = "انتظر حتى نعالج ملفك لتصبح من عائلتنا 💙";
+                else document.getElementById('success-sub').innerText = "";
+                
+                openModal('success-modal');
+                navigate('login-page');
+            } catch (err) {
+                console.error(err);
+                alert("حدث خطأ أثناء التسجيل");
+            }
+        };
+
+        // 2. Login
+        window.handleLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            // Admin Check
+            if(email === 'admin' && pass === 'abobob123') {
+                loadAdminDash();
+                navigate('admin-dash');
+                return;
+            }
+
+            try {
+                // Query Firestore for user (Mocking Auth)
+                const q = query(collection(db, "users"), where("email", "==", email), where("password", "==", pass));
+                const querySnapshot = await getDocs(q);
+                
+                if(!querySnapshot.empty) {
+                    const docSnap = querySnapshot.docs[0];
+                    const user = { id: docSnap.id, ...docSnap.data() };
+                    
+                    if(user.role === 'pro' && user.status === 'pending') {
+                        alert("حسابك قيد المراجعة من طرف الإدارة");
+                        return;
+                    } else if (user.status === 'banned') {
+                        alert("تم حظر حسابك");
+                        return;
+                    }
+
+                    window.currentUser = user;
+                    
+                    if(user.role === 'user') loadUserDash(user);
+                    else loadProDash(user);
+
+                } else {
+                    alert("بيانات خاطئة");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("خطأ في الاتصال");
+            }
+        };
+
+        // 3. User Dash Logic
+        async function loadUserDash(user) {
+            navigate('user-dash');
+            document.getElementById('user-name-disp').innerText = "مرحباً " + user.name;
+            
+            // Popup after 2 seconds
+            setTimeout(() => document.getElementById('offer-popup').classList.remove('hidden'), 2000);
+
+            // Load Nutritionists
+            const q = query(collection(db, "users"), where("role", "==", "pro"), where("status", "==", "active"));
+            const snap = await getDocs(q);
+            const list = document.getElementById('nutritionist-list');
+            list.innerHTML = "";
+            
+            snap.forEach(doc => {
+                const pro = doc.data();
+                list.innerHTML += `
+                    <div class="stat-card" style="align-items:flex-start; text-align:right">
+                        <h4>${pro.name}</h4>
+                        <p class="text-muted">${pro.wilaya || 'الجزائر'}</p>
+                        <button class="btn-glow mt-2" style="padding:5px 20px; font-size:0.9rem" onclick="requestAppt('${doc.id}', '${pro.name}')">طلب استشارة</button>
+                    </div>
+                `;
+            });
+
+            // Load History
+            loadUserHistory(user.id);
+        }
+
+        window.requestAppt = async (proId, proName) => {
+            try {
+                await addDoc(collection(db, "appointments"), {
+                    userId: window.currentUser.id,
+                    userName: window.currentUser.name,
+                    userAge: window.currentUser.age,
+                    userGender: window.currentUser.gender,
+                    proId: proId,
+                    proName: proName,
+                    status: 'pending',
+                    date: new Date().toISOString()
+                });
+                alert("تم ارسال الطلب بنجاح");
+                loadUserHistory(window.currentUser.id);
+            } catch(e) { console.error(e); }
+        };
+
+        async function loadUserHistory(uid) {
+            const q = query(collection(db, "appointments"), where("userId", "==", uid));
+            const snap = await getDocs(q);
+            const container = document.getElementById('user-history');
+            container.innerHTML = "";
+            let total = 0, pending = 0;
+            
+            snap.forEach(d => {
+                const data = d.data();
+                total++;
+                if(data.status === 'pending') pending++;
+                
+                let badge = data.status === 'pending' ? 'status-pending' : (data.status === 'accepted' ? 'status-approved' : 'status-rejected');
+                container.innerHTML += `
+                    <div class="flex" style="justify-content:space-between; padding:10px; background:white; margin-bottom:5px; border-radius:5px">
+                        <span>د. ${data.proName}</span>
+                        <span class="${badge}">${data.status}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('user-total-deals').innerText = total;
+            document.getElementById('user-pending-deals').innerText = pending;
+        }
+
+        // 4. Pro Dash Logic
+        async function loadProDash(user) {
+            navigate('pro-dash');
+            document.getElementById('pro-name-disp').innerText = user.name;
+            
+            const q = query(collection(db, "appointments"), where("proId", "==", user.id));
+            const snap = await getDocs(q);
+            
+            const reqTable = document.getElementById('pro-requests-table');
+            const accTable = document.getElementById('pro-accepted-table');
+            reqTable.innerHTML = ""; accTable.innerHTML = "";
+            
+            let newReq = 0;
+
+            snap.forEach(d => {
+                const data = d.data();
+                if(data.status === 'pending') {
+                    newReq++;
+                    reqTable.innerHTML += `
+                        <tr>
+                            <td>${data.userName}</td>
+                            <td>${data.userAge}</td>
+                            <td>${data.userGender}</td>
+                            <td>
+                                <button class="status-approved" onclick="updateAppt('${d.id}', 'accepted')">قبول</button>
+                                <button class="status-rejected" onclick="updateAppt('${d.id}', 'rejected')">رفض</button>
+                            </td>
+                        </tr>
+                    `;
+                } else if(data.status === 'accepted') {
+                    accTable.innerHTML += `
+                        <tr>
+                            <td>${data.userName}</td>
+                            <td>0550... (Show after DB update)</td>
+                        </tr>
+                    `;
+                }
+            });
+            document.getElementById('pro-new-req').innerText = newReq;
+            document.getElementById('pro-total-req').innerText = snap.size;
+        }
+
+        window.updateAppt = async (id, status) => {
+            await updateDoc(doc(db, "appointments", id), { status: status });
+            loadProDash(window.currentUser); // Reload
+        };
+
+        // 5. Admin Logic
+        async function loadAdminDash() {
+            // Stats
+            const usersSnap = await getDocs(collection(db, "users"));
+            let u=0, p=0;
+            usersSnap.forEach(d => d.data().role === 'user' ? u++ : p++);
+            document.getElementById('adm-users-count').innerText = u;
+            document.getElementById('adm-pros-count').innerText = p;
+
+            // Users Table
+            const tBody = document.getElementById('admin-users-table');
+            tBody.innerHTML = "";
+            usersSnap.forEach(d => {
+                const data = d.data();
+                tBody.innerHTML += `<tr><td>${data.name}</td><td>${data.role}</td><td>${data.status}</td><td><button onclick="toggleBan('${d.id}', '${data.status}')">Ban/Unban</button></td></tr>`;
+            });
+
+            // Approvals
+            const appBody = document.getElementById('admin-approvals-table');
+            appBody.innerHTML = "";
+            usersSnap.forEach(d => {
+                const data = d.data();
+                if(data.role === 'pro' && data.status === 'pending') {
+                    appBody.innerHTML += `
+                        <tr>
+                            <td>${data.name}</td>
+                            <td><a href="#">عرض الشهادة</a></td>
+                            <td>
+                                <button class="status-approved" onclick="approvePro('${d.id}', true)">تأكيد</button>
+                                <button class="status-rejected" onclick="approvePro('${d.id}', false)">رفض</button>
+                            </td>
+                        </tr>`;
+                }
+            });
+            
+            // Reports
+            const repSnap = await getDocs(collection(db, "reports"));
+            const rBody = document.getElementById('admin-reports-table');
+            rBody.innerHTML = "";
+            repSnap.forEach(d => {
+                 rBody.innerHTML += `<tr><td>${d.data().name}</td><td>${d.data().desc}</td><td>${d.data().email}</td></tr>`;
+            });
+        }
+
+        window.showAdminTab = (tabName) => {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById('admin-'+tabName).classList.remove('hidden');
+        };
+
+        window.approvePro = async (id, isApproved) => {
+            if(isApproved) await updateDoc(doc(db, "users", id), { status: 'active' });
+            else await updateDoc(doc(db, "users", id), { status: 'rejected' }); // Or delete
+            loadAdminDash();
+        };
+
+        window.submitReport = async () => {
+             await addDoc(collection(db, "reports"), {
+                 name: document.getElementById('rep-name').value,
+                 email: document.getElementById('rep-email').value,
+                 desc: document.getElementById('rep-desc').value
+             });
+             closeModal('report-modal');
+             alert("تم ارسال البلاغ");
+        };
+        
+        window.updateCMS = async () => {
+             const url = document.getElementById('cms-bg').value;
+             if(url) document.querySelector(':root').style.setProperty('--bg-image', `url(${url})`);
+             alert("Updated!");
+        };
+
+        window.logout = () => {
+            window.currentUser = null;
+            navigate('landing');
+        };
+
+        // Remove Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+        });
+
+    </script>
+</body>
+</html>
