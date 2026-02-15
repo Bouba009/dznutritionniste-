@@ -20,13 +20,12 @@
     <style>
         :root {
             --primary: #2E7D32;
-            --primary-dark: #1B5E20;
             --accent: #FFC107;
             --text: #333;
             --light: #f4f6f8;
             --white: #ffffff;
-            --radius: 12px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.05);
             --bg-url: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2053');
         }
 
@@ -34,30 +33,28 @@
         
         body { background: var(--light); color: var(--text); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* --- LOADER --- */
+        /* LOADER */
         #loader { position: fixed; inset: 0; background: var(--white); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
         .spinner { width: 40px; height: 40px; border: 4px solid #eee; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- UTILS --- */
+        /* UTILS */
         .hidden { display: none !important; }
         .flex { display: flex; }
-        .center { align-items: center; justify-content: center; }
-        .col { flex-direction: column; }
         .w-full { width: 100%; }
         
-        /* --- LAYOUT & RESPONSIVE --- */
+        /* NAVBAR */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 10px 5%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            padding: 10px 5%; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             height: 60px;
         }
-        .logo-container img { height: 35px; width: auto; object-fit: contain; }
         .nav-actions { display: flex; gap: 15px; align-items: center; }
-        .lang-switch { font-weight: bold; cursor: pointer; border: 1px solid var(--primary); padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; }
+        .lang-switch { font-weight: bold; cursor: pointer; border: 1px solid var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; transition:0.3s }
+        .lang-switch:hover { background: var(--primary); color: white; }
 
-        /* Sidebar */
+        /* SIDEBAR */
         .sidebar {
             position: fixed; top: 0; right: -280px; width: 260px; height: 100vh;
             background: var(--white); z-index: 1100; padding: 20px;
@@ -69,21 +66,20 @@
         .overlay.active { display: block; }
         
         .menu-item {
-            padding: 12px; margin: 5px 0; border-radius: 8px; cursor: pointer; 
-            display: flex; align-items: center; gap: 10px; color: #555; font-weight: 600; transition: 0.2s;
+            padding: 12px; margin: 5px 0; border-radius: 10px; cursor: pointer; 
+            display: flex; align-items: center; gap: 12px; color: #555; font-weight: 600; transition: 0.2s;
         }
-        .menu-item:hover, .menu-item.active { background: #e8f5e9; color: var(--primary); }
-        .menu-item i { width: 20px; text-align: center; }
+        .menu-item:hover, .menu-item.active { background: #e8f5e9; color: var(--primary); transform:translateX(-5px); }
 
-        /* Main Content */
+        /* MAIN CONTENT */
         main { flex: 1; margin-top: 60px; padding-bottom: 20px; }
         
-        /* Hero Section */
+        /* HERO */
         #landing {
             min-height: calc(100vh - 60px); position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px;
         }
         .bg-img { position: absolute; inset: 0; background-image: var(--bg-url); background-size: cover; background-position: center; z-index: -1; animation: zoomBg 20s infinite alternate; }
-        .bg-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)); z-index: 0; }
+        .bg-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)); z-index: 0; }
         .hero-content { position: relative; z-index: 1; width: 100%; max-width: 600px; }
         @keyframes zoomBg { from { transform: scale(1); } to { transform: scale(1.1); } }
         
@@ -92,60 +88,55 @@
             font-weight: 700; border: none; font-size: 1.1rem; cursor: pointer; 
             box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4); animation: pulse 2s infinite;
         }
+        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);} 70% {box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);} }
 
-        /* Dashboard Grid */
+        /* DASHBOARD STYLES */
         .dash-container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 20px; }
         
-        .card { background: var(--white); padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow); position: relative; overflow: hidden; }
-        .card-val { font-size: 1.8rem; font-weight: 800; color: var(--text); }
-        .card-lbl { font-size: 0.85rem; color: #666; }
+        /* Pro Dashboard Cards (Gradient) */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .dash-card {
+            padding: 20px; border-radius: 15px; color: white; position: relative; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between; height: 120px;
+        }
+        .dash-card h3 { font-size: 2.2rem; margin: 0; font-weight: 800; }
+        .dash-card span { font-size: 0.9rem; opacity: 0.9; }
+        .dash-card i { position: absolute; bottom: -10px; left: -10px; font-size: 5rem; opacity: 0.2; transform: rotate(15deg); }
         
-        /* Colors for Cards */
-        .c-blue { border-bottom: 4px solid #2196F3; }
-        .c-green { border-bottom: 4px solid #4CAF50; }
-        .c-orange { border-bottom: 4px solid #FF9800; }
-        .c-red { border-bottom: 4px solid #F44336; }
+        .bg-gradient-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .bg-gradient-2 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color:#333 !important; }
+        .bg-gradient-3 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color:#005500 !important; }
+        .bg-gradient-4 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
 
-        /* Tables & Lists */
-        .responsive-table { overflow-x: auto; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); }
+        /* User Dashboard Cards (Clean) */
+        .card-clean { background: white; padding: 20px; border-radius: 15px; box-shadow: var(--shadow); text-align: center; border-bottom: 4px solid var(--primary); }
+        .card-clean h3 { font-size: 2rem; color: var(--primary); }
+        
+        /* TABLES */
+        .responsive-table { overflow-x: auto; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        th { background: #f9f9f9; color: var(--primary); font-weight: 700; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+        th { background: #fafafa; color: #555; font-weight: 700; }
         [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
 
-        /* Pros List (User View) */
-        .pro-card {
-            background: var(--white); border-radius: var(--radius); padding: 15px; margin-bottom: 15px;
-            box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
-        }
-        .pro-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-        .stars { color: var(--accent); font-size: 0.9rem; }
-
-        /* Forms */
-        .form-card { max-width: 500px; margin: 40px auto; background: var(--white); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); }
-        .inp-group { margin-bottom: 15px; text-align: left; }
-        [dir="rtl"] .inp-group { text-align: right; }
-        .inp-ui { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; font-size: 1rem; }
+        /* FORMS */
+        .form-card { max-width: 500px; margin: 40px auto; background: var(--white); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .inp-ui { width: 100%; padding: 12px; border: 2px solid #f0f0f0; border-radius: 10px; outline: none; transition: 0.3s; margin-bottom: 15px; font-size: 1rem; }
         .inp-ui:focus { border-color: var(--primary); }
         
-        /* Footer */
-        footer { background: #222; color: #fff; padding: 30px 20px; text-align: center; margin-top: auto; }
-        .footer-links { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
-        .footer-links span { cursor: pointer; color: #bbb; font-size: 0.9rem; }
-        .footer-links span:hover { color: var(--white); }
+        /* STARS */
+        .star-rating { display: flex; gap: 5px; justify-content: center; font-size: 2rem; color: #ddd; cursor: pointer; margin-bottom: 15px; }
+        .star-rating i.active { color: gold; }
 
-        /* Modals */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); padding: 20px; }
-        .modal-content { background: var(--white); width: 100%; max-width: 450px; border-radius: var(--radius); padding: 25px; position: relative; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* FOOTER */
+        footer { background: #1a1a1a; color: #fff; padding: 30px 20px; text-align: center; margin-top: auto; }
+        .footer-links span { margin: 0 10px; cursor: pointer; color: #aaa; font-size: 0.9rem; }
         
-        /* Mobile specific fixes */
-        @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .hero-content h1 { font-size: 2rem; }
-            th, td { padding: 8px; font-size: 0.8rem; }
-        }
+        /* MODALS */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 20px; }
+        .modal-content { background: var(--white); width: 100%; max-width: 450px; border-radius: 20px; padding: 25px; position: relative; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
     </style>
 </head>
 <body>
@@ -155,16 +146,13 @@
 
     <!-- NAVBAR -->
     <nav>
-        <div class="flex center" style="gap:15px">
+        <div class="flex" style="align-items:center; gap:15px">
             <i class="fas fa-bars fa-lg" onclick="toggleSidebar()" style="cursor:pointer; color:var(--primary)"></i>
-            <div class="logo-container" id="nav-logo">
-                <!-- Logo injected via JS -->
-                <span style="font-weight:900; color:var(--primary)">DZ Nutritionniste</span>
-            </div>
+            <div id="nav-logo"><span style="font-weight:900; color:var(--primary); font-size:1.2rem">DZ Nutritionniste</span></div>
         </div>
         <div class="nav-actions">
             <div id="notif-box" style="position:relative; cursor:pointer;" class="hidden" onclick="showNotifs()">
-                <i class="fas fa-bell fa-lg" style="color:var(--text)"></i>
+                <i class="fas fa-bell fa-lg" style="color:#555"></i>
                 <span id="notif-badge" style="position:absolute; top:-5px; right:-5px; background:red; color:white; font-size:0.6rem; padding:2px 5px; border-radius:10px; display:none">0</span>
             </div>
             <div class="lang-switch" onclick="switchLang()">AR | FR</div>
@@ -174,7 +162,7 @@
     <!-- SIDEBAR -->
     <div class="overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
-        <div class="flex center" style="justify-content:space-between; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px">
+        <div class="flex" style="justify-content:space-between; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px">
             <h3 data-t="menu">القائمة</h3>
             <i class="fas fa-times" onclick="toggleSidebar()" style="cursor:pointer"></i>
         </div>
@@ -188,15 +176,15 @@
         <!-- Private -->
         <div id="menu-private" class="hidden">
             <div class="menu-item" onclick="navDash()"><i class="fas fa-th-large"></i> <span data-t="dashboard">لوحة التحكم</span></div>
-            <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-cog"></i> <span data-t="profile">الملف الشخصي</span></div>
+            <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-circle"></i> <span data-t="profile">الملف الشخصي</span></div>
         </div>
 
         <div style="margin-top:auto">
             <div class="menu-item" onclick="openStatic('about')"><i class="fas fa-info-circle"></i> <span data-t="about">من نحن</span></div>
             <div class="menu-item" onclick="openStatic('privacy')"><i class="fas fa-shield-alt"></i> <span data-t="privacy">السياسة</span></div>
             <div class="menu-item" onclick="openLoc()"><i class="fas fa-map-marker-alt"></i> <span data-t="location">مقرنا</span></div>
-            <div class="menu-item" onclick="openReport()"><i class="fas fa-bug"></i> <span data-t="report">ابلاغ</span></div>
-            <div id="btn-logout" class="menu-item hidden" style="color:red" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span data-t="logout">خروج</span></div>
+            <div class="menu-item" onclick="openReportModal()"><i class="fas fa-exclamation-triangle"></i> <span data-t="report">ابلاغ</span></div>
+            <div id="btn-logout" class="menu-item hidden" style="color:red; margin-top:10px" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span data-t="logout">خروج</span></div>
         </div>
     </div>
 
@@ -217,9 +205,9 @@
         <section id="login" class="hidden">
             <div class="form-card animate__animated animate__fadeIn">
                 <h2 class="text-center mb-4" data-t="login">تسجيل الدخول</h2>
-                <div class="inp-group"><label data-t="email">الايميل</label><input type="email" id="l-email" class="inp-ui"></div>
-                <div class="inp-group"><label data-t="password">كلمة المرور</label><input type="password" id="l-pass" class="inp-ui"></div>
-                <button class="btn-main w-full" style="border-radius:8px; animation:none" onclick="doLogin()" data-t="login_btn">دخول</button>
+                <input type="email" id="l-email" class="inp-ui" placeholder="Email">
+                <input type="password" id="l-pass" class="inp-ui" placeholder="Password">
+                <button class="btn-main w-full" style="border-radius:10px; animation:none" onclick="doLogin()" data-t="login_btn">دخول</button>
                 <p class="text-center mt-3" style="cursor:pointer; color:var(--primary)" onclick="nav('register')" data-t="no_account">حساب جديد</p>
             </div>
         </section>
@@ -229,34 +217,33 @@
             <div class="form-card animate__animated animate__fadeIn">
                 <h2 class="text-center mb-4" data-t="register">انشاء حساب</h2>
                 
-                <div class="flex" style="background:#f0f0f0; padding:5px; border-radius:8px; margin-bottom:15px">
-                    <button id="btn-role-user" class="w-full" style="border:none; background:white; padding:8px; border-radius:6px; font-weight:bold" onclick="setRole('user')" data-t="role_user">مستخدم</button>
-                    <button id="btn-role-pro" class="w-full" style="border:none; background:transparent; padding:8px; border-radius:6px; font-weight:bold" onclick="setRole('pro')" data-t="role_pro">مختص</button>
+                <div class="flex" style="background:#f9f9f9; padding:5px; border-radius:10px; margin-bottom:20px">
+                    <button id="btn-role-user" class="w-full" style="border:none; background:white; padding:10px; border-radius:8px; font-weight:bold; box-shadow:0 2px 5px rgba(0,0,0,0.05)" onclick="setRole('user')" data-t="role_user">مستخدم</button>
+                    <button id="btn-role-pro" class="w-full" style="border:none; background:transparent; padding:10px; border-radius:8px; font-weight:bold" onclick="setRole('pro')" data-t="role_pro">مختص</button>
                 </div>
 
-                <div class="inp-group"><label data-t="fullname">الاسم الكامل</label><input type="text" id="r-name" class="inp-ui"></div>
-                <div class="inp-group"><label data-t="phone">الهاتف</label><input type="tel" id="r-phone" class="inp-ui"></div>
-                <div class="inp-group"><label data-t="email">الايميل</label><input type="email" id="r-email" class="inp-ui"></div>
-                <div class="inp-group"><label data-t="password">كلمة المرور</label><input type="password" id="r-pass" class="inp-ui"></div>
+                <input type="text" id="r-name" class="inp-ui" placeholder="الاسم الكامل">
+                <input type="tel" id="r-phone" class="inp-ui" placeholder="رقم الهاتف">
+                <input type="email" id="r-email" class="inp-ui" placeholder="الايميل">
+                <input type="password" id="r-pass" class="inp-ui" placeholder="كلمة المرور">
                 
                 <div class="flex" style="gap:10px">
-                    <div class="inp-group w-full"><label data-t="gender">الجنس</label><select id="r-gender" class="inp-ui"><option value="m">M</option><option value="f">F</option></select></div>
-                    <div class="inp-group w-full"><label data-t="age">السن</label><input type="number" id="r-age" class="inp-ui"></div>
+                    <select id="r-gender" class="inp-ui"><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select>
+                    <input type="number" id="r-age" class="inp-ui" placeholder="السن">
                 </div>
 
                 <!-- Pro Fields -->
                 <div id="pro-fields" class="hidden animate__animated animate__fadeIn">
-                    <div class="inp-group"><label data-t="wilaya">الولاية</label><input type="text" id="r-wilaya" class="inp-ui"></div>
-                    <div class="inp-group"><label data-t="marital">الحالة الاجتماعية</label>
-                        <select id="r-social" class="inp-ui" onchange="toggleKids(this.value)">
-                            <option value="single">Single</option><option value="married">Married</option>
-                        </select>
-                    </div>
-                    <div id="kids-div" class="inp-group hidden"><label data-t="kids">أولاد؟</label><select id="r-kids" class="inp-ui"><option value="no">No</option><option value="yes">Yes</option></select></div>
-                    <div class="inp-group"><label data-t="cert">الشهادة (ملف)</label><input type="file" id="r-cert" class="inp-ui" accept="image/*,application/pdf"></div>
+                    <input type="text" id="r-wilaya" class="inp-ui" placeholder="الولاية">
+                    <select id="r-social" class="inp-ui" onchange="toggleKids(this.value)">
+                        <option value="single">أعزب</option><option value="married">متزوج</option><option value="divorced">مطلق</option>
+                    </select>
+                    <div id="kids-div" class="hidden"><label data-t="kids">أولاد؟</label><select id="r-kids" class="inp-ui"><option value="no">لا</option><option value="yes">نعم</option></select></div>
+                    <label style="display:block;margin-bottom:5px" data-t="cert">الشهادة</label>
+                    <input type="file" id="r-cert" class="inp-ui" accept="image/*,application/pdf">
                 </div>
 
-                <button class="btn-main w-full" style="border-radius:8px; animation:none" onclick="doRegister()" data-t="register_btn">تسجيل</button>
+                <button class="btn-main w-full" style="border-radius:10px; animation:none" onclick="doRegister()" data-t="register_btn">تسجيل</button>
             </div>
         </section>
 
@@ -264,22 +251,22 @@
         <section id="dash-user" class="dash-container hidden">
             <div id="u-slider" style="height:180px; border-radius:var(--radius); overflow:hidden; margin-bottom:20px; position:relative"></div>
             
-            <div class="card mb-4 flex center" style="justify-content:flex-start; gap:15px">
-                <img id="u-img" src="" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid var(--primary)">
-                <div><h3 id="u-name">User</h3><small data-t="welcome">مرحبا</small></div>
+            <div class="card-clean mb-4 flex" style="justify-content:flex-start; align-items:center; gap:15px; text-align:left">
+                <img id="u-img" src="" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:3px solid var(--primary)">
+                <div><h3 id="u-name" style="font-size:1.4rem; margin:0">User</h3><small style="color:#777" data-t="welcome">مرحبا</small></div>
             </div>
 
             <div class="stats-grid">
-                <div class="card c-blue"><div class="card-val" id="u-total">0</div><div class="card-lbl" data-t="total_req">اجمالي</div></div>
-                <div class="card c-orange"><div class="card-val" id="u-pending">0</div><div class="card-lbl" data-t="pending">انتظار</div></div>
-                <div class="card c-green"><div class="card-val" id="u-accepted">0</div><div class="card-lbl" data-t="accepted">مقبول</div></div>
+                <div class="card-clean"><h3 id="u-total">0</h3><span data-t="total_req">اجمالي</span></div>
+                <div class="card-clean" style="border-color:orange"><h3 id="u-pending">0</h3><span data-t="pending">انتظار</span></div>
+                <div class="card-clean" style="border-color:green"><h3 id="u-accepted">0</h3><span data-t="accepted">مقبول</span></div>
             </div>
 
             <h3 class="mb-2" data-t="available_pros">المختصين</h3>
-            <div id="pros-list" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:15px; margin-bottom:20px"></div>
+            <div id="pros-list" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:15px; margin-bottom:30px"></div>
 
             <div class="responsive-table">
-                <div style="padding:15px; border-bottom:1px solid #eee"><strong data-t="history">سجلي</strong></div>
+                <div style="padding:15px; background:#f9f9f9; font-weight:bold" data-t="history">سجلي</div>
                 <table>
                     <thead><tr><th data-t="pro">المختص</th><th data-t="status">الحالة</th><th data-t="action">اجراء</th></tr></thead>
                     <tbody id="u-history-body"></tbody>
@@ -287,33 +274,67 @@
             </div>
         </section>
 
-        <!-- 5. DASHBOARD PRO -->
+        <!-- 5. DASHBOARD PRO (Modern) -->
         <section id="dash-pro" class="dash-container hidden">
             <div id="p-slider" style="height:180px; border-radius:var(--radius); overflow:hidden; margin-bottom:20px; position:relative"></div>
             
-            <div class="card mb-4 flex center" style="justify-content:flex-start; gap:15px">
-                <img id="p-img" src="" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid var(--primary)">
-                <div><h3 id="p-name">Dr</h3><small id="p-code">Code: --</small></div>
-                <div style="margin-right:auto; text-align:center"><div class="card-val" style="font-size:1.2rem; color:var(--accent)" id="p-points">0</div><small data-t="points">نقاطي</small></div>
+            <!-- Header Profile -->
+            <div class="flex" style="background:white; padding:20px; border-radius:15px; box-shadow:var(--shadow); align-items:center; gap:15px; margin-bottom:20px">
+                <img id="p-img" src="" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--primary)">
+                <div style="flex:1">
+                    <h2 id="p-name" style="margin:0; font-size:1.5rem">Dr. Name</h2>
+                    <span id="p-code" style="background:#eee; padding:2px 8px; border-radius:5px; font-size:0.8rem">Code: --</span>
+                </div>
+                <div style="text-align:center">
+                    <div style="font-size:1.5rem; font-weight:bold; color:var(--primary)" id="p-points">0</div>
+                    <small data-t="points">نقاطي</small>
+                </div>
             </div>
 
+            <!-- Colorful Stats Cards -->
             <div class="stats-grid">
-                <div class="card c-blue"><div class="card-val" id="p-new">0</div><div class="card-lbl" data-t="new_req">جديد</div></div>
-                <div class="card c-green"><div class="card-val" id="p-total">0</div><div class="card-lbl" data-t="total">اجمالي</div></div>
+                <div class="dash-card bg-gradient-1">
+                    <h3 id="p-new">0</h3>
+                    <span data-t="new_req">طلبات جديدة</span>
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="dash-card bg-gradient-2">
+                    <h3 id="p-rej">0</h3>
+                    <span>مرفوضة</span>
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="dash-card bg-gradient-3">
+                    <h3 id="p-total">0</h3>
+                    <span data-t="total">الاجمالي</span>
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="dash-card bg-gradient-4">
+                    <h3 id="p-cli-count">0</h3>
+                    <span data-t="accepted_clients">زبائن حاليون</span>
+                    <i class="fas fa-users"></i>
+                </div>
             </div>
 
-            <div class="responsive-table mb-4">
-                <div style="padding:15px"><strong data-t="incoming">واردة</strong></div>
+            <!-- Incoming Requests -->
+            <div class="responsive-table">
+                <div style="padding:15px; background:#f9f9f9; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px">
+                    <div style="width:10px; height:10px; background:blue; border-radius:50%"></div>
+                    <strong data-t="incoming">طلبات واردة</strong>
+                </div>
                 <table>
-                    <thead><tr><th data-t="client">المريض</th><th data-t="age">السن</th><th data-t="action">اجراء</th></tr></thead>
+                    <thead><tr><th data-t="client">الاسم</th><th>السن</th><th>الجنس</th><th data-t="action">اجراء</th></tr></thead>
                     <tbody id="p-req-body"></tbody>
                 </table>
             </div>
 
+            <!-- Accepted Clients -->
             <div class="responsive-table">
-                <div style="padding:15px"><strong data-t="accepted_clients">زبائن</strong></div>
+                <div style="padding:15px; background:#f9f9f9; border-bottom:1px solid #eee; display:flex; align-items:center; gap:10px">
+                    <div style="width:10px; height:10px; background:green; border-radius:50%"></div>
+                    <strong data-t="accepted_clients">زبائن حاليون</strong>
+                </div>
                 <table>
-                    <thead><tr><th data-t="client">الاسم</th><th data-t="phone">الهاتف</th></tr></thead>
+                    <thead><tr><th data-t="client">الاسم</th><th data-t="phone">الهاتف</th><th>الايميل</th></tr></thead>
                     <tbody id="p-cli-body"></tbody>
                 </table>
             </div>
@@ -322,66 +343,42 @@
         <!-- 6. ADMIN -->
         <section id="dash-admin" class="dash-container hidden">
             <h2 class="mb-4">Admin Panel</h2>
-
             <div class="stats-grid">
-                <div class="card c-blue"><div class="card-val" id="adm-u">0</div><div class="card-lbl" data-t="users">Users</div></div>
-                <div class="card c-green"><div class="card-val" id="adm-p">0</div><div class="card-lbl" data-t="pros">Pros</div></div>
-                <div class="card c-orange"><div class="card-val" id="adm-s">0</div><div class="card-lbl" data-t="sessions">Sessions</div></div>
+                <div class="card-clean"><h3 id="adm-u">0</h3><span>Users</span></div>
+                <div class="card-clean"><h3 id="adm-p">0</h3><span>Pros</span></div>
+                <div class="card-clean"><h3 id="adm-s">0</h3><span>Sessions</span></div>
             </div>
-
-            <div class="flex" style="gap:10px; overflow-x:auto; margin-bottom:15px; padding-bottom:5px">
+            
+            <div class="flex" style="gap:10px; overflow-x:auto; margin-bottom:20px">
                 <button class="btn-main" style="padding:5px 15px; font-size:0.8rem; animation:none" onclick="admTab('users')">Users</button>
                 <button class="btn-main" style="padding:5px 15px; font-size:0.8rem; animation:none" onclick="admTab('apps')">Approvals</button>
-                <button class="btn-main" style="padding:5px 15px; font-size:0.8rem; animation:none" onclick="admTab('sessions')">Sessions</button>
-                <button class="btn-main" style="padding:5px 15px; font-size:0.8rem; animation:none" onclick="admTab('cms')">CMS</button>
+                <button class="btn-main" style="padding:5px 15px; font-size:0.8rem; animation:none" onclick="admTab('cms')">Settings</button>
             </div>
 
-            <!-- Admin Views -->
             <div id="view-users" class="adm-view">
-                <input type="text" placeholder="Filter (Name, Email, Code, Role)..." class="inp-ui mb-2" onkeyup="filterUsers(this.value)">
+                <input type="text" placeholder="Search..." class="inp-ui" onkeyup="filterUsers(this.value)">
                 <div class="responsive-table">
-                    <table id="tbl-adm-users">
-                        <thead><tr><th>Name</th><th>Role</th><th>Code</th><th>Action</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
+                    <table id="tbl-adm-users"><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Action</th></tr></thead><tbody></tbody></table>
                 </div>
             </div>
 
             <div id="view-apps" class="adm-view hidden">
                 <div class="responsive-table">
-                    <table id="tbl-adm-apps">
-                        <thead><tr><th>Name</th><th>Cert</th><th>Action</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
+                    <table id="tbl-adm-apps"><thead><tr><th>Name</th><th>Cert</th><th>Action</th></tr></thead><tbody></tbody></table>
                 </div>
             </div>
 
-            <div id="view-sessions" class="adm-view hidden">
-                <div class="responsive-table">
-                    <table id="tbl-adm-sess">
-                        <thead><tr><th>Client</th><th>Pro</th><th>Date</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            
             <div id="view-cms" class="adm-view hidden">
-                <div class="card">
+                <div class="form-card" style="margin:0; max-width:100%">
                     <h4>Settings</h4>
-                    <label>Logo (Upload)</label><input type="file" id="adm-logo-up" class="inp-ui mb-2">
-                    <button class="btn-main" style="padding:5px 20px; animation:none; font-size:0.9rem" onclick="uploadLogo()">Update Logo</button>
+                    <label>Change Logo</label><input type="file" id="adm-logo-up" class="inp-ui">
+                    <button class="btn-main" style="padding:5px; font-size:0.9rem; animation:none" onclick="uploadLogo()">Update</button>
                     <hr class="my-3">
-                    <label>Notifications</label>
-                    <input id="notif-ar" placeholder="Arabic" class="inp-ui mb-2">
-                    <input id="notif-fr" placeholder="French" class="inp-ui mb-2">
-                    <select id="notif-target" class="inp-ui mb-2"><option value="all">All</option><option value="user">Users</option><option value="pro">Pros</option></select>
-                    <button class="btn-main" style="padding:5px 20px; animation:none; font-size:0.9rem" onclick="sendNotif()">Send</button>
-                    <hr class="my-3">
-                    <label>Manage Points (Enter Code)</label>
+                    <label>Set Points (By Code)</label>
                     <div class="flex" style="gap:5px">
-                        <input id="pts-code" placeholder="Code (e.g T123)" class="inp-ui">
+                        <input id="pts-code" placeholder="Code" class="inp-ui">
                         <input id="pts-val" type="number" placeholder="Points" class="inp-ui">
-                        <button class="btn-main" style="padding:5px; animation:none; font-size:0.8rem" onclick="setPoints()">Set</button>
+                        <button class="btn-main" style="padding:5px; font-size:0.9rem; animation:none" onclick="setPoints()">Set</button>
                     </div>
                 </div>
             </div>
@@ -390,15 +387,14 @@
     </main>
 
     <!-- FOOTER -->
-    <footer id="main-footer">
-        <h4 id="foot-logo">DZ Nutritionniste</h4>
-        <div class="footer-links">
+    <footer>
+        <h4>DZ Nutritionniste</h4>
+        <div class="footer-links" style="margin-top:10px">
             <span onclick="openStatic('about')" data-t="about">من نحن</span>
             <span onclick="openStatic('privacy')" data-t="privacy">السياسة</span>
-            <span onclick="openLoc()" data-t="location">مقرنا</span>
-            <span onclick="openReport()" data-t="report">اتصل بنا</span>
+            <span onclick="openReportModal()" data-t="report">ابلاغ</span>
         </div>
-        <p style="margin-top:15px; font-size:0.7rem; color:#666">© 2024 DZ Nutritionniste</p>
+        <p style="margin-top:15px; font-size:0.7rem; opacity:0.6">© 2024</p>
     </footer>
 
     <!-- MODALS -->
@@ -406,38 +402,48 @@
     <!-- Profile Edit -->
     <div id="mod-profile" class="modal"><div class="modal-content">
         <h3 data-t="edit_profile">تعديل الملف</h3>
-        <div class="inp-group"><label data-t="name">الاسم</label><input id="edit-name" class="inp-ui"></div>
-        <div class="inp-group"><label data-t="password">كلمة المرور</label><input id="edit-pass" class="inp-ui"></div>
-        <div class="inp-group"><label data-t="photo">الصورة</label><input type="file" id="edit-img" class="inp-ui"></div>
-        <button class="btn-main w-full" style="animation:none; border-radius:8px" onclick="saveProfile()" data-t="save">حفظ</button>
+        <label data-t="name">الاسم</label><input id="edit-name" class="inp-ui">
+        <label data-t="password">كلمة المرور</label><input id="edit-pass" class="inp-ui">
+        <label data-t="photo">الصورة</label><input type="file" id="edit-img" class="inp-ui" accept="image/*">
+        <button class="btn-main w-full" style="animation:none; border-radius:10px" onclick="saveProfile()" data-t="save">حفظ</button>
         <button class="w-full mt-2" style="background:none; border:none; color:red" onclick="closeMod('mod-profile')" data-t="cancel">الغاء</button>
     </div></div>
 
-    <!-- Rating -->
+    <!-- Rating (Stars) -->
     <div id="mod-rate" class="modal"><div class="modal-content">
-        <h3 data-t="rate_pro">تقييم المختص</h3>
-        <select id="rate-stars" class="inp-ui mb-2"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option></select>
-        <textarea id="rate-comment" class="inp-ui mb-2" placeholder="Comment..."></textarea>
-        <button class="btn-main w-full" style="animation:none; border-radius:8px" onclick="submitRate()" data-t="send">ارسال</button>
+        <h3 data-t="rate_pro" style="text-align:center">تقييم المختص</h3>
+        <div class="star-rating" id="star-container">
+            <i class="fas fa-star" onclick="setStar(1)"></i>
+            <i class="fas fa-star" onclick="setStar(2)"></i>
+            <i class="fas fa-star" onclick="setStar(3)"></i>
+            <i class="fas fa-star" onclick="setStar(4)"></i>
+            <i class="fas fa-star" onclick="setStar(5)"></i>
+        </div>
+        <input type="hidden" id="rate-val">
+        <textarea id="rate-comment" class="inp-ui" placeholder="Comment..."></textarea>
+        <button class="btn-main w-full" style="animation:none; border-radius:10px" onclick="submitRate()" data-t="send">ارسال</button>
         <button class="w-full mt-2" style="background:none; border:none" onclick="closeMod('mod-rate')">X</button>
     </div></div>
     
-    <!-- Info Modal -->
+    <!-- Report Issue -->
+    <div id="mod-report" class="modal"><div class="modal-content">
+        <h3 data-t="report">ابلاغ عن مشكلة</h3>
+        <input id="rep-name" class="inp-ui" placeholder="Name">
+        <input id="rep-email" class="inp-ui" placeholder="Email">
+        <textarea id="rep-desc" class="inp-ui" placeholder="Description..."></textarea>
+        <button class="btn-main w-full" style="animation:none; border-radius:10px" onclick="submitReport()" data-t="send">ارسال</button>
+        <button class="w-full mt-2" style="background:none; border:none" onclick="closeMod('mod-report')">X</button>
+    </div></div>
+
+    <!-- Info/Reviews/Static -->
     <div id="mod-info" class="modal"><div class="modal-content">
         <h3 id="info-title"></h3>
         <div id="info-body" style="margin-top:10px; line-height:1.6; max-height:300px; overflow:auto"></div>
-        <button class="w-full mt-3" style="background:#eee; border:none; padding:10px; border-radius:8px" onclick="closeMod('mod-info')">Close</button>
-    </div></div>
-    
-    <!-- Reviews View -->
-    <div id="mod-reviews" class="modal"><div class="modal-content">
-        <h3 data-t="reviews">التقييمات</h3>
-        <div id="reviews-list" style="margin-top:10px; max-height:300px; overflow-y:auto"></div>
-        <button class="w-full mt-2" style="background:#eee; border:none; padding:10px" onclick="closeMod('mod-reviews')">Close</button>
+        <button class="w-full mt-3" style="background:#f0f0f0; border:none; padding:10px; border-radius:8px" onclick="closeMod('mod-info')">Close</button>
     </div></div>
 
     <script>
-        // --- 1. CONFIG & INIT ---
+        // CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyCW3xXtNcSAqoEB3MTiTkBH6faZy4U2MMs",
             authDomain: "sstore-6a68a.firebaseapp.com",
@@ -449,73 +455,61 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        // Globals
+        // GLOBAL STATE
         let currentUser = null;
         let lang = localStorage.getItem('lang') || 'ar';
         let regRole = 'user';
+        let rateTarget = null;
         let appSettings = {};
-        let rateTargetId = null;
-
-        // Translation Data
+        
+        // TRANSLATIONS
         const tData = {
             ar: {
                 menu:"القائمة", home:"الرئيسية", login:"دخول", dashboard:"لوحة التحكم", profile:"الملف الشخصي",
                 about:"من نحن", privacy:"السياسة", location:"مقرنا", report:"ابلاغ", logout:"خروج",
-                hero_title:"غير حياتك للأفضل", start_now:"إبدأ الآن", email:"الايميل", password:"كلمة المرور",
-                login_btn:"دخول", no_account:"ليس لديك حساب؟", register:"انشاء حساب", role_user:"مستخدم",
-                role_pro:"مختص", fullname:"الاسم الكامل", phone:"الهاتف", gender:"الجنس", age:"السن",
-                wilaya:"الولاية", marital:"الحالة الاجتماعية", kids:"أولاد؟", cert:"الشهادة", register_btn:"تسجيل",
+                hero_title:"غير حياتك للأفضل", start_now:"إبدأ الآن", login_btn:"دخول", no_account:"ليس لديك حساب؟", 
+                register:"انشاء حساب", role_user:"مستخدم", role_pro:"مختص", register_btn:"تسجيل",
                 welcome:"مرحباً بك", total_req:"اجمالي الطلبات", pending:"قيد الانتظار", accepted:"مقبولة",
                 available_pros:"المختصين المتاحين", history:"سجلي", pro:"المختص", status:"الحالة", action:"اجراء",
                 points:"نقاطي", new_req:"طلبات جديدة", total:"الاجمالي", incoming:"طلبات واردة", client:"المريض",
-                accepted_clients:"زبائن حاليون", save:"حفظ", cancel:"الغاء", name:"الاسم", photo:"الصورة",
-                rate_pro:"تقييم المختص", send:"ارسال", reviews:"التعليقات", request:"طلب", wait:"انتظر",
-                users:"المستخدمين", pros:"المختصين", sessions:"الجلسات", edit_profile:"تعديل الملف"
+                accepted_clients:"زبائن حاليون", save:"حفظ", cancel:"الغاء", name:"الاسم", photo:"الصورة", password:"كلمة المرور",
+                rate_pro:"تقييم المختص", send:"ارسال", reviews:"التعليقات", request:"طلب", wait:"انتظار", cert:"الشهادة", kids:"أولاد؟"
             },
             fr: {
                 menu:"Menu", home:"Accueil", login:"Connexion", dashboard:"Tableau de bord", profile:"Profil",
                 about:"À propos", privacy:"Confidentialité", location:"Localisation", report:"Signaler", logout:"Déconnexion",
-                hero_title:"Changez votre vie pour le mieux", start_now:"Commencer", email:"Email", password:"Mot de passe",
-                login_btn:"Connexion", no_account:"Pas de compte?", register:"Inscription", role_user:"Utilisateur",
-                role_pro:"Spécialiste", fullname:"Nom complet", phone:"Tél", gender:"Sexe", age:"Age",
-                wilaya:"Wilaya", marital:"État civil", kids:"Enfants?", cert:"Certificat", register_btn:"S'inscrire",
+                hero_title:"Changez votre vie pour le mieux", start_now:"Commencer", login_btn:"Connexion", no_account:"Pas de compte?", 
+                register:"Inscription", role_user:"Utilisateur", role_pro:"Spécialiste", register_btn:"S'inscrire",
                 welcome:"Bienvenue", total_req:"Total Demandes", pending:"En attente", accepted:"Acceptées",
                 available_pros:"Spécialistes disponibles", history:"Historique", pro:"Spécialiste", status:"Statut", action:"Action",
                 points:"Mes points", new_req:"Nouvelles", total:"Total", incoming:"Entrantes", client:"Patient",
-                accepted_clients:"Clients actuels", save:"Enregistrer", cancel:"Annuler", name:"Nom", photo:"Photo",
-                rate_pro:"Évaluer", send:"Envoyer", reviews:"Avis", request:"Demander", wait:"Attendre",
-                users:"Utilisateurs", pros:"Pros", sessions:"Séances", edit_profile:"Modifier profil"
+                accepted_clients:"Clients actuels", save:"Enregistrer", cancel:"Annuler", name:"Nom", photo:"Photo", password:"Mot de passe",
+                rate_pro:"Évaluer", send:"Envoyer", reviews:"Avis", request:"Demander", wait:"Attente", cert:"Certificat", kids:"Enfants?"
             }
         };
 
-        // --- 2. CORE FUNCTIONS ---
+        // --- CORE FUNCTIONS ---
         
-        // Init
         window.onload = async () => {
             applyLang();
-            await loadSettings();
+            loadSettings();
             
-            // Persistent Login
-            const savedUid = localStorage.getItem('uid');
-            if(savedUid) {
-                const doc = await db.collection('users').doc(savedUid).get();
-                if(doc.exists) {
-                    currentUser = { id: doc.id, ...doc.data() };
+            // Check Session
+            const uid = localStorage.getItem('uid');
+            if(uid) {
+                const d = await db.collection('users').doc(uid).get();
+                if(d.exists) {
+                    currentUser = {id:d.id, ...d.data()};
                     initApp();
-                } else {
-                    document.getElementById('loader').classList.add('hidden');
-                }
-            } else {
-                document.getElementById('loader').classList.add('hidden');
-            }
+                } else { document.getElementById('loader').classList.add('hidden'); }
+            } else { document.getElementById('loader').classList.add('hidden'); }
         };
 
         function switchLang() {
             lang = lang === 'ar' ? 'fr' : 'ar';
             localStorage.setItem('lang', lang);
             applyLang();
-            // Refresh text in JS-generated lists
-            if(currentUser) initApp(); 
+            if(currentUser) initApp();
         }
 
         function applyLang() {
@@ -525,19 +519,17 @@
                 if(tData[lang][k]) el.innerText = tData[lang][k];
             });
         }
-        
-        function t(key) { return tData[lang][key] || key; }
+        function t(k) { return tData[lang][k] || k; }
 
-        async function loadSettings() {
+        function loadSettings() {
             db.collection('settings').doc('config').onSnapshot(d => {
                 if(d.exists) {
                     appSettings = d.data();
-                    if(appSettings.logo) document.getElementById('nav-logo').innerHTML = `<img src="${appSettings.logo}"> <span style="font-weight:900; color:var(--primary)">DZ Nutritionniste</span>`;
+                    if(appSettings.logo) document.getElementById('nav-logo').innerHTML = `<img src="${appSettings.logo}" style="height:35px">`;
                 }
             });
         }
 
-        // Navigation
         function nav(id) {
             document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
@@ -548,24 +540,10 @@
         function toggleSidebar(force) {
             const sb = document.getElementById('sidebar');
             const ov = document.querySelector('.overlay');
-            if(force === false) { sb.classList.remove('active'); ov.classList.remove('active'); }
+            if(force===false) { sb.classList.remove('active'); ov.classList.remove('active'); }
             else { sb.classList.toggle('active'); ov.classList.toggle('active'); }
         }
 
-        function setRole(r) {
-            regRole = r;
-            document.getElementById('btn-role-user').style.background = r==='user'?'white':'transparent';
-            document.getElementById('btn-role-pro').style.background = r==='pro'?'white':'transparent';
-            if(r==='pro') document.getElementById('pro-fields').classList.remove('hidden');
-            else document.getElementById('pro-fields').classList.add('hidden');
-        }
-
-        function toggleKids(v) {
-            if(v==='single') document.getElementById('kids-div').classList.add('hidden');
-            else document.getElementById('kids-div').classList.remove('hidden');
-        }
-
-        // Helper: File to Base64
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -573,65 +551,71 @@
             reader.onerror = error => reject(error);
         });
 
-        // --- 3. AUTH LOGIC ---
+        // --- AUTH ---
+        
+        function setRole(r) {
+            regRole = r;
+            document.getElementById('btn-role-user').style.background = r==='user'?'white':'transparent';
+            document.getElementById('btn-role-pro').style.background = r==='pro'?'white':'transparent';
+            if(r==='pro') document.getElementById('pro-fields').classList.remove('hidden');
+            else document.getElementById('pro-fields').classList.add('hidden');
+        }
+        
+        function toggleKids(v) {
+            document.getElementById('kids-div').style.display = (v==='married'||v==='divorced') ? 'block' : 'none';
+        }
 
         async function doRegister() {
             const email = document.getElementById('r-email').value;
             const pass = document.getElementById('r-pass').value;
             const name = document.getElementById('r-name').value;
+            if(!email || !pass || !name) return Swal.fire('Error','Missing Fields','error');
             
-            if(!email || !pass || !name) return Swal.fire('Error', 'Required fields missing', 'error');
-
-            const data = {
-                name, email, pass,
+            let data = {
+                name, email, pass, 
                 phone: document.getElementById('r-phone').value,
                 gender: document.getElementById('r-gender').value,
                 age: document.getElementById('r-age').value,
-                role: regRole,
-                status: regRole==='user'?'active':'pending',
-                joined: Date.now(),
-                img: 'https://via.placeholder.com/100'
+                role: regRole, status: regRole==='user'?'active':'pending',
+                joined: Date.now(), img: 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
             };
 
             if(regRole === 'pro') {
                 data.wilaya = document.getElementById('r-wilaya').value;
                 data.marital = document.getElementById('r-social').value;
-                data.code = 'T' + Math.floor(10000 + Math.random() * 90000);
-                data.points = 0;
-                data.lastAccepted = 0; // For rotation logic
-                const file = document.getElementById('r-cert').files[0];
-                if(file) data.cert = await toBase64(file);
-                else data.cert = "";
+                data.code = 'DZ'+Math.floor(Math.random()*100000);
+                data.lastAccepted = 0; data.points = 0;
+                const f = document.getElementById('r-cert').files[0];
+                if(f) data.cert = await toBase64(f);
             }
 
             try {
                 await db.collection('users').add(data);
-                if(regRole === 'pro') Swal.fire('تم', 'انتظر تفعيل الحساب', 'info');
-                else Swal.fire('تم', 'تم التسجيل بنجاح', 'success');
+                Swal.fire('Success','Account Created','success');
                 nav('login');
-            } catch(e) { Swal.fire('Error', e.message, 'error'); }
+            } catch(e) { Swal.fire('Error',e.message,'error'); }
         }
 
         async function doLogin() {
             const email = document.getElementById('l-email').value;
             const pass = document.getElementById('l-pass').value;
 
-            if(email === 'admin' && pass === '123123') { // Admin hardcoded for demo
-                currentUser = { role: 'admin', name: 'Admin' };
+            if(email === 'admin' && pass === 'abobob123') {
+                currentUser = {role:'admin', name:'Admin'};
                 initApp();
                 return;
             }
 
             const snap = await db.collection('users').where('email','==',email).where('pass','==',pass).get();
-            if(snap.empty) return Swal.fire('Error', 'Invalid credentials', 'error');
+            if(snap.empty) return Swal.fire('Error','Invalid login','error');
+            const u = {id:snap.docs[0].id, ...snap.docs[0].data()};
+            
+            if(u.status === 'banned') return Swal.fire('Banned','Your account is banned','error');
+            if(u.status === 'pending') return Swal.fire('Pending','Account under review','warning');
+            if(u.status === 'rejected') return Swal.fire('Rejected','Application rejected','error');
 
-            const user = { id: snap.docs[0].id, ...snap.docs[0].data() };
-            if(user.status === 'banned') return Swal.fire('Error', 'Account Banned', 'error');
-            if(user.status === 'pending') return Swal.fire('Wait', 'Pending Approval', 'warning');
-            if(user.status === 'rejected') return Swal.fire('Error', 'Application Rejected', 'error');
-
-            currentUser = user;
-            localStorage.setItem('uid', user.id);
+            currentUser = u;
+            localStorage.setItem('uid', u.id);
             initApp();
         }
 
@@ -645,7 +629,7 @@
             nav('login');
         }
 
-        // --- 4. APP LOGIC ---
+        // --- APP LOGIC ---
 
         function initApp() {
             document.getElementById('loader').classList.add('hidden');
@@ -653,20 +637,10 @@
             document.getElementById('menu-private').classList.remove('hidden');
             document.getElementById('btn-logout').classList.remove('hidden');
             document.getElementById('notif-box').classList.remove('hidden');
-
-            navDash();
-
-            // Listen for Notifs
-            const role = currentUser.role === 'admin' ? 'admin' : currentUser.role;
-            db.collection('notifs').where('target','in',['all', role]).onSnapshot(snap => {
-                let count = 0;
-                // Simple logic: verify read status locally or just count all (Demo: count all)
-                // In real app, subcollection 'reads'
-                snap.forEach(d => { if(!localStorage.getItem('read_'+d.id)) count++; });
-                const badge = document.getElementById('notif-badge');
-                badge.innerText = count;
-                badge.style.display = count > 0 ? 'block' : 'none';
-            });
+            
+            if(currentUser.role === 'admin') initAdmin();
+            else if(currentUser.role === 'pro') initPro();
+            else initUser();
         }
 
         function navDash() {
@@ -676,131 +650,75 @@
             else initUser();
         }
 
-        // USER DASHBOARD
+        // --- USER ---
         function initUser() {
             nav('dash-user');
             document.getElementById('u-name').innerText = currentUser.name;
             document.getElementById('u-img').src = currentUser.img;
 
-            // Load Pros with Rotation Logic (1 Hour)
+            // Pros with rotation
             db.collection('users').where('role','==','pro').where('status','==','active').onSnapshot(snap => {
                 const list = document.getElementById('pros-list');
                 list.innerHTML = "";
-                
                 let pros = [];
-                snap.forEach(d => pros.push({id: d.id, ...d.data()}));
+                snap.forEach(d => pros.push({id:d.id, ...d.data()}));
                 
-                // Sort: If lastAccepted > 1 hour ago (or 0), show first. Recently accepted show last.
-                const oneHour = 3600000;
+                // Rotation: Accepted < 1 hour go bottom
                 const now = Date.now();
-                
                 pros.sort((a,b) => {
-                    const tA = a.lastAccepted || 0;
-                    const tB = b.lastAccepted || 0;
-                    const hideA = (now - tA) < oneHour;
-                    const hideB = (now - tB) < oneHour;
-                    
-                    if(hideA && !hideB) return 1; // A goes to bottom
+                    const hideA = (now - (a.lastAccepted||0)) < 3600000;
+                    const hideB = (now - (b.lastAccepted||0)) < 3600000;
+                    if(hideA && !hideB) return 1;
                     if(!hideA && hideB) return -1;
-                    return 0; // Keep order
+                    return 0;
                 });
 
                 pros.forEach(p => {
-                    // Calc rating
-                    const rating = p.ratingSum ? (p.ratingSum / p.ratingCount).toFixed(1) : "N/A";
+                    const stars = p.rateSum ? (p.rateSum/p.rateCount).toFixed(1) : 'N/A';
                     list.innerHTML += `
-                    <div class="pro-card">
-                        <img src="${p.img}" class="pro-avatar">
+                    <div style="background:white; padding:15px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.05); text-align:center">
+                        <img src="${p.img}" style="width:60px; height:60px; border-radius:50%; object-fit:cover">
                         <h4>${p.name}</h4>
-                        <div class="stars" onclick="showReviews('${p.id}')" style="cursor:pointer">⭐ ${rating} (${p.ratingCount||0} ${t('reviews')})</div>
+                        <div style="color:gold; cursor:pointer" onclick="showReviews('${p.id}')">⭐ ${stars} (${p.rateCount||0})</div>
                         <small>${p.wilaya||''}</small>
-                        <button class="btn-main" style="padding:5px 20px; font-size:0.8rem" onclick="reqAppt('${p.id}', '${p.name}')">${t('request')}</button>
+                        <button class="btn-main mt-2" style="padding:5px 20px; font-size:0.8rem" onclick="reqAppt('${p.id}','${p.name}')">${t('request')}</button>
                     </div>`;
                 });
             });
 
             // History
             db.collection('appointments').where('userId','==',currentUser.id).onSnapshot(snap => {
-                const tbody = document.getElementById('u-history-body');
-                tbody.innerHTML = "";
-                let counts = {total:0, pending:0, accepted:0};
+                const b = document.getElementById('u-history-body');
+                b.innerHTML = "";
+                let c = {tot:0, pen:0, acc:0};
                 snap.forEach(doc => {
                     const d = doc.data();
-                    counts.total++;
-                    if(d.status === 'pending') counts.pending++;
-                    if(d.status === 'accepted') counts.accepted++;
+                    c.tot++;
+                    if(d.status==='pending') c.pen++;
+                    if(d.status==='accepted') c.acc++;
                     
-                    let actionHtml = `<span style="color:gray">${t('wait')}</span>`;
+                    let act = `<span style="color:#aaa">${t('wait')}</span>`;
                     if(d.status === 'accepted') {
-                        // Rate button if not rated
-                        if(!d.rated) actionHtml = `<button onclick="openRate('${d.proId}', '${doc.id}')" style="background:gold; border:none; padding:5px; border-radius:5px">⭐</button>`;
-                        else actionHtml = "✅";
-                    } else if(d.status === 'rejected') actionHtml = "❌";
+                        act = d.rated ? '✅' : `<button onclick="openRate('${d.proId}','${doc.id}')" style="background:gold; border:none; padding:5px; border-radius:5px">⭐ Rate</button>`;
+                    } else if(d.status==='rejected') act = '❌';
 
-                    tbody.innerHTML += `<tr><td>${d.proName}</td><td>${d.status}</td><td>${actionHtml}</td></tr>`;
+                    b.innerHTML += `<tr><td>${d.proName}</td><td>${d.status}</td><td>${act}</td></tr>`;
                 });
-                document.getElementById('u-total').innerText = counts.total;
-                document.getElementById('u-pending').innerText = counts.pending;
-                document.getElementById('u-accepted').innerText = counts.accepted;
+                document.getElementById('u-total').innerText = c.tot;
+                document.getElementById('u-pending').innerText = c.pen;
+                document.getElementById('u-accepted').innerText = c.acc;
             });
         }
 
         async function reqAppt(pid, pname) {
             await db.collection('appointments').add({
-                userId: currentUser.id, userName: currentUser.name, 
+                userId: currentUser.id, userName: currentUser.name, userAge: currentUser.age, userGender: currentUser.gender,
                 proId: pid, proName: pname, status: 'pending', date: Date.now()
             });
             Swal.fire('OK', t('wait'), 'success');
         }
 
-        function openRate(pid, aid) {
-            rateTargetId = {pid, aid};
-            document.getElementById('mod-rate').style.display = 'flex';
-        }
-
-        async function submitRate() {
-            const stars = parseInt(document.getElementById('rate-stars').value);
-            const comment = document.getElementById('rate-comment').value;
-            const {pid, aid} = rateTargetId;
-            
-            // Add Review
-            await db.collection('reviews').add({
-                proId: pid, userId: currentUser.id, userName: currentUser.name, stars, comment, date: Date.now()
-            });
-            
-            // Update Pro Stats
-            const proRef = db.collection('users').doc(pid);
-            await db.runTransaction(async (t) => {
-                const doc = await t.get(proRef);
-                const d = doc.data();
-                const newCount = (d.ratingCount || 0) + 1;
-                const newSum = (d.ratingSum || 0) + stars;
-                t.update(proRef, { ratingCount: newCount, ratingSum: newSum });
-            });
-
-            // Mark appt as rated
-            await db.collection('appointments').doc(aid).update({ rated: true });
-
-            closeMod('mod-rate');
-            Swal.fire('Thanks', '', 'success');
-        }
-
-        function showReviews(pid) {
-            const list = document.getElementById('reviews-list');
-            list.innerHTML = "Loading...";
-            document.getElementById('mod-reviews').style.display = 'flex';
-            
-            db.collection('reviews').where('proId','==',pid).get().then(snap => {
-                list.innerHTML = "";
-                if(snap.empty) list.innerHTML = "No reviews yet.";
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    list.innerHTML += `<div style="border-bottom:1px solid #eee; padding:5px"><b>${d.userName}</b> (${d.stars}⭐)<br>${d.comment}</div>`;
-                });
-            });
-        }
-
-        // PRO DASHBOARD
+        // --- PRO ---
         function initPro() {
             nav('dash-pro');
             document.getElementById('p-name').innerText = currentUser.name;
@@ -812,74 +730,64 @@
                 const rb = document.getElementById('p-req-body');
                 const cb = document.getElementById('p-cli-body');
                 rb.innerHTML = ""; cb.innerHTML = "";
-                
-                let stats = {new:0, total:0};
-                
+                let s = {new:0, tot:0, rej:0, cli:0};
+
                 snap.forEach(doc => {
                     const d = doc.data();
-                    stats.total++;
+                    s.tot++;
                     if(d.status === 'pending') {
-                        stats.new++;
-                        // Need fetch age/gender from user doc? Or stored in appt? Stored in appt for simplicity in this demo, but we didn't store it in reqAppt. Let's assume we fetch user.
-                        // For demo speed, I'll just show name.
-                        rb.innerHTML += `<tr><td>${d.userName}</td><td>--</td><td>
-                            <button onclick="ansAppt('${doc.id}', true, '${d.userId}')" style="color:green">✔</button> 
-                            <button onclick="ansAppt('${doc.id}', false)" style="color:red">✖</button>
+                        s.new++;
+                        // Show Name, Age, Gender
+                        rb.innerHTML += `<tr><td>${d.userName}</td><td>${d.userAge}</td><td>${d.userGender}</td><td>
+                            <button onclick="ansAppt('${doc.id}',true,'${d.userId}')" style="color:green; font-size:1.2rem; border:none; background:none">✔</button>
+                            <button onclick="ansAppt('${doc.id}',false)" style="color:red; font-size:1.2rem; border:none; background:none">✖</button>
                         </td></tr>`;
+                    } else if(d.status === 'rejected') {
+                        s.rej++;
                     } else if(d.status === 'accepted') {
-                         // Fetch client details
-                         db.collection('users').doc(d.userId).get().then(u => {
-                             const ud = u.data();
-                             cb.innerHTML += `<tr><td>${ud.name}</td><td>${ud.phone}</td></tr>`;
-                         });
+                        s.cli++;
+                        // Fetch client details to show Phone/Email
+                        db.collection('users').doc(d.userId).get().then(u => {
+                            if(u.exists) {
+                                const ud = u.data();
+                                cb.innerHTML += `<tr><td>${ud.name}</td><td>${ud.phone}</td><td>${ud.email}</td></tr>`;
+                            }
+                        });
                     }
                 });
-                document.getElementById('p-new').innerText = stats.new;
-                document.getElementById('p-total').innerText = stats.total;
+                document.getElementById('p-new').innerText = s.new;
+                document.getElementById('p-total').innerText = s.tot;
+                document.getElementById('p-rej').innerText = s.rej;
+                document.getElementById('p-cli-count').innerText = s.cli;
             });
         }
 
-        async function ansAppt(aid, accept, uid) {
-            const status = accept ? 'accepted' : 'rejected';
-            await db.collection('appointments').doc(aid).update({status});
-            
-            if(accept) {
-                // Update Last Accepted Timestamp for Rotation Logic
-                await db.collection('users').doc(currentUser.id).update({ lastAccepted: Date.now() });
+        async function ansAppt(aid, ok, uid) {
+            await db.collection('appointments').doc(aid).update({status: ok?'accepted':'rejected'});
+            if(ok) {
+                await db.collection('users').doc(currentUser.id).update({lastAccepted: Date.now()});
             }
         }
 
-        // ADMIN DASHBOARD
-        let allUsersCache = [];
-        
+        // --- ADMIN ---
+        let allUsers = [];
         function initAdmin() {
             nav('dash-admin');
-            
-            // Stats & Users
             db.collection('users').onSnapshot(snap => {
-                allUsersCache = [];
+                allUsers = [];
                 let u=0, p=0;
-                snap.forEach(doc => {
-                    const d = {id: doc.id, ...doc.data()};
-                    allUsersCache.push(d);
-                    if(d.role === 'user') u++; else if(d.role === 'pro') p++;
+                snap.forEach(d => {
+                    const usr = {id:d.id, ...d.data()};
+                    allUsers.push(usr);
+                    if(usr.role==='user') u++; else if(usr.role==='pro') p++;
                 });
                 document.getElementById('adm-u').innerText = u;
                 document.getElementById('adm-p').innerText = p;
-                renderAdmUsers(allUsersCache);
+                renderAdmUsers(allUsers);
                 renderAdmApps();
             });
-
-            // Sessions
             db.collection('appointments').where('status','==','accepted').onSnapshot(snap => {
                 document.getElementById('adm-s').innerText = snap.size;
-                const tb = document.querySelector('#tbl-adm-sess tbody');
-                tb.innerHTML = "";
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    const date = new Date(d.date).toLocaleDateString();
-                    tb.innerHTML += `<tr><td>${d.userName}</td><td>${d.proName}</td><td>${date}</td></tr>`;
-                });
             });
         }
 
@@ -887,81 +795,63 @@
             const tb = document.querySelector('#tbl-adm-users tbody');
             tb.innerHTML = "";
             list.forEach(u => {
-                if(u.role === 'admin') return;
-                const btnTxt = u.status === 'banned' ? 'Unban' : 'Ban';
-                const code = u.code || '-';
-                tb.innerHTML += `<tr><td>${u.name}</td><td>${u.role}</td><td>${code}</td>
-                <td><button onclick="banUser('${u.id}', '${u.status}')" style="font-size:0.7rem">${btnTxt}</button></td></tr>`;
+                if(u.role==='admin') return;
+                const act = u.status==='banned' ? 'Unban' : 'Ban';
+                tb.innerHTML += `<tr><td>${u.name}</td><td>${u.role}</td><td>${u.status}</td>
+                <td><button onclick="banUser('${u.id}','${u.status}')" style="font-size:0.8rem">${act}</button></td></tr>`;
             });
         }
-        
+
         function renderAdmApps() {
             const tb = document.querySelector('#tbl-adm-apps tbody');
             tb.innerHTML = "";
-            const apps = allUsersCache.filter(u => u.status === 'pending');
-            apps.forEach(u => {
-                // Cert link handling: if base64 too long, show "View"
-                let certHtml = u.cert ? `<button onclick="showCert('${u.id}')">View</button>` : 'None';
-                tb.innerHTML += `<tr><td>${u.name}</td><td>${certHtml}</td>
-                <td><button onclick="approveUser('${u.id}', true)">✔</button> <button onclick="approveUser('${u.id}', false)">✖</button></td></tr>`;
+            allUsers.filter(u => u.status==='pending').forEach(u => {
+                const cert = u.cert ? `<button onclick="viewCert('${u.id}')">View</button>` : '-';
+                tb.innerHTML += `<tr><td>${u.name}</td><td>${cert}</td>
+                <td><button onclick="approve('${u.id}',true)">✔</button> <button onclick="approve('${u.id}',false)">✖</button></td></tr>`;
             });
         }
 
-        function filterUsers(val) {
-            val = val.toLowerCase();
-            const filtered = allUsersCache.filter(u => 
-                (u.name && u.name.toLowerCase().includes(val)) ||
-                (u.email && u.email.toLowerCase().includes(val)) ||
-                (u.code && u.code.toLowerCase().includes(val)) ||
-                (u.role && u.role.includes(val))
-            );
-            renderAdmUsers(filtered);
+        function filterUsers(v) {
+            v = v.toLowerCase();
+            const f = allUsers.filter(u => u.name?.toLowerCase().includes(v) || u.email?.toLowerCase().includes(v) || u.code?.toLowerCase().includes(v));
+            renderAdmUsers(f);
         }
 
-        async function banUser(id, st) {
-            const nst = st === 'banned' ? 'active' : 'banned';
-            await db.collection('users').doc(id).update({status:nst});
-        }
-        async function approveUser(id, ok) {
-            const nst = ok ? 'active' : 'rejected';
-            await db.collection('users').doc(id).update({status:nst});
-        }
-        
-        function showCert(uid) {
-            const u = allUsersCache.find(x => x.id === uid);
+        async function banUser(id, st) { await db.collection('users').doc(id).update({status: st==='banned'?'active':'banned'}); }
+        async function approve(id, ok) { await db.collection('users').doc(id).update({status: ok?'active':'rejected'}); }
+        function viewCert(uid) {
+            const u = allUsers.find(x => x.id===uid);
             if(u && u.cert) {
-                const win = window.open();
-                win.document.write(`<iframe src="${u.cert}" style="width:100%; height:100%; border:none;"></iframe>`);
+                const w = window.open();
+                w.document.write(`<iframe src="${u.cert}" style="width:100%;height:100%;border:none"></iframe>`);
             }
+        }
+        function admTab(id) {
+            document.querySelectorAll('.adm-view').forEach(e => e.classList.add('hidden'));
+            document.getElementById('view-'+id).classList.remove('hidden');
         }
         
         async function setPoints() {
-            const code = document.getElementById('pts-code').value;
-            const val = parseInt(document.getElementById('pts-val').value);
-            const found = allUsersCache.find(u => u.code == code);
-            if(found) {
-                await db.collection('users').doc(found.id).update({points: val});
-                Swal.fire('Done', 'Points updated', 'success');
-            } else {
-                Swal.fire('Error', 'Code not found', 'error');
-            }
+            const c = document.getElementById('pts-code').value;
+            const v = parseInt(document.getElementById('pts-val').value);
+            const u = allUsers.find(x => x.code == c);
+            if(u) {
+                await db.collection('users').doc(u.id).update({points: v});
+                Swal.fire('OK','Updated','success');
+            } else Swal.fire('Error','Code not found','error');
         }
         
         async function uploadLogo() {
             const f = document.getElementById('adm-logo-up').files[0];
             if(f) {
                 const b64 = await toBase64(f);
-                await db.collection('settings').doc('config').set({logo: b64}, {merge:true});
-                Swal.fire('Done', 'Logo Updated', 'success');
+                await db.collection('settings').doc('config').set({logo:b64}, {merge:true});
+                Swal.fire('OK','Logo updated','success');
             }
         }
 
-        function admTab(id) {
-            document.querySelectorAll('.adm-view').forEach(e => e.classList.add('hidden'));
-            document.getElementById('view-'+id).classList.remove('hidden');
-        }
-
-        // --- 5. UTILS ---
+        // --- UTILS & MODALS ---
 
         function openProfile() {
             document.getElementById('edit-name').value = currentUser.name;
@@ -975,75 +865,97 @@
             
             let upd = {name};
             if(pass) upd.pass = pass;
-            if(file) {
-                upd.img = await toBase64(file);
-            }
+            if(file) upd.img = await toBase64(file);
             
             await db.collection('users').doc(currentUser.id).update(upd);
-            currentUser = {...currentUser, ...upd}; // Optimistic update
-            closeMod('mod-profile');
-            Swal.fire('Updated', '', 'success');
-            // Refresh dash UI if needed
-            if(document.getElementById('u-name')) document.getElementById('u-name').innerText = name;
-            if(document.getElementById('p-name')) document.getElementById('p-name').innerText = name;
-            if(upd.img) {
-                if(document.getElementById('u-img')) document.getElementById('u-img').src = upd.img;
-                if(document.getElementById('p-img')) document.getElementById('p-img').src = upd.img;
+            currentUser = {...currentUser, ...upd}; // Update local
+            if(document.getElementById('u-name')) {
+                document.getElementById('u-name').innerText = name;
+                document.getElementById('u-img').src = currentUser.img;
             }
+            if(document.getElementById('p-name')) {
+                document.getElementById('p-name').innerText = name;
+                document.getElementById('p-img').src = currentUser.img;
+            }
+            closeMod('mod-profile');
+            Swal.fire('Saved','','success');
         }
 
-        function showNotifs() {
-            document.getElementById('mod-info').style.display = 'flex';
-            document.getElementById('info-title').innerText = t('notifications');
-            const box = document.getElementById('info-body');
-            box.innerHTML = "Loading...";
-            
-            const role = currentUser.role === 'admin' ? 'admin' : currentUser.role;
-            db.collection('notifs').where('target','in',['all', role]).orderBy('date','desc').get().then(snap => {
-                box.innerHTML = "";
-                snap.forEach(doc => {
-                    // Mark as read in local storage
-                    localStorage.setItem('read_'+doc.id, '1');
-                    const d = doc.data();
-                    const txt = lang==='ar' ? d.txt_ar : d.txt_fr;
-                    box.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; background:${localStorage.getItem('read_'+doc.id)?'white':'#f0f8ff'}">${txt}</div>`;
-                });
-                document.getElementById('notif-badge').style.display = 'none';
+        // Rating
+        function openRate(pid, aid) {
+            rateTarget = {pid, aid};
+            document.getElementById('mod-rate').style.display = 'flex';
+            setStar(0);
+        }
+        function setStar(n) {
+            document.getElementById('rate-val').value = n;
+            const stars = document.querySelectorAll('.star-rating i');
+            stars.forEach((s, i) => {
+                if(i < n) s.classList.add('active');
+                else s.classList.remove('active');
             });
         }
-        
-        async function sendNotif() {
-            const ar = document.getElementById('notif-ar').value;
-            const fr = document.getElementById('notif-fr').value;
-            const tar = document.getElementById('notif-target').value;
-            await db.collection('notifs').add({txt_ar:ar, txt_fr:fr, target:tar, date: Date.now()});
-            Swal.fire('Sent', '', 'success');
+        async function submitRate() {
+            const n = parseInt(document.getElementById('rate-val').value);
+            const c = document.getElementById('rate-comment').value;
+            if(!n) return;
+            
+            await db.collection('reviews').add({
+                proId: rateTarget.pid, stars: n, comment: c, userName: currentUser.name, date: Date.now()
+            });
+            // Update Aggregates
+            const ref = db.collection('users').doc(rateTarget.pid);
+            await db.runTransaction(async t => {
+                const doc = await t.get(ref);
+                const d = doc.data();
+                const count = (d.rateCount||0) + 1;
+                const sum = (d.rateSum||0) + n;
+                t.update(ref, {rateCount:count, rateSum:sum});
+            });
+            await db.collection('appointments').doc(rateTarget.aid).update({rated:true});
+            closeMod('mod-rate');
+            Swal.fire('Thanks','','success');
+        }
+        function showReviews(pid) {
+            document.getElementById('mod-reviews').style.display = 'flex'; // Missing HTML, added below dynamically in info
+            // Reusing Info Modal for simplicity
+            document.getElementById('info-title').innerText = t('reviews');
+            const b = document.getElementById('info-body');
+            b.innerHTML = "Loading...";
+            document.getElementById('mod-info').style.display = 'flex';
+            
+            db.collection('reviews').where('proId','==',pid).get().then(snap => {
+                b.innerHTML = "";
+                if(snap.empty) b.innerHTML = "No reviews.";
+                snap.forEach(d => {
+                    const r = d.data();
+                    b.innerHTML += `<div style="border-bottom:1px solid #eee; padding:5px"><b>${r.userName}</b> ${'⭐'.repeat(r.stars)}<br>${r.comment}</div>`;
+                });
+            });
         }
 
-        // Static Pages
-        function openStatic(type) {
+        // Reporting
+        function openReportModal() { document.getElementById('mod-report').style.display = 'flex'; }
+        async function submitReport() {
+            const n = document.getElementById('rep-name').value;
+            const e = document.getElementById('rep-email').value;
+            const d = document.getElementById('rep-desc').value;
+            if(!d) return;
+            await db.collection('reports').add({name:n, email:e, desc:d, date:Date.now()});
+            closeMod('mod-report');
+            Swal.fire('Sent','','success');
+        }
+
+        // Static
+        function openStatic(k) {
             document.getElementById('mod-info').style.display = 'flex';
-            document.getElementById('info-title').innerText = t(type);
-            // In real app, fetch text from Firestore settings
-            const content = appSettings[type + '_' + lang] || "Content loading...";
-            document.getElementById('info-body').innerText = content;
+            document.getElementById('info-title').innerText = t(k);
+            document.getElementById('info-body').innerText = appSettings[k+'_'+lang] || "Loading content...";
         }
         function openLoc() {
             document.getElementById('mod-info').style.display = 'flex';
             document.getElementById('info-title').innerText = t('location');
-            document.getElementById('info-body').innerHTML = `<iframe src="https://maps.google.com/maps?q=Algiers&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0"></iframe>`;
-        }
-        function openReport() {
-            Swal.fire({
-                title: t('report'),
-                input: 'textarea',
-                showCancelButton: true
-            }).then(res => {
-                if(res.isConfirmed) {
-                    db.collection('reports').add({desc: res.value, user: currentUser?currentUser.email:'Guest'});
-                    Swal.fire('Sent','','success');
-                }
-            });
+            document.getElementById('info-body').innerHTML = `<iframe src="https://maps.google.com/maps?q=Algiers&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="250" style="border:0"></iframe>`;
         }
 
         function closeMod(id) { document.getElementById(id).style.display = 'none'; }
