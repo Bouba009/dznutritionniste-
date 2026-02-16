@@ -5,23 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DZ Nutritionniste</title>
     
-    <!-- Fonts & Icons -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Firebase Libraries (Compat) -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
-    <!-- SweetAlert2 (Popups) -->
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
-            --primary: #2E7D32; /* Green */
-            --primary-dark: #1B5E20;
-            --accent: #FFC107; /* Amber */
+            --primary: #2E7D32;
+            --accent: #FFC107;
             --text: #2c3e50;
             --light: #f8f9fa;
             --white: #ffffff;
@@ -33,31 +34,25 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--light); color: var(--text); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: 0.3s; }
 
-        /* --- LOADER --- */
+        /* LOADER */
         #loader { position: fixed; inset: 0; background: var(--white); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
         .spinner { width: 50px; height: 50px; border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- UTILS --- */
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .center { align-items: center; justify-content: center; }
-        .w-full { width: 100%; }
-        .text-primary { color: var(--primary); }
-
-        /* --- NAVBAR --- */
+        /* NAVBAR (Compact) */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 5px 5%; height: 70px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 5px 3%; height: 60px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--primary); font-size: 1.1rem; }
-        #nav-logo img { height: 45px; object-fit: contain; }
-        .btn-auth-nav { background: var(--primary); color: white; padding: 6px 20px; border-radius: 20px; font-size: 0.9rem; border: none; cursor: pointer; font-weight: bold; transition:0.3s; }
-        .btn-auth-nav:hover { background: var(--primary-dark); transform: translateY(-2px); }
-        .lang-switch { border: 2px solid var(--primary); padding: 3px 10px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: 900; color: var(--primary); font-size: 1rem; }
+        #nav-logo img { height: 35px; object-fit: contain; }
+        /* Smaller buttons */
+        .btn-auth-nav { background: var(--primary); color: white; padding: 4px 12px; border-radius: 15px; font-size: 0.8rem; border: none; cursor: pointer; font-weight: bold; transition:0.3s; }
+        .btn-auth-nav:hover { background: #1B5E20; transform: translateY(-1px); }
+        .lang-switch { border: 1px solid var(--primary); padding: 2px 8px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 0.75rem; color: var(--primary); }
 
-        /* --- SIDEBAR --- */
+        /* SIDEBAR */
         .sidebar {
             position: fixed; top: 0; right: -280px; width: 260px; height: 100vh;
             background: var(--white); z-index: 1100; padding: 20px;
@@ -69,121 +64,81 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1050; display: none; }
         .overlay.active { display: block; }
         .menu-item { padding: 12px; margin: 5px 0; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #555; font-weight: 600; transition: 0.2s; }
-        .menu-item:hover { background: #e8f5e9; color: var(--primary); transform: translateX(-5px); }
-        [dir="ltr"] .menu-item:hover { transform: translateX(5px); }
+        .menu-item:hover { background: #e8f5e9; color: var(--primary); }
 
-        /* --- HERO --- */
-        main { margin-top: 70px; flex: 1; padding-bottom: 40px; }
-        #landing { height: calc(100vh - 70px); position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
+        /* HERO */
+        main { margin-top: 60px; flex: 1; padding-bottom: 40px; }
+        #landing { height: calc(100vh - 60px); position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
         .hero-bg { position: absolute; inset: 0; background-image: var(--bg-def); background-size: cover; background-position: center; z-index: -2; animation: zoomBg 20s infinite alternate; }
         .hero-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)); z-index: -1; }
-        .hero-content { position: relative; z-index: 1; padding: 20px; width: 100%; max-width: 700px; }
+        .hero-content { position: relative; z-index: 1; padding: 20px; }
         @keyframes zoomBg { from {transform: scale(1);} to {transform: scale(1.1);} }
 
-        .btn-glow {
-            background: var(--accent); color: #000; padding: 15px 45px; border-radius: 50px; 
-            font-weight: 800; border: none; font-size: 1.2rem; cursor: pointer; 
-            box-shadow: 0 0 20px rgba(255, 193, 7, 0.6); animation: pulse 2s infinite; text-transform: uppercase;
-        }
+        .btn-glow { background: var(--accent); color: #000; padding: 14px 40px; border-radius: 50px; font-weight: 800; border: none; font-size: 1.1rem; cursor: pointer; box-shadow: 0 0 20px rgba(255, 193, 7, 0.6); animation: pulse 2s infinite; }
         @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(255, 193, 7, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);} }
 
-        /* --- DASHBOARDS --- */
-        .dash-container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
-
-        /* Admin 3x3 Grid */
+        /* ADMIN GRID */
+        .dash-container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
         .admin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
-        .adm-card {
-            padding: 15px; border-radius: 15px; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            box-shadow: var(--shadow); height: 130px; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
-        }
+        .adm-card { padding: 15px; border-radius: 12px; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: var(--shadow); height: 130px; cursor: pointer; transition: 0.3s; }
         .adm-card:hover { transform: translateY(-5px); }
-        .adm-card h3 { font-size: 2.5rem; margin: 0; font-weight: 900; }
-        .adm-card span { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-top: 5px; }
-        
-        /* Gradients */
-        .g1 { background: linear-gradient(45deg, #FF512F, #DD2476); }
-        .g2 { background: linear-gradient(45deg, #11998e, #38ef7d); }
-        .g3 { background: linear-gradient(45deg, #2193b0, #6dd5ed); }
-        .g4 { background: linear-gradient(45deg, #8E2DE2, #4A00E0); }
-        .g5 { background: linear-gradient(45deg, #f12711, #f5af19); }
-        .g6 { background: linear-gradient(45deg, #00b09b, #96c93d); }
-        .g7 { background: linear-gradient(45deg, #8360c3, #2ebf91); }
-        .g8 { background: linear-gradient(45deg, #DA4453, #89216B); }
-        .g9 { background: linear-gradient(45deg, #fc4a1a, #f7b733); }
+        .adm-card h3 { font-size: 2.2rem; margin: 0; font-weight: 900; }
+        .adm-card span { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .g1 { background: linear-gradient(45deg, #FF512F, #DD2476); } .g2 { background: linear-gradient(45deg, #11998e, #38ef7d); } .g3 { background: linear-gradient(45deg, #2193b0, #6dd5ed); } .g4 { background: linear-gradient(45deg, #8E2DE2, #4A00E0); } .g5 { background: linear-gradient(45deg, #f12711, #f5af19); } .g6 { background: linear-gradient(45deg, #00b09b, #96c93d); } .g7 { background: linear-gradient(45deg, #8360c3, #2ebf91); } .g8 { background: linear-gradient(45deg, #DA4453, #89216B); } .g9 { background: linear-gradient(45deg, #fc4a1a, #f7b733); }
 
-        /* Pro 2x2 Grid */
+        /* PRO GRID */
         .pro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .pro-stat {
-            padding: 25px; border-radius: 15px; color: white; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between;
-            height: 150px; position: relative; overflow: hidden; transition: 0.3s;
-        }
-        .pro-stat:hover { transform: scale(1.02); }
-        .pro-stat h3 { font-size: 3rem; margin: 0; font-weight: 800; }
-        .pc1 { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
-        .pc2 { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
-        .pc3 { background: linear-gradient(135deg, #f83600 0%, #f9d423 100%); }
-        .pc4 { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); }
+        .pro-stat { padding: 20px; border-radius: 15px; color: white; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between; height: 140px; position: relative; overflow: hidden; }
+        .pc1 { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); } .pc2 { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); } .pc3 { background: linear-gradient(135deg, #f83600 0%, #f9d423 100%); } .pc4 { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); }
 
-        /* --- UI ELEMENTS --- */
-        .tbl-box { overflow-x: auto; background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid #eee; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
-        th { background: #fafafa; color: var(--primary); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
+        /* UI */
+        .tbl-box { overflow-x: auto; background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+        th { background: #fafafa; color: var(--primary); font-weight: 700; }
         [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
 
-        .pro-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .pro-item { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: var(--shadow); border-top: 5px solid var(--primary); transition:0.3s; }
-        .pro-item:hover { transform: translateY(-5px); }
-        .pro-item img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #eee; }
-
-        .form-box { max-width: 550px; margin: 40px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); }
-        .inp { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s; }
-        .inp:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1); }
+        .pro-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .pro-item { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: var(--shadow); border-top: 4px solid var(--primary); }
+        .form-box { max-width: 550px; margin: 30px auto; background: white; padding: 25px; border-radius: 15px; box-shadow: var(--shadow); }
+        .inp { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; outline: none; }
         
-        .role-switch { display: flex; background: #f0f0f0; padding: 5px; border-radius: 10px; margin-bottom: 20px; }
-        .role-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: transparent; transition:0.3s; color: #777; }
-        .role-btn.active { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .role-switch { display: flex; background: #f0f0f0; padding: 4px; border-radius: 10px; margin-bottom: 15px; }
+        .role-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: transparent; transition:0.3s; }
+        .role-btn.active { background: var(--primary); color: white; }
+
+        .btn-modern { background: linear-gradient(45deg, #2E7D32, #43A047); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+        /* زر الحذف والحظر */
+        .btn-danger { background: #e74c3c; color: white; padding: 4px 10px; border-radius: 5px; border: none; font-size: 0.75rem; cursor: pointer; margin: 2px; }
+        .btn-warn { background: #f39c12; color: white; padding: 4px 10px; border-radius: 5px; border: none; font-size: 0.75rem; cursor: pointer; margin: 2px; }
+        .btn-info { background: #3498db; color: white; padding: 4px 10px; border-radius: 5px; border: none; font-size: 0.75rem; cursor: pointer; margin: 2px; }
 
         .stars { font-size: 2rem; color: #ddd; cursor: pointer; display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; }
         .stars i.active { color: gold; animation: rubberBand 1s; }
 
-        /* Buttons */
-        .btn-modern { background: linear-gradient(45deg, #2E7D32, #43A047); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
-        .btn-modern:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .btn-del { background: #ff4757; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.3s; }
-        .btn-del:hover { background: #e0404e; }
-        .btn-adm-tab { background: white; border: 1px solid #eee; padding: 8px 15px; border-radius: 20px; color: #555; cursor: pointer; font-weight: bold; transition:0.3s; margin-bottom: 5px; white-space: nowrap; }
-        .btn-adm-tab:hover { border-color: var(--primary); color: var(--primary); }
+        footer { background: #1a1a1a; color: #fff; padding: 30px 20px; text-align: center; margin-top: auto; }
+        .f-link { margin: 0 10px; cursor: pointer; color: #bbb; display: inline-block; font-size: 0.9rem; }
 
-        /* Footer */
-        footer { background: #1a1a1a; color: #fff; padding: 40px 20px; text-align: center; margin-top: auto; }
-        .f-link { margin: 0 10px; cursor: pointer; color: #bbb; display: inline-block; transition: 0.3s; font-size: 0.9rem; }
-        .f-link:hover { color: var(--accent); }
-
-        /* Modals */
+        /* MODALS */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
-        .modal-box { background: white; width: 95%; max-width: 500px; padding: 30px; border-radius: 20px; max-height: 90vh; overflow-y: auto; animation: fadeInUp 0.3s; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        .modal-box { background: white; width: 95%; max-width: 500px; padding: 25px; border-radius: 15px; max-height: 90vh; overflow-y: auto; animation: fadeInUp 0.3s; }
 
-        @media (max-width: 768px) {
-            .admin-grid { grid-template-columns: 1fr 1fr; }
-            .pro-grid { grid-template-columns: 1fr; }
-            .hero-content h1 { font-size: 2.5rem; }
-        }
+        @media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr 1fr; } .pro-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <!-- Loader -->
+    <!-- LOADER -->
     <div id="loader"><div class="spinner"></div><h4 style="margin-top:15px; color:var(--primary); font-weight:bold">DZ Nutritionniste</h4></div>
 
-    <!-- Navbar -->
+    <!-- NAVBAR -->
     <nav>
         <div class="nav-brand">
             <i class="fas fa-bars fa-lg" onclick="toggleSidebar()" style="cursor:pointer; color:var(--text)"></i>
             <div id="nav-logo"></div>
             <span>DZ Nutritionniste</span>
         </div>
-        <div class="flex center" style="gap:10px">
+        <div class="flex center" style="gap:8px">
             <button id="auth-btn-nav" class="btn-auth-nav" onclick="handleAuthBtn()">Login</button>
             <div onclick="switchLang()" class="lang-switch">AR | FR</div>
             <div id="notif-btn" class="hidden" style="position:relative; cursor:pointer" onclick="showNotifs()">
@@ -193,7 +148,7 @@
         </div>
     </nav>
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <div class="overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
         <div class="flex" style="justify-content:space-between; margin-bottom:30px; border-bottom:1px solid #eee; padding-bottom:15px">
@@ -217,18 +172,18 @@
         </div>
     </div>
 
-    <!-- Main -->
+    <!-- MAIN -->
     <main>
-        <!-- Landing -->
+        <!-- LANDING -->
         <section id="landing">
             <div class="hero-bg"></div><div class="hero-overlay"></div>
             <div class="hero-content animate__animated animate__fadeInUp">
-                <h1 style="font-size:3rem; margin-bottom:20px; font-weight:900" data-t="hero_title">غير حياتك للأفضل</h1>
+                <h1 style="font-size:2.5rem; margin-bottom:20px; font-weight:900" data-t="hero_title">غير حياتك للأفضل</h1>
                 <button class="btn-glow" onclick="nav('register')" data-t="start_now">إبدأ الآن</button>
             </div>
         </section>
 
-        <!-- Login -->
+        <!-- LOGIN -->
         <section id="login" class="hidden">
             <div class="form-box animate__animated animate__zoomIn">
                 <h2 class="text-center mb-4" data-t="login" style="color:var(--primary)">تسجيل الدخول</h2>
@@ -239,7 +194,7 @@
             </div>
         </section>
 
-        <!-- Register -->
+        <!-- REGISTER -->
         <section id="register" class="hidden">
             <div class="form-box animate__animated animate__fadeIn">
                 <h2 class="text-center mb-4" data-t="register">انشاء حساب</h2>
@@ -257,24 +212,27 @@
                 <input id="r-pass" type="password" class="inp" data-p="password">
                 <input id="r-pass2" type="password" class="inp" data-p="confirm_pass">
                 
-                <!-- Fields for Pro -->
+                <!-- Pro Fields -->
                 <div id="pro-fields" class="hidden animate__animated animate__fadeIn" style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:15px; border:1px solid #eee">
                     <label data-t="wilaya" style="font-weight:bold; font-size:0.9rem">الولاية</label><input id="r-wilaya" class="inp">
                     <label data-t="marital" style="font-weight:bold; font-size:0.9rem">الحالة الاجتماعية</label>
                     <select id="r-social" class="inp" onchange="toggleKids(this.value)">
-                        <option value="Single" data-t="single">أعزب</option><option value="Married" data-t="married">متزوج</option><option value="Divorced" data-t="divorced">مطلق</option>
+                        <option value="Single" data-t="single">أعزب</option>
+                        <option value="Married" data-t="married">متزوج</option>
+                        <option value="Divorced" data-t="divorced">مطلق</option>
                     </select>
                     <div id="kids-div" class="hidden"><label data-t="kids" style="font-weight:bold; font-size:0.9rem">أولاد</label><select id="r-kids" class="inp"><option value="No" data-t="no">لا</option><option value="Yes" data-t="yes">نعم</option></select></div>
-                    <label data-t="cert" style="font-weight:bold; font-size:0.9rem">الشهادة</label><input id="r-cert" type="file" class="inp" accept="image/*">
+                    <label data-t="cert" style="font-weight:bold; font-size:0.9rem">الشهادة (PDF)</label>
+                    <input id="r-cert" type="file" class="inp" accept="application/pdf">
                 </div>
                 <button class="btn-modern" onclick="doRegister()" data-t="register_btn">تسجيل</button>
             </div>
         </section>
 
-        <!-- Dynamic Dashboard Container -->
-        <section id="dash-container" class="hidden" style="max-width:1100px; margin:20px auto; padding:0 15px"></section>
+        <!-- DASHBOARD CONTAINER -->
+        <section id="dash-container" class="hidden dash-container"></section>
 
-        <!-- Admin Template -->
+        <!-- ADMIN TEMPLATE -->
         <template id="tpl-admin">
             <h2 class="mb-4" data-t="admin_panel" style="color:var(--primary); font-weight:900">Admin Panel</h2>
             <div class="admin-grid">
@@ -290,22 +248,29 @@
             </div>
             
             <div class="flex" style="gap:5px; overflow-x:auto; margin-bottom:20px; padding-bottom:5px">
-                <button class="btn-adm-tab" onclick="showAdm('users')" data-t="users">Users</button>
-                <button class="btn-adm-tab" onclick="showAdm('apps')" data-t="approvals">Approvals</button>
-                <button class="btn-adm-tab" onclick="showAdm('reps')" data-t="report">Reports</button>
-                <button class="btn-adm-tab" onclick="showAdm('cms')" data-t="settings">Settings</button>
+                <button class="btn-info" onclick="showAdm('users')" data-t="users">Users</button>
+                <button class="btn-info" onclick="showAdm('apps')" data-t="approvals">Approvals</button>
+                <button class="btn-info" onclick="showAdm('reps')" data-t="report">Reports</button>
+                <button class="btn-info" onclick="showAdm('cms')" data-t="settings">Settings</button>
             </div>
 
-            <div id="adm-view-users" class="hidden"><h3 data-t="users">Users</h3><input class="inp" onkeyup="filterUsers(this.value)" placeholder="Search..."><div class="tbl-box"><table id="tbl-users"><thead><tr><th>Name</th><th>Role</th><th>Code</th><th>Action</th></tr></thead><tbody></tbody></table></div></div>
-            <div id="adm-view-apps" class="hidden"><h3 data-t="approvals">Approvals</h3><div class="tbl-box"><table id="tbl-apps"><thead><tr><th>Name</th><th>Cert</th><th>Action</th></tr></thead><tbody></tbody></table></div></div>
-            <div id="adm-view-reps" class="hidden"><h3 data-t="report">Reports</h3><div class="tbl-box"><table id="tbl-reps"><thead><tr><th>Name</th><th>Email</th><th>Desc</th><th>Action</th></tr></thead><tbody></tbody></table></div></div>
+            <!-- Users Table with Ban/Delete -->
+            <div id="adm-view-users" class="hidden"><h3 data-t="users">Users</h3><input class="inp" onkeyup="filterUsers(this.value)" placeholder="Search"><div class="tbl-box"><table id="tbl-users"><thead><tr><th>Name</th><th>Role</th><th>Phone</th><th>Code</th><th>Points</th><th>Status</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div>
+            
+            <!-- Approvals with Full Details -->
+            <div id="adm-view-apps" class="hidden"><h3 data-t="approvals">Approvals</h3><div class="tbl-box"><table id="tbl-apps"><thead><tr><th>Name</th><th>Details</th><th>Cert</th><th>Action</th></tr></thead><tbody></tbody></table></div></div>
+            
+            <!-- Sessions -->
             <div id="adm-view-sess" class="hidden"><h3 data-t="sessions">Sessions</h3><div class="tbl-box"><table id="tbl-sess"><thead><tr><th>Client</th><th>Pro</th><th>Date</th></tr></thead><tbody></tbody></table></div></div>
+            
+            <div id="adm-view-reps" class="hidden"><h3 data-t="report">Reports</h3><div class="tbl-box"><table id="tbl-reps"><thead><tr><th>Name</th><th>Email</th><th>Desc</th><th>Action</th></tr></thead><tbody></tbody></table></div></div>
+            
             <div id="adm-view-cms" class="hidden">
                 <div class="form-box" style="max-width:100%; margin:0">
                     <h3 data-t="settings">Settings</h3>
                     <div class="flex" style="gap:20px; flex-wrap:wrap">
-                        <div style="flex:1"><label data-t="logo">Logo</label><input type="file" id="adm-logo" class="inp"><div class="flex" style="gap:5px"><button class="btn-modern" onclick="updLogo()">Update</button><button class="btn-del" onclick="delLogo()">Delete</button></div></div>
-                        <div style="flex:1"><label data-t="bg">Background</label><input type="file" id="adm-bg" class="inp"><div class="flex" style="gap:5px"><button class="btn-modern" onclick="updBg()">Update</button><button class="btn-del" onclick="delBg()">Delete</button></div></div>
+                        <div style="flex:1"><label data-t="logo">Logo</label><input type="file" id="adm-logo" class="inp"><div class="flex" style="gap:5px"><button class="btn-modern" onclick="updLogo()">Update</button><button class="btn-danger" onclick="delLogo()">Delete</button></div></div>
+                        <div style="flex:1"><label data-t="bg">Background</label><input type="file" id="adm-bg" class="inp"><div class="flex" style="gap:5px"><button class="btn-modern" onclick="updBg()">Update</button><button class="btn-danger" onclick="delBg()">Delete</button></div></div>
                     </div>
                     <hr class="my-3"><label data-t="add_banner">Banner</label><input type="file" id="ban-img" class="inp"><input id="ban-link" class="inp" placeholder="Link"><select id="ban-role" class="inp"><option value="all">All</option><option value="user">User</option><option value="pro">Pro</option></select><button class="btn-modern" onclick="addBan()">Add</button><div id="ban-list" style="margin-top:10px"></div>
                     <hr class="my-3"><label data-t="points_manager">Points</label><div class="flex" style="gap:10px"><input id="pt-code" placeholder="Code" class="inp"><input id="pt-val" type="number" class="inp"><button class="btn-modern" onclick="setPts()">Set</button></div>
@@ -316,27 +281,26 @@
 
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer>
-        <h4 style="font-size:1.5rem; font-weight:900">DZ Nutritionniste</h4>
-        <div class="footer-links">
+        <h4>DZ Nutritionniste</h4>
+        <div style="margin-top:15px">
             <span class="f-link" onclick="openStatic('about')" data-t="about">من نحن</span>
             <span class="f-link" onclick="openStatic('privacy')" data-t="privacy">السياسة</span>
             <span class="f-link" onclick="openLoc()" data-t="location">مقرنا</span>
             <span class="f-link" onclick="openReportModal()" data-t="report">ابلاغ</span>
         </div>
-        <p style="font-size:0.8rem; opacity:0.6">© 2026 All Rights Reserved.</p>
+        <p style="margin-top:20px; font-size:0.7rem; opacity:0.6">© 2026</p>
     </footer>
 
-    <!-- Modals -->
-    <div id="mod-profile" class="modal"><div class="modal-box"><h3 data-t="edit_profile">تعديل الملف</h3><label data-t="name">الاسم</label><input id="ped-name" class="inp"><label data-t="password">كلمة المرور</label><input id="ped-pass" class="inp"><label data-t="photo">الصورة</label><input type="file" id="ped-img" class="inp" accept="image/*"><button class="btn-modern" onclick="saveProf()" data-t="save">حفظ</button><button class="btn-del" style="width:100%; margin-top:5px" onclick="closeMod('mod-profile')" data-t="cancel">الغاء</button></div></div>
-    <div id="mod-rate" class="modal"><div class="modal-box center"><h3 data-t="rate_pro">تقييم</h3><div class="stars" id="star-box"><i class="fas fa-star" onclick="rate(1)"></i><i class="fas fa-star" onclick="rate(2)"></i><i class="fas fa-star" onclick="rate(3)"></i><i class="fas fa-star" onclick="rate(4)"></i><i class="fas fa-star" onclick="rate(5)"></i></div><input type="hidden" id="rate-v"><textarea id="rate-c" class="inp" placeholder="Comment..."></textarea><button class="btn-modern" onclick="subRate()" data-t="send">ارسال</button><button class="btn-del" style="width:100%; margin-top:5px" onclick="closeMod('mod-rate')">X</button></div></div>
-    <div id="mod-report" class="modal"><div class="modal-box"><h3 data-t="report">ابلاغ</h3><input id="rp-name" class="inp" data-p="name"><input id="rp-mail" class="inp" data-p="email"><textarea id="rp-desc" class="inp" data-p="desc"></textarea><button class="btn-modern" onclick="subRep()" data-t="send">ارسال</button><button class="btn-del" style="width:100%; margin-top:5px" onclick="closeMod('mod-report')">X</button></div></div>
-    <div id="mod-info" class="modal"><div class="modal-box"><h3 id="inf-t" class="text-primary"></h3><div id="inf-c" style="margin-top:15px; line-height:1.6; max-height:400px; overflow-y:auto; text-align:right"></div><button class="btn-modern" style="margin-top:10px; background:#ccc; color:#333" onclick="closeMod('mod-info')">Close</button></div></div>
+    <!-- MODALS -->
+    <div id="mod-profile" class="modal"><div class="modal-box"><h3 data-t="edit_profile">تعديل الملف</h3><label data-t="name">الاسم</label><input id="ped-name" class="inp"><label data-t="password">كلمة المرور</label><input id="ped-pass" class="inp"><label data-t="photo">الصورة</label><input type="file" id="ped-img" class="inp" accept="image/*"><button class="btn-modern" onclick="saveProf()" data-t="save">حفظ</button><button class="btn-danger full-width" style="margin-top:10px" onclick="closeMod('mod-profile')" data-t="cancel">الغاء</button></div></div>
+    <div id="mod-rate" class="modal"><div class="modal-box center"><h3 data-t="rate_pro">تقييم</h3><div class="stars" id="star-box"><i class="fas fa-star" onclick="rate(1)"></i><i class="fas fa-star" onclick="rate(2)"></i><i class="fas fa-star" onclick="rate(3)"></i><i class="fas fa-star" onclick="rate(4)"></i><i class="fas fa-star" onclick="rate(5)"></i></div><input type="hidden" id="rate-v"><textarea id="rate-c" class="inp" placeholder="Comment..."></textarea><button class="btn-modern" onclick="subRate()" data-t="send">ارسال</button><button class="btn-danger full-width" style="margin-top:10px" onclick="closeMod('mod-rate')">X</button></div></div>
+    <div id="mod-report" class="modal"><div class="modal-box"><h3 data-t="report">ابلاغ</h3><input id="rp-name" class="inp" data-p="name"><input id="rp-mail" class="inp" data-p="email"><textarea id="rp-desc" class="inp" data-p="desc"></textarea><button class="btn-modern" onclick="subRep()" data-t="send">ارسال</button><button class="btn-danger full-width" style="margin-top:10px" onclick="closeMod('mod-report')">X</button></div></div>
+    <div id="mod-info" class="modal"><div class="modal-box"><h3 id="inf-t" class="text-primary"></h3><div id="inf-c" style="margin-top:10px; max-height:400px; overflow-y:auto; line-height:1.6"></div><button class="btn-modern" style="margin-top:10px; background:#ccc; color:#333" onclick="closeMod('mod-info')">Close</button></div></div>
 
     <script>
-        // --- 1. FIREBASE CONFIG ---
-        // ⚠️⚠️⚠️ ضع بياناتك هنا ⚠️⚠️⚠️
+        // CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyCW3xXtNcSAqoEB3MTiTkBH6faZy4U2MMs",
             authDomain: "sstore-6a68a.firebaseapp.com",
@@ -345,17 +309,13 @@
             messagingSenderId: "624495077479",
             appId: "1:624495077479:web:7b299982afeb1c5bce4cc2"
         };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // Initialize
-        try {
-            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-            var db = firebase.firestore();
-        } catch(e) { console.error(e); }
-
-        // --- 2. STATE ---
+        // STATE
         let currentUser=null, lang=localStorage.getItem('lang')||'ar', regRole='user', rateM=null, uCache=[];
 
-        // --- 3. TRANSLATIONS ---
+        // TRANSLATIONS
         const tD = {
             ar: {
                 menu:"القائمة", home:"الرئيسية", login:"دخول", dashboard:"لوحة التحكم", profile:"الملف", about:"من نحن", privacy:"السياسة", location:"مقرنا", report:"ابلاغ", logout:"خروج", hero_title:"غير حياتك للأفضل", start_now:"إبدأ الآن", login_btn:"دخول", no_account:"ليس لديك حساب؟", register:"انشاء حساب", role_user:"مستخدم", role_pro:"مختص", register_btn:"تسجيل", name:"الاسم", photo:"الصورة", password:"كلمة المرور", confirm_pass:"تأكيد كلمة المرور", pass_mismatch:"كلمات المرور غير متطابقة", reg_ok_user:"تم التسجيل بنجاح", reg_ok_pro:"تم التسجيل! انتظر حتى نعالج ملفك لتصبح من عائلتنا 💙", wilaya:"الولاية", marital:"الحالة الاجتماعية", single:"أعزب", married:"متزوج", divorced:"مطلق", kids:"أولاد؟", no:"لا", yes:"نعم", cert:"الشهادة", admin_panel:"لوحة الادمن", users:"المستخدمين", pending:"قيد الانتظار", approvals:"التوثيق", settings:"الاعدادات", logo:"اللوغو", bg:"الخلفية", add_banner:"اضافة بانر", welcome:"مرحبا", total_req:"اجمالي", accepted:"مقبولة", history:"سجلي", available_pros:"المختصين", request:"طلب", wait:"انتظار", points:"نقاطي", incoming:"طلبات واردة", client:"المريض", age:"السن", gender:"الجنس", action:"اجراء", accepted_clients:"زبائن", phone:"الهاتف", email:"الايميل", edit_profile:"تعديل الملف", save:"حفظ", cancel:"الغاء", rate_pro:"تقييم", send:"ارسال", reviews:"التعليقات", desc:"الوصف", male:"ذكر", female:"أنثى", new_req:"جديد", total:"الاجمالي", rejected:"مرفوض", succ_title:"تم", saved_msg:"تم الحفظ", sent_msg:"تم الارسال", req_ok_title:"تم الطلب", req_ok_msg:"تم ارسال الطلب بنجاح", err_title:"خطأ", login_err:"بيانات خاطئة", ban_msg:"حسابك محظور", pend_msg:"حسابك قيد المراجعة", rej_msg:"تم رفض طلبك", points_manager:"تعديل النقاط", sessions:"جلسات", visits_day:"زيارات يوم", visits_month:"زيارات شهر", banners:"بانرات", send_notif:"ارسال اشعار",
@@ -364,43 +324,31 @@
             },
             fr: {
                 menu:"Menu", home:"Accueil", login:"Connexion", dashboard:"Tableau de bord", profile:"Profil", about:"À propos", privacy:"Confidentialité", location:"Localisation", report:"Signaler", logout:"Déconnexion", hero_title:"Changez votre vie", start_now:"Commencer", login_btn:"Connexion", no_account:"Pas de compte?", register:"Inscription", role_user:"Utilisateur", role_pro:"Spécialiste", register_btn:"S'inscrire", name:"Nom", photo:"Photo", password:"Mot de passe", confirm_pass:"Confirmer MDP", pass_mismatch:"Mots de passe non identiques", reg_ok_user:"Succès", reg_ok_pro:"Inscrit! Attendez l'approbation 💙", wilaya:"Wilaya", marital:"État civil", single:"Célibataire", married:"Marié", divorced:"Divorcé", kids:"Enfants?", no:"Non", yes:"Oui", cert:"Certificat", admin_panel:"Admin Panel", users:"Utilisateurs", pending:"En attente", approvals:"Approbations", settings:"Paramètres", logo:"Logo", bg:"Arrière-plan", add_banner:"Ajouter bannière", welcome:"Bienvenue", total_req:"Total", accepted:"Acceptées", history:"Historique", available_pros:"Spécialistes", request:"Demander", wait:"Attente", points:"Points", incoming:"Entrantes", client:"Patient", age:"Age", gender:"Sexe", action:"Action", accepted_clients:"Clients", phone:"Tél", email:"Email", edit_profile:"Modifier Profil", save:"Sauvegarder", cancel:"Annuler", rate_pro:"Évaluer", send:"Envoyer", reviews:"Avis", desc:"Description", male:"Homme", female:"Femme", new_req:"Nouvelles", total:"Total", rejected:"Rejeté", succ_title:"Fait", saved_msg:"Enregistré", sent_msg:"Envoyé", req_ok_title:"Succès", req_ok_msg:"Demande envoyée", err_title:"Erreur", login_err:"Données invalides", ban_msg:"Compte banni", pend_msg:"Compte en attente", rej_msg:"Demande rejetée", points_manager:"Gérer Points", sessions:"Séances", visits_day:"Visites Jour", visits_month:"Visites Mois", banners:"Bannières", send_notif:"Envoyer Notif",
-                about_text: "Une plateforme mettant en relation les patients avec les meilleurs nutritionnistes d’Algérie, permettant de réserver des consultations en ligne sans se déplacer, et proposant des programmes nutritionnels, des conseils et un accompagnement.",
-                privacy_text: "Notre site web a pour but de mettre en relation des patients et des nutritionnistes. Nous ne collectons aucune information et ne sommes affiliés à aucune organisation. Nous nous engageons à garantir la stricte confidentialité de toutes les informations des utilisateurs"
+                about_text: "Une plateforme mettant en relation les patients avec les meilleurs nutritionnistes d’Algérie...",
+                privacy_text: "Notre site web a pour but de mettre en relation des patients et des nutritionnistes..."
             }
         };
 
-        // --- 4. STARTUP ---
+        // --- INIT ---
         window.onload=async()=>{
             applyLang(); loadCMS(); trackVisit();
             const uid=localStorage.getItem('uid');
-            if(uid){
-                try { const d=await db.collection('users').doc(uid).get(); if(d.exists){currentUser={id:d.id,...d.data()};initApp();} else hideLoader(); } 
-                catch(e){ hideLoader(); }
-            } else hideLoader();
+            if(uid){ try{const d=await db.collection('users').doc(uid).get(); if(d.exists){currentUser={id:d.id,...d.data()};initApp();} else hideLoader();}catch{hideLoader();} } else hideLoader();
         }
         function hideLoader(){document.getElementById('loader').classList.add('hidden');}
         function switchLang(){lang=lang==='ar'?'fr':'ar';localStorage.setItem('lang',lang);location.reload();}
         function applyLang(){document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-t]').forEach(e=>e.innerText=tD[lang][e.getAttribute('data-t')]||e.innerText);document.querySelectorAll('[data-p]').forEach(e=>e.placeholder=tD[lang][e.getAttribute('data-p')]||e.placeholder);}
         function t(k){return tD[lang][k]||k;}
-        function sAlert(icon,kTitle,kText){
-            let c={icon:icon,title:t(kTitle),text:t(kText),timer:3000,showConfirmButton:false};
-            if(kTitle==='reg_ok_pro'){c.iconHtml='<i class="fas fa-clock fa-2x" style="color:#2196F3"></i>';c.timer=5000;}
-            Swal.fire(c);
-        }
-        function loadCMS(){
-            db.collection('settings').doc('config').onSnapshot(s=>{
-                if(s.exists){ const d=s.data(); if(d.logo)document.getElementById('nav-logo').innerHTML=`<img src="${d.logo}">`; if(d.bg)document.querySelector('.hero-bg').style.backgroundImage=`url('${d.bg}')`; }
-            });
-        }
+        function sAlert(i,t,m){let c={icon:i,title:window.t(t),text:window.t(m),timer:3000,showConfirmButton:false};if(t==='reg_ok_pro'){c.iconHtml='<i class="fas fa-clock fa-2x" style="color:#2196F3"></i>';c.timer=5000;}Swal.fire(c);}
+        function loadCMS(){db.collection('settings').doc('config').onSnapshot(s=>{if(s.exists){const d=s.data();if(d.logo)document.getElementById('nav-logo').innerHTML=`<img src="${d.logo}">`;if(d.bg)document.querySelector('.hero-bg').style.backgroundImage=`url('${d.bg}')`; window.cms=d;}});}
         function trackVisit(){const d=new Date().toISOString().split('T')[0];db.collection('stats').doc('visits').set({[d]:firebase.firestore.FieldValue.increment(1),[d.substring(0,7)]:firebase.firestore.FieldValue.increment(1)},{merge:true});}
-        
         function nav(id){document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));if(document.getElementById(id))document.getElementById(id).classList.remove('hidden');if(id==='dash-container')document.getElementById('dash-container').classList.remove('hidden');toggleSidebar(false);}
         function toggleSidebar(f){const s=document.getElementById('sidebar'),o=document.querySelector('.overlay');if(f===false){s.classList.remove('active');o.classList.remove('active')}else{s.classList.toggle('active');o.classList.toggle('active')}}
         const toBase64=f=>new Promise((r,j)=>{const rd=new FileReader();rd.readAsDataURL(f);rd.onload=()=>r(rd.result);rd.onerror=j;});
         function handleAuthBtn(){if(currentUser)logout();else nav('login');}
         function updateAuthBtn(){const b=document.getElementById('auth-btn-nav');if(currentUser){b.innerText=t('logout');b.onclick=logout;}else{b.innerText=t('login');b.onclick=()=>nav('login');}}
 
-        // --- 5. AUTH ---
+        // --- AUTH ---
         function setRole(r){regRole=r;document.getElementById('role-user').className=`role-btn ${r==='user'?'active':''}`;document.getElementById('role-pro').className=`role-btn ${r==='pro'?'active':''}`;document.getElementById('pro-fields').classList.toggle('hidden',r!=='pro');}
         function toggleKids(v){document.getElementById('kids-div').className=(v==='Married'||v==='Divorced')?'':'hidden';}
         async function doRegister(){
@@ -408,7 +356,7 @@
             if(!n||!e||!p)return sAlert('error','err_title','login_err');
             if(p!==p2)return sAlert('error','err_title','pass_mismatch');
             let d={name:n,email:e,pass:p,role:regRole,status:regRole==='user'?'active':'pending',joined:Date.now(),
-                phone:document.getElementById('r-phone').value, gender:document.getElementById('r-gender').value, age:document.getElementById('r-age').value};
+            phone:document.getElementById('r-phone').value, gender:document.getElementById('r-gender').value, age:document.getElementById('r-age').value};
             if(regRole==='pro'){d.wilaya=document.getElementById('r-wilaya').value;d.marital=document.getElementById('r-social').value;if(d.marital!=='Single')d.kids=document.getElementById('r-kids').value;const f=document.getElementById('r-cert').files[0];if(f)d.cert=await toBase64(f); d.code='T'+Math.floor(10000+Math.random()*90000); d.lastAccepted=0; d.points=0;}
             try{await db.collection('users').add(d);sAlert(regRole==='user'?'success':'info','succ_title',regRole==='user'?'reg_ok_user':'reg_ok_pro');nav('login');}catch(x){Swal.fire('Error',x.message,'error');}
         }
@@ -420,12 +368,11 @@
             const u={id:q.docs[0].id,...q.docs[0].data()};
             if(u.status==='banned')return sAlert('error','err_title','ban_msg');
             if(u.status==='pending')return sAlert('warning','err_title','pend_msg');
-            if(u.status==='rejected')return sAlert('error','err_title','rej_msg');
             currentUser=u; localStorage.setItem('uid',u.id); initApp();
         }
         function logout(){currentUser=null;localStorage.removeItem('uid');location.reload();}
 
-        // --- 6. LOGIC ---
+        // --- APP ---
         function initApp(){
             document.getElementById('loader').classList.add('hidden');document.getElementById('menu-public').classList.add('hidden');document.getElementById('menu-private').classList.remove('hidden');document.getElementById('btn-logout').classList.remove('hidden');document.getElementById('notif-btn').classList.remove('hidden');updateAuthBtn();
             if(currentUser.role==='admin')renderAdmin();else if(currentUser.role==='pro')initPro();else initUser();
@@ -433,9 +380,9 @@
         }
         function navDash(){if(currentUser.role==='admin')renderAdmin();else if(currentUser.role==='pro')initPro();else initUser();}
 
-        // User Dash
+        // --- USER ---
         function initUser(){
-            nav('dash-container'); const c=document.getElementById('dash-container'); c.innerHTML=`<div id="u-slider" style="height:220px;border-radius:15px;overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)"></div><div class="flex" style="background:white;padding:20px;border-radius:15px;align-items:center;gap:20px;margin-bottom:20px"><img src="${currentUser.img||'https://via.placeholder.com/80'}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--primary)"><div><h2 style="margin:0">${currentUser.name}</h2><span>${t('welcome')}</span></div></div><h3 class="mb-2" style="color:var(--text);font-weight:bold">${t('available_pros')}</h3><div id="pros-list" class="pro-list mb-4"></div><div class="tbl-box"><table><thead><tr><th>${t('pro')}</th><th>${t('status')}</th><th>${t('action')}</th></tr></thead><tbody id="u-hist"></tbody></table></div>`;
+            nav('dash-container'); const c=document.getElementById('dash-container'); c.innerHTML=`<div id="u-slider" style="height:220px;border-radius:15px;overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)"></div><div class="flex" style="background:white;padding:15px;border-radius:15px;align-items:center;gap:20px;margin-bottom:20px"><img src="${currentUser.img||'https://via.placeholder.com/80'}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--primary)"><div><h2 style="margin:0">${currentUser.name}</h2><span>${t('welcome')}</span></div></div><h3 class="mb-2">${t('available_pros')}</h3><div id="pros-list" class="pro-list mb-4"></div><div class="tbl-box"><table><thead><tr><th>${t('pro')}</th><th>${t('status')}</th><th>${t('action')}</th></tr></thead><tbody id="u-hist"></tbody></table></div>`;
             loadBans('u-slider','user'); applyLang();
             db.collection('users').where('role','==','pro').where('status','==','active').onSnapshot(s=>{
                 const l=document.getElementById('pros-list'); l.innerHTML="";
@@ -451,7 +398,7 @@
         }
         async function req(pid,pnm){await db.collection('apps').add({uid:currentUser.id, uName:currentUser.name, uAge:currentUser.age, uGen:currentUser.gender, pid:pid, pName:pnm, status:'pending', date:Date.now()}); sAlert('success','req_ok_title','req_ok_msg');}
 
-        // Pro Dash
+        // --- PRO ---
         function initPro(){
             nav('dash-container'); const c=document.getElementById('dash-container'); c.innerHTML=`<div id="p-slider" style="height:220px;border-radius:15px;overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)"></div><div class="flex" style="background:white;padding:25px;border-radius:15px;align-items:center;gap:20px;margin-bottom:30px"><img src="${currentUser.img||'https://via.placeholder.com/80'}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--primary)"><div style="flex:1"><h2 style="margin:0">${currentUser.name}</h2><span>Code: ${currentUser.code}</span></div><div class="center"><div style="font-size:2rem;font-weight:bold;color:var(--accent)">${currentUser.points||0}</div><small>${t('points')}</small></div></div><div class="pro-grid"><div class="pro-stat pc1"><h3 id="stat-new">0</h3><span>${t('new_req')}</span></div><div class="pro-stat pc2"><h3 id="stat-tot">0</h3><span>${t('total')}</span></div><div class="pro-stat pc3"><h3 id="stat-rej">0</h3><span>${t('rejected')}</span></div><div class="pro-stat pc4"><h3 id="stat-cli">0</h3><span>${t('accepted_clients')}</span></div></div><div class="tbl-box"><table><thead><tr><th>${t('client')}</th><th>${t('age')}</th><th>${t('gender')}</th><th>${t('action')}</th></tr></thead><tbody id="p-req"></tbody></table></div><div class="tbl-box"><table><thead><tr><th>${t('client')}</th><th>${t('phone')}</th><th>${t('email')}</th></tr></thead><tbody id="p-cli"></tbody></table></div>`;
             loadBans('p-slider','pro'); applyLang();
@@ -471,7 +418,7 @@
         }
         async function ans(aid,ok){await db.collection('apps').doc(aid).update({status:ok?'accepted':'rejected'}); if(ok)await db.collection('users').doc(currentUser.id).update({lastAccepted:Date.now()});}
 
-        // Admin Dash
+        // --- ADMIN ---
         function renderAdmin(){
             nav('dash-container'); const c=document.getElementById('dash-container'); c.innerHTML=""; c.appendChild(document.getElementById('tpl-admin').content.cloneNode(true)); applyLang();
             db.collection('users').onSnapshot(s=>{
@@ -479,18 +426,25 @@
                 const tb=document.querySelector('#tbl-users tbody'), tbA=document.querySelector('#tbl-apps tbody'); tb.innerHTML=""; tbA.innerHTML=""; uCache=[];
                 s.forEach(doc=>{
                     const u=doc.data(); uCache.push({id:doc.id,...u});
-                    if(u.role!='admin')tb.innerHTML+=`<tr><td>${u.name}</td><td>${u.role}</td><td><button class="btn-del" onclick="delUser('${doc.id}')">Del</button></td></tr>`;
-                    if(u.status==='pending')tbA.innerHTML+=`<tr><td>${u.name}</td><td>${u.cert?`<button class="btn-modern" style="width:auto;padding:5px" onclick="viewCert('${u.cert}')">View</button>`:'-'}</td><td><div class="flex" style="gap:5px"><button class="btn-modern" style="width:auto;padding:5px;background:green" onclick="approve('${doc.id}',1)">✔</button><button class="btn-del" style="padding:5px" onclick="approve('${doc.id}',0)">✖</button></div></td></tr>`;
+                    if(u.role!='admin'){
+                        const banBtn = u.status==='banned'?`<button class="btn-warn" onclick="banUser('${doc.id}','active')">Unban</button>`:`<button class="btn-warn" onclick="banUser('${doc.id}','banned')">Ban</button>`;
+                        tb.innerHTML+=`<tr><td>${u.name}</td><td>${u.role}</td><td>${u.phone||'-'}</td><td>${u.code||'-'}</td><td>${u.points||0}</td><td>${u.status}</td><td>${banBtn} <button class="btn-danger" onclick="delUser('${doc.id}')">Del</button></td></tr>`;
+                    }
+                    if(u.status==='pending'){
+                        // تفاصيل المختص (زر)
+                        const detBtn = `<button class="btn-info" onclick="viewDetails('${u.wilaya}','${u.marital}','${u.kids||'-'}')">Details</button>`;
+                        const certBtn = u.cert?`<button class="btn-info" onclick="viewCert('${u.cert}')">PDF</button>`:'-';
+                        tbA.innerHTML+=`<tr><td>${u.name}</td><td>${detBtn}</td><td>${certBtn}</td><td><button class="btn-modern" style="width:auto;padding:5px;background:green" onclick="approve('${doc.id}',1)">✔</button><button class="btn-danger" onclick="approve('${doc.id}',0)">✖</button></td></tr>`;
+                    }
                 });
             });
-            db.collection('reports').onSnapshot(s=>{document.getElementById('adm-r').innerText=s.size; const tb=document.querySelector('#tbl-reps tbody'); tb.innerHTML=""; s.forEach(d=>{const r=d.data(); tb.innerHTML+=`<tr><td>${r.name}</td><td>${r.email}</td><td>${r.desc}</td><td><button class="btn-del" onclick="delRep('${d.id}')">Del</button></td></tr>`;});});
+            db.collection('reports').onSnapshot(s=>{document.getElementById('adm-r').innerText=s.size; const tb=document.querySelector('#tbl-reps tbody'); tb.innerHTML=""; s.forEach(d=>{const r=d.data(); tb.innerHTML+=`<tr><td>${r.name}</td><td>${r.email}</td><td>${r.desc}</td><td><button class="btn-danger" onclick="delRep('${d.id}')">Del</button></td></tr>`;});});
             db.collection('apps').where('status','==','accepted').onSnapshot(s=>{document.getElementById('adm-s').innerText=s.size; document.getElementById('adm-c').innerText=new Set(s.docs.map(d=>d.data().uid)).size; const tb=document.querySelector('#tbl-sess tbody'); tb.innerHTML=""; s.forEach(d=>{const x=d.data(); tb.innerHTML+=`<tr><td>${x.uName}</td><td>${x.pName}</td><td>${new Date(x.date).toLocaleDateString()}</td></tr>`;});});
             db.collection('stats').doc('visits').onSnapshot(d=>{if(d.exists){const dt=d.data(),k=new Date().toISOString().split('T')[0];document.getElementById('adm-vd').innerText=dt[k]||0;document.getElementById('adm-vm').innerText=dt[k.substring(0,7)]||0;}});
-            db.collection('banners').onSnapshot(s=>{const bl=document.getElementById('ban-list'); bl.innerHTML=""; s.forEach(d=>{bl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:5px;border-bottom:1px solid #eee"><img src="${d.data().img}" width="50"><button class="btn-del" onclick="delBan('${d.id}')">Del</button></div>`;});});
+            db.collection('banners').onSnapshot(s=>{const bl=document.getElementById('ban-list'); bl.innerHTML=""; s.forEach(d=>{bl.innerHTML+=`<div style="display:flex;justify-content:space-between;padding:5px;border-bottom:1px solid #eee"><img src="${d.data().img}" width="50"><button class="btn-danger" onclick="delBan('${d.id}')">Del</button></div>`;});});
         }
         function showAdm(id){document.querySelectorAll('[id^="adm-view-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('adm-view-'+id).classList.remove('hidden');}
         
-        // Admin Actions
         async function updLogo(){const f=document.getElementById('adm-logo').files[0]; if(f){const b=await toBase64(f); db.collection('settings').doc('config').set({logo:b},{merge:true}); sAlert('success','succ_title','saved_msg');}}
         async function delLogo(){await db.collection('settings').doc('config').update({logo:firebase.firestore.FieldValue.delete()}); sAlert('success','succ_title','saved_msg');}
         async function updBg(){const f=document.getElementById('adm-bg').files[0]; if(f){const b=await toBase64(f); db.collection('settings').doc('config').set({bg:b},{merge:true}); sAlert('success','succ_title','saved_msg');}}
@@ -499,18 +453,23 @@
         async function delBan(id){await db.collection('banners').doc(id).delete();}
         async function setPts(){const c=document.getElementById('pt-code').value,v=parseInt(document.getElementById('pt-val').value); const s=await db.collection('users').where('code','==',c).get(); if(!s.empty){await db.collection('users').doc(s.docs[0].id).update({points:v}); sAlert('success','succ_title','saved_msg');}else Swal.fire('Error','Code not found','error');}
         async function delUser(id){if(confirm('Delete?'))await db.collection('users').doc(id).delete();}
+        async function banUser(id,st){await db.collection('users').doc(id).update({status:st});}
         async function approve(id,ok){await db.collection('users').doc(id).update({status:ok?'active':'rejected'});}
         async function delRep(id){await db.collection('reports').doc(id).delete();}
         async function sndNot(){const a=document.getElementById('nt-ar').value,f=document.getElementById('nt-fr').value,t=document.getElementById('nt-tar').value;await db.collection('notifs').add({ar:a,fr:f,target:t,date:Date.now()});sAlert('success','succ_title','sent_msg');}
-        function viewCert(c){const w=window.open();w.document.write(`<img src="${c}" style="max-width:100%">`);}
+        function viewCert(c){const w=window.open();w.document.write(`<iframe src="${c}" width="100%" height="100%" style="border:none"></iframe>`);}
+        function viewDetails(w,m,k){
+            document.getElementById('inf-t').innerText="Details";
+            document.getElementById('inf-c').innerHTML=`Wilaya: ${w}<br>Marital: ${m}<br>Kids: ${k}`;
+            document.getElementById('mod-info').style.display='flex';
+        }
         function filterUsers(v){const t=document.querySelector('#tbl-users tbody');const rows=t.getElementsByTagName('tr');for(let i=0;i<rows.length;i++){const n=rows[i].getElementsByTagName('td')[0];if(n){rows[i].style.display=n.innerHTML.toLowerCase().indexOf(v.toLowerCase())>-1?'':'none';}}}
 
-        // Utils
         function checkNotifs(){const r=currentUser.role=='admin'?'admin':currentUser.role; db.collection('notifs').where('target','in',['all',r]).onSnapshot(s=>{let c=0;s.forEach(d=>{if(!localStorage.getItem('rn_'+d.id))c++});const b=document.getElementById('notif-badge');b.innerText=c;b.style.display=c>0?'block':'none';});}
         function showNotifs(){const r=currentUser.role=='admin'?'admin':currentUser.role; db.collection('notifs').where('target','in',['all',r]).get().then(s=>{let h="";s.forEach(d=>{localStorage.setItem('rn_'+d.id,'1');h+=`<div style="padding:10px;border-bottom:1px solid #eee">${lang=='ar'?d.data().ar:d.data().fr}</div>`});document.getElementById('inf-t').innerText=t('report');document.getElementById('inf-c').innerHTML=h||"Empty";document.getElementById('mod-info').style.display='flex';document.getElementById('notif-badge').style.display='none';});}
         async function loadBans(eid,r){db.collection('banners').where('target','in',['all',r]).onSnapshot(s=>{const e=document.getElementById(eid);e.innerHTML="";s.forEach((d,i)=>e.innerHTML+=`<img src="${d.data().img}" style="width:100%;height:100%;object-fit:cover;display:${i==0?'block':'none'}" onclick="window.open('${d.data().link||'#'}')">`);if(s.size>1){let x=0;setInterval(()=>{const m=e.querySelectorAll('img');m.forEach(z=>z.style.display='none');x=(x+1)%m.length;m[x].style.display='block';},4000);}});}
         function openProfile(){document.getElementById('ped-name').value=currentUser.name;document.getElementById('mod-profile').style.display='flex';}
-        async function saveProf(){const n=document.getElementById('ped-name').value,p=document.getElementById('ped-pass').value,f=document.getElementById('ped-img').files[0];let u={name:n};if(p)u.pass=p;if(f)u.img=await toBase64(f);await db.collection('users').doc(currentUser.id).update(u);currentUser={...currentUser,...u};closeMod('mod-profile');sAlert('success','succ_title','saved_msg');location.reload();}
+        async function saveProf(){const n=document.getElementById('ped-name').value,p=document.getElementById('ped-pass').value,f=document.getElementById('ped-img').files[0];let u={name:n};if(p)u.pass=p;if(f)u.img=await toBase64(f);await db.collection('users').doc(currentUser.id).update(u);currentUser={...currentUser,...u};sAlert('success','succ_title','saved_msg');location.reload();}
         function openReportModal(){document.getElementById('mod-report').style.display='flex';}
         async function subRep(){const n=document.getElementById('rp-name').value,e=document.getElementById('rp-mail').value,d=document.getElementById('rp-desc').value;if(!d)return;await db.collection('reports').add({name:n,email:e,desc:d});closeMod('mod-report');sAlert('success','succ_title','sent_msg');}
         function openStatic(k){document.getElementById('inf-t').innerText=t(k);document.getElementById('inf-c').innerText=t(k+'_text');document.getElementById('mod-info').style.display='flex';}
