@@ -5,143 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DZ Nutritionniste</title>
     
-    <!-- Fonts & Icons -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Firebase (Compat Mode) -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <!-- SweetAlert2 -->
+    
+    <!-- SweetAlert2 (Professional Alerts) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
             --primary: #2E7D32;
-            --secondary: #004d40;
             --accent: #FFC107;
-            --text: #333;
-            --bg-light: #f4f7f6;
+            --text: #2c3e50;
+            --light: #f3f4f6;
             --white: #ffffff;
             --radius: 12px;
-            --shadow: 0 4px 15px rgba(0,0,0,0.08);
-            --bg-image: url(''); /* Set dynamically */
+            --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { background: var(--bg-light); color: var(--text); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
-        
-        /* --- LOADER --- */
-        #loader { position: fixed; inset: 0; background: #fff; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
-        .spinner { width: 50px; height: 50px; border: 5px solid #eee; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
+        body { background: var(--light); color: var(--text); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; transition: 0.3s; }
+
+        /* LOADER */
+        #loader { position: fixed; inset: 0; background: var(--white); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- LAYOUT --- */
+        /* UTILS */
         .hidden { display: none !important; }
         .flex { display: flex; }
         .center { align-items: center; justify-content: center; }
         .w-full { width: 100%; }
 
+        /* NAVBAR */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 0 5%; height: 70px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 0 5%; height: 65px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
-        
-        #nav-logo img { height: 45px; object-fit: contain; }
-        
+        #nav-logo img { height: 40px; }
+
+        /* SIDEBAR */
         .sidebar {
-            position: fixed; top: 0; right: -300px; width: 280px; height: 100vh;
+            position: fixed; top: 0; right: -280px; width: 260px; height: 100vh;
             background: var(--white); z-index: 1100; padding: 20px;
             box-shadow: -5px 0 20px rgba(0,0,0,0.1); transition: 0.3s ease; display: flex; flex-direction: column;
         }
         .sidebar.active { right: 0; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1050; display: none; }
-        .overlay.active { display: block; }
+        [dir="ltr"] .sidebar { right: auto; left: -280px; }
+        [dir="ltr"] .sidebar.active { left: 0; }
         
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1050; display: none; }
+        .overlay.active { display: block; }
+
         .menu-item { padding: 12px; margin: 5px 0; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #555; font-weight: 600; transition: 0.2s; }
         .menu-item:hover { background: #e8f5e9; color: var(--primary); }
 
         main { margin-top: 70px; padding-bottom: 40px; flex: 1; }
 
-        /* --- HERO --- */
+        /* HERO */
         #landing {
             min-height: calc(100vh - 70px); position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: white;
         }
-        .hero-bg { position: absolute; inset: 0; background-image: var(--bg-image); background-size: cover; background-position: center; z-index: -1; animation: zoomBg 20s infinite alternate; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)); z-index: 0; }
+        .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: -1; animation: zoom 20s infinite alternate; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(46, 125, 50, 0.8), rgba(0,0,0,0.6)); z-index: 0; }
         .hero-content { position: relative; z-index: 1; padding: 20px; }
-        @keyframes zoomBg { from { transform: scale(1); } to { transform: scale(1.1); } }
-        
+        @keyframes zoom { from {transform: scale(1);} to {transform: scale(1.1);} }
+
         .btn-glow {
-            background: var(--accent); color: #000; padding: 15px 40px; border-radius: 50px; 
-            font-weight: 700; border: none; font-size: 1.1rem; cursor: pointer; 
-            box-shadow: 0 0 15px rgba(255, 193, 7, 0.6); animation: pulse 2s infinite;
+            background: var(--accent); color: #000; padding: 14px 40px; border-radius: 50px; 
+            font-weight: 800; border: none; font-size: 1.1rem; cursor: pointer; 
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.5); animation: pulse 2s infinite;
         }
         @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);} 70% {box-shadow: 0 0 0 15px rgba(255, 193, 7, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);} }
 
-        /* --- DASHBOARDS --- */
-        .dash-container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        /* DASHBOARDS */
+        .dash-container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
 
-        /* ADMIN 3x3 GRID */
+        /* ADMIN BUTTONS */
+        .btn-admin {
+            background: white; border: 1px solid #eee; padding: 10px 20px; border-radius: 8px;
+            font-weight: 700; color: #555; cursor: pointer; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-admin:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); color: var(--primary); border-color: var(--primary); }
+        .btn-admin i { font-size: 1.1rem; }
+
+        /* ADMIN GRID 3x3 */
         .admin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
         .adm-card {
             padding: 20px; border-radius: 12px; color: white; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            box-shadow: var(--shadow); height: 130px;
+            box-shadow: var(--shadow); height: 120px;
         }
-        .adm-card h3 { font-size: 2.5rem; margin: 0; font-weight: 800; }
-        .adm-card span { font-size: 0.9rem; font-weight: 600; }
+        .adm-card h3 { font-size: 2.2rem; margin: 0; font-weight: 900; }
+        .adm-card span { font-size: 0.85rem; font-weight: 600; opacity: 0.9; }
         
-        .c1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .c2 { background: linear-gradient(135deg, #2af598 0%, #009efd 100%); }
-        .c3 { background: linear-gradient(135deg, #b721ff 0%, #21d4fd 100%); }
-        .c4 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color:#333 !important; }
-        .c5 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
-        .c6 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color:#333 !important; }
-        .c7 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color:#333 !important; }
-        .c8 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .c9 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        /* Gradients */
+        .g1 { background: linear-gradient(45deg, #FF512F, #DD2476); }
+        .g2 { background: linear-gradient(45deg, #11998e, #38ef7d); }
+        .g3 { background: linear-gradient(45deg, #2193b0, #6dd5ed); }
+        .g4 { background: linear-gradient(45deg, #8E2DE2, #4A00E0); }
+        .g5 { background: linear-gradient(45deg, #f12711, #f5af19); }
+        .g6 { background: linear-gradient(45deg, #00b09b, #96c93d); }
+        .g7 { background: linear-gradient(45deg, #8360c3, #2ebf91); }
+        .g8 { background: linear-gradient(45deg, #DA4453, #89216B); }
+        .g9 { background: linear-gradient(45deg, #fc4a1a, #f7b733); }
 
-        /* PRO DASHBOARD */
-        .pro-header { background: white; padding: 20px; border-radius: var(--radius); display: flex; align-items: center; gap: 15px; margin-bottom: 20px; box-shadow: var(--shadow); }
-        .pro-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
-        .pro-stat-card { background: white; padding: 20px; border-radius: var(--radius); border-left: 5px solid; box-shadow: var(--shadow); }
-        
-        /* USER PRO LIST */
-        .pro-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .pro-card { background: white; padding: 20px; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow); border-top: 4px solid var(--primary); }
-        
-        /* TABLES */
-        .tbl-wrap { overflow-x: auto; background: white; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; }
+        /* PRO DASHBOARD 2x2 */
+        .pro-grid {
+            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 15px; margin-bottom: 20px;
+        }
+        .pro-card-stat {
+            padding: 25px; border-radius: 15px; color: white; position: relative;
+            box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 140px; overflow: hidden;
+        }
+        .pro-card-stat h3 { font-size: 2.5rem; margin: 0; font-weight: 800; z-index: 2; }
+        .pro-card-stat span { font-size: 1rem; z-index: 2; font-weight: 600; }
+        .pro-card-stat i { position: absolute; right: -10px; bottom: -10px; font-size: 6rem; opacity: 0.2; transform: rotate(-15deg); z-index: 1; }
+        [dir="ltr"] .pro-card-stat i { left: -10px; right: auto; transform: rotate(15deg); }
+
+        .pc1 { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
+        .pc2 { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
+        .pc3 { background: linear-gradient(135deg, #f83600 0%, #f9d423 100%); }
+        .pc4 { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); }
+
+        /* USER LIST */
+        .pro-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .pro-item { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: var(--shadow); border-top: 5px solid var(--primary); transition:0.3s }
+        .pro-item:hover { transform: translateY(-5px); }
+
+        /* TABLES & FORMS */
+        .tbl-box { overflow-x: auto; background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 20px; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        th { background: #f8f9fa; color: #555; font-weight: 700; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+        th { background: #fafafa; color: #555; font-weight: 700; }
         [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
 
-        /* FORMS & UI */
-        .inp { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; outline: none; }
-        .inp:focus { border-color: var(--primary); }
-        .form-box { max-width: 500px; margin: 50px auto; background: white; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); }
-        
+        .inp { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        .inp:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1); }
+        .form-box { max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); }
+
         .stars { font-size: 2rem; color: #ddd; cursor: pointer; display: flex; justify-content: center; gap: 5px; margin-bottom: 10px; }
-        .stars i.active { color: gold; }
+        .stars i.active { color: gold; animation: rubberBand 1s; }
 
-        /* FOOTER */
         footer { background: #222; color: #fff; padding: 40px 20px; text-align: center; margin-top: auto; }
-        .foot-link { margin: 0 10px; cursor: pointer; color: #bbb; display: inline-block; }
-        
-        /* MODALS */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
-        .modal-box { background: white; width: 90%; max-width: 500px; padding: 25px; border-radius: 15px; max-height: 90vh; overflow-y: auto; animation: fadeInUp 0.3s; }
+        .f-link { margin: 0 10px; cursor: pointer; color: #bbb; display: inline-block; }
+        .f-link:hover { color: white; }
 
-        /* Mobile Fixes */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .admin-grid { grid-template-columns: 1fr 1fr; }
-            .pro-stats { grid-template-columns: 1fr; }
-            .hero-content h1 { font-size: 2rem; }
+            .pro-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -157,14 +181,14 @@
     <nav>
         <div class="flex center" style="gap:15px">
             <i class="fas fa-bars fa-lg" onclick="toggleSidebar()" style="cursor:pointer; color:var(--primary)"></i>
-            <div id="nav-logo"><!-- Img injected here --></div>
+            <div id="nav-logo"></div>
         </div>
         <div class="flex center" style="gap:15px">
-            <div id="notif-box" style="position:relative; cursor:pointer" class="hidden" onclick="showNotifs()">
+            <div id="notif-btn" style="position:relative; cursor:pointer" class="hidden" onclick="showNotifs()">
                 <i class="fas fa-bell fa-lg" style="color:#555"></i>
                 <span id="notif-badge" style="position:absolute; top:-5px; right:-5px; background:red; color:white; font-size:0.6rem; padding:2px 5px; border-radius:10px; display:none">0</span>
             </div>
-            <div onclick="switchLang()" style="border:1px solid var(--primary); padding:3px 8px; border-radius:5px; cursor:pointer; font-weight:bold; font-size:0.8rem">AR | FR</div>
+            <div onclick="switchLang()" style="border:1px solid var(--primary); padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:0.85rem">AR | FR</div>
         </div>
     </nav>
 
@@ -186,7 +210,6 @@
         <div style="margin-top:auto">
             <div class="menu-item" onclick="openStatic('about')"><i class="fas fa-info-circle"></i> <span data-t="about">من نحن</span></div>
             <div class="menu-item" onclick="openStatic('privacy')"><i class="fas fa-shield-alt"></i> <span data-t="privacy">السياسة</span></div>
-            <div class="menu-item" onclick="openLoc()"><i class="fas fa-map-marker-alt"></i> <span data-t="location">مقرنا</span></div>
             <div class="menu-item" onclick="openReportModal()"><i class="fas fa-bug"></i> <span data-t="report">ابلاغ</span></div>
             <div id="btn-logout" class="menu-item hidden" style="color:red; margin-top:10px" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span data-t="logout">خروج</span></div>
         </div>
@@ -206,11 +229,11 @@
 
         <!-- LOGIN -->
         <section id="login" class="hidden">
-            <div class="form-box animate__animated animate__fadeIn">
+            <div class="form-box animate__animated animate__zoomIn">
                 <h2 class="text-center mb-4" data-t="login">تسجيل الدخول</h2>
                 <input id="l-email" class="inp" placeholder="Email">
                 <input id="l-pass" type="password" class="inp" placeholder="Password">
-                <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="doLogin()" data-t="login_btn">دخول</button>
+                <button class="btn-glow w-full" style="border-radius:8px; animation:none" onclick="doLogin()" data-t="login_btn">دخول</button>
                 <p class="text-center mt-3" style="cursor:pointer; color:var(--primary)" onclick="nav('register')" data-t="no_account">حساب جديد</p>
             </div>
         </section>
@@ -223,188 +246,143 @@
                     <button id="role-user" class="w-full" style="border:none; background:white; padding:10px; border-radius:8px; font-weight:bold" onclick="setRole('user')" data-t="role_user">مستخدم</button>
                     <button id="role-pro" class="w-full" style="border:none; background:none; padding:10px; border-radius:8px; font-weight:bold" onclick="setRole('pro')" data-t="role_pro">مختص</button>
                 </div>
-                
-                <input id="r-name" class="inp" placeholder="الاسم الكامل">
-                <input id="r-phone" type="tel" class="inp" placeholder="الهاتف">
-                <input id="r-email" type="email" class="inp" placeholder="الايميل">
-                <input id="r-pass" type="password" class="inp" placeholder="كلمة المرور">
+                <input id="r-name" class="inp" data-p="name">
+                <input id="r-phone" type="tel" class="inp" data-p="phone">
+                <input id="r-email" type="email" class="inp" data-p="email">
+                <input id="r-pass" type="password" class="inp" data-p="password">
                 <div class="flex" style="gap:10px">
-                    <select id="r-gender" class="inp"><option value="M">ذكر</option><option value="F">أنثى</option></select>
-                    <input id="r-age" type="number" class="inp" placeholder="السن">
+                    <select id="r-gender" class="inp"><option value="Male" data-t="male">ذكر</option><option value="Female" data-t="female">أنثى</option></select>
+                    <input id="r-age" type="number" class="inp" data-p="age">
                 </div>
-
                 <div id="pro-fields" class="hidden animate__animated animate__fadeIn">
-                    <input id="r-wilaya" class="inp" placeholder="الولاية">
-                    <select id="r-social" class="inp" onchange="toggleKids(this.value)">
-                        <option value="single">أعزب</option><option value="married">متزوج</option><option value="divorced">مطلق</option>
+                    <input id="r-wilaya" class="inp" data-p="wilaya">
+                    <select id="r-social" class="inp" onchange="document.getElementById('kids-div').style.display=(this.value!='Single')?'block':'none'">
+                        <option value="Single" data-t="single">أعزب</option><option value="Married" data-t="married">متزوج</option><option value="Divorced" data-t="divorced">مطلق</option>
                     </select>
-                    <div id="kids-div" class="hidden"><label data-t="kids">أولاد</label><select id="r-kids" class="inp"><option value="no">لا</option><option value="yes">نعم</option></select></div>
-                    <label style="font-size:0.9rem" data-t="cert">الشهادة (صورة)</label>
-                    <input id="r-cert" type="file" class="inp" accept="image/*">
+                    <div id="kids-div" class="hidden"><label data-t="kids">أولاد</label><select id="r-kids" class="inp"><option value="No" data-t="no">لا</option><option value="Yes" data-t="yes">نعم</option></select></div>
+                    <label style="font-size:0.9rem" data-t="cert">الشهادة</label><input id="r-cert" type="file" class="inp" accept="image/*">
                 </div>
-
-                <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="doRegister()" data-t="register_btn">تسجيل</button>
+                <button class="btn-glow w-full" style="border-radius:10px; animation:none" onclick="doRegister()" data-t="register_btn">تسجيل</button>
             </div>
         </section>
 
         <!-- USER DASHBOARD -->
         <section id="dash-user" class="dash-container hidden">
             <div id="u-slider" style="height:200px; border-radius:15px; overflow:hidden; margin-bottom:20px; position:relative; box-shadow:var(--shadow)"></div>
-            
-            <div class="pro-header">
+            <div class="flex" style="background:white; padding:15px; border-radius:15px; box-shadow:var(--shadow); align-items:center; gap:15px; margin-bottom:20px">
                 <img id="u-img" src="" style="width:70px; height:70px; border-radius:50%; border:3px solid var(--primary); object-fit:cover">
-                <div><h2 id="u-name">User</h2><span data-t="welcome">مرحبا</span></div>
+                <div><h2 id="u-name" style="margin:0; font-size:1.4rem">User</h2><span data-t="welcome">مرحبا</span></div>
             </div>
-
+            
             <h3 class="mb-2" data-t="available_pros">المختصين</h3>
             <div id="pros-list" class="pro-list mb-4"></div>
 
-            <div class="tbl-wrap">
-                <div style="padding:15px; font-weight:bold" data-t="history">سجلي</div>
+            <div class="tbl-box">
+                <div style="padding:15px; font-weight:bold; background:#f9f9f9" data-t="history">سجلي</div>
                 <table><thead><tr><th data-t="pro">المختص</th><th data-t="status">الحالة</th><th data-t="action">اجراء</th></tr></thead><tbody id="u-hist"></tbody></table>
             </div>
         </section>
 
-        <!-- PRO DASHBOARD -->
+        <!-- PRO DASHBOARD (2x2 Grid) -->
         <section id="dash-pro" class="dash-container hidden">
             <div id="p-slider" style="height:200px; border-radius:15px; overflow:hidden; margin-bottom:20px; position:relative; box-shadow:var(--shadow)"></div>
-            
-            <div class="pro-header">
+            <div class="flex" style="background:white; padding:20px; border-radius:15px; box-shadow:var(--shadow); align-items:center; gap:15px; margin-bottom:20px">
                 <img id="p-img" src="" style="width:80px; height:80px; border-radius:50%; border:3px solid var(--primary); object-fit:cover">
-                <div style="flex:1">
-                    <h2 id="p-name">Dr. Name</h2>
-                    <span id="p-code" style="background:#eee; padding:3px 8px; border-radius:5px; font-size:0.9rem">Code: --</span>
-                </div>
-                <div style="text-align:center">
-                    <div id="p-points" style="font-size:2rem; font-weight:bold; color:var(--primary)">0</div>
-                    <small data-t="points">نقاطي</small>
-                </div>
+                <div style="flex:1"><h2 id="p-name">Dr. Name</h2><span id="p-code" style="background:#eee; padding:3px 8px; border-radius:5px">Code: --</span></div>
+                <div style="text-align:center"><div id="p-points" style="font-size:2rem; font-weight:bold; color:var(--primary)">0</div><small data-t="points">نقاطي</small></div>
             </div>
 
-            <div class="pro-stats">
-                <div class="pro-stat-card" style="border-color:#2196F3"><h3 id="stat-new" style="font-size:2rem">0</h3><span data-t="new_req">جديد</span></div>
-                <div class="pro-stat-card" style="border-color:#4CAF50"><h3 id="stat-tot" style="font-size:2rem">0</h3><span data-t="total">الاجمالي</span></div>
-                <div class="pro-stat-card" style="border-color:#F44336"><h3 id="stat-rej" style="font-size:2rem">0</h3><span>مرفوض</span></div>
-                <div class="pro-stat-card" style="border-color:#FF9800"><h3 id="stat-cli" style="font-size:2rem">0</h3><span data-t="accepted_clients">زبائن</span></div>
+            <div class="pro-grid">
+                <div class="pro-card-stat pc1"><h3 id="stat-new">0</h3><span data-t="new_req">جديد</span><i class="fas fa-user-plus"></i></div>
+                <div class="pro-card-stat pc2"><h3 id="stat-tot">0</h3><span data-t="total">الاجمالي</span><i class="fas fa-chart-pie"></i></div>
+                <div class="pro-stat-card pc3" style="background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"><h3 id="stat-rej">0</h3><span data-t="rejected">مرفوض</span><i class="fas fa-times-circle"></i></div>
+                <div class="pro-stat-card pc4"><h3 id="stat-cli">0</h3><span data-t="accepted_clients">زبائن</span><i class="fas fa-users"></i></div>
             </div>
 
-            <div class="tbl-wrap">
+            <div class="tbl-box">
                 <div style="padding:15px; font-weight:bold" data-t="incoming">واردة</div>
-                <table><thead><tr><th data-t="client">الاسم</th><th data-t="age">السن</th><th>الجنس</th><th data-t="action">اجراء</th></tr></thead><tbody id="p-req"></tbody></table>
+                <table><thead><tr><th data-t="client">الاسم</th><th data-t="age">السن</th><th data-t="gender">الجنس</th><th data-t="action">اجراء</th></tr></thead><tbody id="p-req"></tbody></table>
             </div>
-
-            <div class="tbl-wrap">
+            <div class="tbl-box">
                 <div style="padding:15px; font-weight:bold" data-t="accepted_clients">زبائن</div>
-                <table><thead><tr><th data-t="client">الاسم</th><th data-t="phone">الهاتف</th><th>الايميل</th></tr></thead><tbody id="p-cli"></tbody></table>
+                <table><thead><tr><th data-t="client">الاسم</th><th data-t="phone">الهاتف</th><th data-t="email">الايميل</th></tr></thead><tbody id="p-cli"></tbody></table>
             </div>
         </section>
 
         <!-- ADMIN DASHBOARD -->
         <section id="dash-admin" class="dash-container hidden">
-            <h2 class="mb-4">Admin Dashboard</h2>
-            
-            <!-- 3x3 Grid -->
+            <h2 class="mb-4" data-t="admin_panel">Admin</h2>
             <div class="admin-grid">
-                <div class="adm-card c1"><h3 id="adm-users">0</h3><span data-t="users">Users</span></div>
-                <div class="adm-card c2"><h3 id="adm-pros">0</h3><span data-t="pros">Pros</span></div>
-                <div class="adm-card c3"><h3 id="adm-clients">0</h3><span data-t="accepted_clients">Clients</span></div>
-                <div class="adm-card c4"><h3 id="adm-sess">0</h3><span data-t="sessions">Success Sessions</span></div>
-                <div class="adm-card c5"><h3 id="adm-v-day">0</h3><span>Visits (Today)</span></div>
-                <div class="adm-card c6"><h3 id="adm-v-mon">0</h3><span>Visits (Month)</span></div>
-                <div class="adm-card c7"><h3 id="adm-rep">0</h3><span data-t="report">Reports</span></div>
-                <div class="adm-card c8"><h3 id="adm-ban">0</h3><span>Active Banners</span></div>
-                <div class="adm-card c9"><h3 id="adm-pend">0</h3><span>Pending Approvals</span></div>
+                <div class="adm-card g1"><h3 id="adm-u">0</h3><span data-t="users">Users</span></div>
+                <div class="adm-card g2"><h3 id="adm-p">0</h3><span data-t="pros">Pros</span></div>
+                <div class="adm-card g3"><h3 id="adm-c">0</h3><span data-t="accepted_clients">Clients</span></div>
+                <div class="adm-card g4"><h3 id="adm-s">0</h3><span data-t="sessions">Sessions</span></div>
+                <div class="adm-card g5"><h3 id="adm-vd">0</h3><span data-t="visits_day">Visits Day</span></div>
+                <div class="adm-card g6"><h3 id="adm-vm">0</h3><span data-t="visits_month">Visits Month</span></div>
+                <div class="adm-card g7"><h3 id="adm-r">0</h3><span data-t="report">Reports</span></div>
+                <div class="adm-card g8"><h3 id="adm-b">0</h3><span data-t="banners">Banners</span></div>
+                <div class="adm-card g9"><h3 id="adm-w">0</h3><span data-t="pending">Pending</span></div>
             </div>
 
-            <!-- Tabs -->
-            <div class="flex" style="gap:10px; overflow-x:auto; margin-bottom:20px; padding-bottom:5px">
-                <button class="btn-glow" style="padding:8px 20px; font-size:0.8rem; animation:none" onclick="admTab('users')">Users</button>
-                <button class="btn-glow" style="padding:8px 20px; font-size:0.8rem; animation:none" onclick="admTab('approvals')">Approvals</button>
-                <button class="btn-glow" style="padding:8px 20px; font-size:0.8rem; animation:none" onclick="admTab('sessions')">Sessions</button>
-                <button class="btn-glow" style="padding:8px 20px; font-size:0.8rem; animation:none" onclick="admTab('cms')">CMS / Settings</button>
+            <div class="flex" style="gap:10px; overflow-x:auto; margin-bottom:20px; padding-bottom:10px">
+                <button class="btn-admin" onclick="admTab('users')"><i class="fas fa-users"></i> <span data-t="users">Users</span></button>
+                <button class="btn-admin" onclick="admTab('apps')"><i class="fas fa-check-circle"></i> <span data-t="approvals">Approvals</span></button>
+                <button class="btn-admin" onclick="admTab('sess')"><i class="fas fa-handshake"></i> <span data-t="sessions">Sessions</span></button>
+                <button class="btn-admin" onclick="admTab('cms')"><i class="fas fa-cogs"></i> <span data-t="settings">Settings</span></button>
             </div>
 
             <div id="view-users" class="adm-view">
-                <input type="text" placeholder="Search (Name, Email, Code)..." class="inp" onkeyup="filterUsers(this.value)">
-                <div class="tbl-wrap">
-                    <table id="tbl-users"><thead><tr><th>Name</th><th>Role</th><th>Code</th><th>Action</th></tr></thead><tbody></tbody></table>
-                </div>
+                <input type="text" placeholder="Search..." class="inp" onkeyup="filterUsers(this.value)">
+                <div class="tbl-box"><table id="tbl-users"><thead><tr><th data-t="name">Name</th><th data-t="role">Role</th><th data-t="code">Code</th><th data-t="action">Action</th></tr></thead><tbody></tbody></table></div>
             </div>
-
-            <div id="view-approvals" class="adm-view hidden">
-                <div class="tbl-wrap">
-                    <table id="tbl-apps"><thead><tr><th>Name</th><th>Cert</th><th>Action</th></tr></thead><tbody></tbody></table>
-                </div>
+            <div id="view-apps" class="adm-view hidden">
+                <div class="tbl-box"><table id="tbl-apps"><thead><tr><th data-t="name">Name</th><th data-t="cert">Cert</th><th data-t="action">Action</th></tr></thead><tbody></tbody></table></div>
             </div>
-
-            <div id="view-sessions" class="adm-view hidden">
-                <div class="tbl-wrap">
-                    <table id="tbl-sess"><thead><tr><th>Client</th><th>Pro</th><th>Date</th></tr></thead><tbody></tbody></table>
-                </div>
+            <div id="view-sess" class="adm-view hidden">
+                <div class="tbl-box"><table id="tbl-sess"><thead><tr><th data-t="client">Client</th><th data-t="pro">Pro</th><th data-t="date">Date</th></tr></thead><tbody></tbody></table></div>
             </div>
-
             <div id="view-cms" class="adm-view hidden">
-                <div class="form-box" style="margin:0; max-width:100%">
-                    <h4>CMS & Settings</h4>
-                    <div class="flex" style="gap:15px; flex-wrap:wrap">
-                        <div style="flex:1; min-width:250px">
-                            <label>Upload Logo</label><input type="file" id="adm-logo" class="inp">
-                            <button onclick="updLogo()" style="padding:5px 15px">Update Logo</button>
-                        </div>
-                        <div style="flex:1; min-width:250px">
-                            <label>Upload Background</label><input type="file" id="adm-bg" class="inp">
-                            <button onclick="updBg()" style="padding:5px 15px">Update BG</button>
-                        </div>
+                <div class="form-box" style="max-width:100%; margin:0">
+                    <h4 data-t="settings">Settings</h4>
+                    <div class="flex" style="gap:10px; flex-wrap:wrap">
+                        <div style="flex:1"><label data-t="logo">Logo</label><input type="file" id="adm-logo" class="inp"><button class="btn-admin" onclick="updLogo()">Update</button></div>
+                        <div style="flex:1"><label data-t="bg">BG</label><input type="file" id="adm-bg" class="inp"><button class="btn-admin" onclick="updBg()">Update</button></div>
                     </div>
                     <hr class="my-3">
-                    <label>Pro Points Manager</label>
-                    <div class="flex" style="gap:5px">
-                        <input id="pt-code" placeholder="Pro Code (e.g T20...)" class="inp">
-                        <input id="pt-val" type="number" placeholder="Points" class="inp">
-                        <button onclick="setPoints()" style="padding:5px 15px">Set</button>
-                    </div>
+                    <label data-t="points_manager">Points</label>
+                    <div class="flex" style="gap:10px"><input id="pt-code" placeholder="Code" class="inp"><input id="pt-val" type="number" class="inp"><button class="btn-admin" onclick="setPts()">Set</button></div>
                     <hr class="my-3">
-                    <label>Add Banner</label>
-                    <input type="file" id="ban-img" class="inp">
-                    <input id="ban-link" placeholder="Link" class="inp">
-                    <select id="ban-role" class="inp"><option value="all">All</option><option value="user">User</option><option value="pro">Pro</option></select>
-                    <button onclick="addBanner()" style="padding:5px 15px">Add Banner</button>
+                    <label data-t="add_banner">Banner</label>
+                    <input type="file" id="ban-img" class="inp"><input id="ban-link" placeholder="Link" class="inp"><select id="ban-role" class="inp"><option value="all">All</option><option value="user">User</option><option value="pro">Pro</option></select><button class="btn-admin" onclick="addBan()">Add</button>
                     <hr class="my-3">
-                    <label>Send Notification</label>
-                    <input id="nt-ar" placeholder="Arabic Text" class="inp">
-                    <input id="nt-fr" placeholder="French Text" class="inp">
-                    <select id="nt-tar" class="inp"><option value="all">All</option><option value="user">User</option><option value="pro">Pro</option></select>
-                    <button onclick="sendNotif()" style="padding:5px 15px">Send</button>
+                    <label data-t="send_notif">Notify</label>
+                    <input id="nt-ar" placeholder="Arabic" class="inp"><input id="nt-fr" placeholder="French" class="inp"><select id="nt-tar" class="inp"><option value="all">All</option><option value="user">User</option><option value="pro">Pro</option></select><button class="btn-admin" onclick="sndNot()">Send</button>
                     <hr class="my-3">
-                    <label>Reports</label>
-                    <div id="rep-list" style="max-height:200px; overflow:auto; background:#f9f9f9; padding:10px"></div>
+                    <label data-t="report">Reports</label><div id="rep-list" style="background:#f9f9f9; padding:10px; max-height:200px; overflow:auto"></div>
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- FOOTER -->
     <footer>
         <h4>DZ Nutritionniste</h4>
         <div style="margin-top:15px">
-            <span class="foot-link" onclick="openStatic('about')" data-t="about">من نحن</span>
-            <span class="foot-link" onclick="openStatic('privacy')" data-t="privacy">السياسة</span>
-            <span class="foot-link" onclick="openLoc()" data-t="location">مقرنا</span>
-            <span class="foot-link" onclick="openReportModal()" data-t="report">ابلاغ</span>
+            <span class="f-link" onclick="openStatic('about')" data-t="about">من نحن</span>
+            <span class="f-link" onclick="openStatic('privacy')" data-t="privacy">السياسة</span>
+            <span class="f-link" onclick="openReportModal()" data-t="report">ابلاغ</span>
         </div>
-        <p style="margin-top:20px; font-size:0.7rem; color:#666">© 2024</p>
+        <p style="margin-top:20px; font-size:0.7rem; opacity:0.6">© 2026</p>
     </footer>
 
     <!-- MODALS -->
-    
     <!-- Profile -->
     <div id="mod-profile" class="modal"><div class="modal-box">
         <h3 data-t="edit_profile">تعديل الملف</h3>
-        <label data-t="name">الاسم</label><input id="p-edit-name" class="inp">
-        <label data-t="password">كلمة المرور</label><input id="p-edit-pass" class="inp">
-        <label data-t="photo">الصورة</label><input type="file" id="p-edit-img" class="inp" accept="image/*">
-        <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="saveProfile()" data-t="save">حفظ</button>
+        <label data-t="name">الاسم</label><input id="ped-name" class="inp">
+        <label data-t="password">كلمة المرور</label><input id="ped-pass" class="inp">
+        <label data-t="photo">الصورة</label><input type="file" id="ped-img" class="inp" accept="image/*">
+        <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="saveProf()" data-t="save">حفظ</button>
         <button class="w-full mt-2" style="background:none; border:none; color:red" onclick="closeMod('mod-profile')" data-t="cancel">الغاء</button>
     </div></div>
 
@@ -412,36 +390,27 @@
     <div id="mod-rate" class="modal"><div class="modal-box text-center">
         <h3 data-t="rate_pro">تقييم المختص</h3>
         <div class="stars" id="star-box">
-            <i class="fas fa-star" onclick="rate(1)"></i>
-            <i class="fas fa-star" onclick="rate(2)"></i>
-            <i class="fas fa-star" onclick="rate(3)"></i>
-            <i class="fas fa-star" onclick="rate(4)"></i>
-            <i class="fas fa-star" onclick="rate(5)"></i>
+            <i class="fas fa-star" onclick="rate(1)"></i><i class="fas fa-star" onclick="rate(2)"></i><i class="fas fa-star" onclick="rate(3)"></i><i class="fas fa-star" onclick="rate(4)"></i><i class="fas fa-star" onclick="rate(5)"></i>
         </div>
-        <input type="hidden" id="rate-v">
-        <textarea id="rate-c" class="inp" placeholder="Comment..."></textarea>
-        <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="submitRate()" data-t="send">ارسال</button>
+        <input type="hidden" id="rate-v"><textarea id="rate-c" class="inp" placeholder="Comment..."></textarea>
+        <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="subRate()" data-t="send">ارسال</button>
         <button class="w-full mt-2" style="background:none; border:none" onclick="closeMod('mod-rate')">X</button>
     </div></div>
-    
+
     <!-- Report -->
-    <div id="mod-report" class="modal"><div class="modal-box">
+    <div id="mod-rep" class="modal"><div class="modal-box">
         <h3 data-t="report">ابلاغ</h3>
-        <input id="rp-name" class="inp" placeholder="Name">
-        <input id="rp-email" class="inp" placeholder="Email">
-        <textarea id="rp-desc" class="inp" placeholder="Description..."></textarea>
-        <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="sendReport()" data-t="send">ارسال</button>
-        <button class="w-full mt-2" style="background:none; border:none" onclick="closeMod('mod-report')">X</button>
+        <input id="rp-name" class="inp" data-p="name"><input id="rp-mail" class="inp" data-p="email"><textarea id="rp-desc" class="inp" data-p="desc"></textarea>
+        <button class="btn-glow w-full" style="border-radius:10px; animation:none; padding:10px" onclick="subRep()" data-t="send">ارسال</button>
+        <button class="w-full mt-2" style="background:none; border:none" onclick="closeMod('mod-rep')">X</button>
     </div></div>
-    
-    <!-- Info/Static -->
+
+    <!-- Info -->
     <div id="mod-info" class="modal"><div class="modal-box">
-        <h3 id="info-t"></h3>
-        <div id="info-c" style="margin-top:15px; line-height:1.6; max-height:300px; overflow-y:auto"></div>
+        <h3 id="inf-t"></h3><div id="inf-c" style="margin-top:10px; max-height:300px; overflow-y:auto"></div>
         <button class="w-full mt-3" style="padding:10px" onclick="closeMod('mod-info')">Close</button>
     </div></div>
 
-    <!-- SCRIPTS -->
     <script>
         // CONFIG
         const firebaseConfig = {
@@ -456,13 +425,9 @@
         const db = firebase.firestore();
 
         // STATE
-        let currentUser = null;
-        let lang = localStorage.getItem('lang') || 'ar';
-        let regRole = 'user';
-        let rateMeta = null;
-        let usersCache = [];
+        let currentUser=null, lang=localStorage.getItem('lang')||'ar', regRole='user', rateM=null, uCache=[];
 
-        // TEXTS
+        // TRANSLATION DICTIONARY (Comprehensive)
         const tD = {
             ar: {
                 menu:"القائمة", home:"الرئيسية", login:"دخول", dashboard:"لوحة التحكم", profile:"الملف",
@@ -474,7 +439,15 @@
                 points:"نقاطي", new_req:"طلبات جديدة", total:"الاجمالي", incoming:"طلبات واردة", client:"المريض",
                 accepted_clients:"زبائن حاليون", save:"حفظ", cancel:"الغاء", name:"الاسم", photo:"الصورة", password:"كلمة المرور",
                 rate_pro:"تقييم", send:"ارسال", reviews:"التعليقات", request:"طلب", wait:"انتظار", cert:"الشهادة", kids:"أولاد؟",
-                age:"السن", users:"مستخدمين", pros:"مختصين", sessions:"جلسات"
+                age:"السن", gender:"الجنس", phone:"الهاتف", email:"الايميل", desc:"الوصف",
+                users:"مستخدمين", pros:"مختصين", sessions:"جلسات", approvals:"توثيق", settings:"اعدادات",
+                visits_day:"زيارات يوم", visits_month:"زيارات شهر", banners:"بانرات", rejected:"مرفوض",
+                add_banner:"اضافة بانر", send_notif:"ارسال اشعار", points_manager:"تعديل النقاط",
+                logo:"اللوغو", bg:"الخلفية", male:"ذكر", female:"أنثى", single:"أعزب", married:"متزوج", divorced:"مطلق", no:"لا", yes:"نعم",
+                req_ok_title:"تم الطلب", req_ok_msg:"تم ارسال طلبك للمختص بنجاح",
+                err_title:"خطأ", login_err:"بيانات خاطئة", ban_msg:"حسابك محظور", pend_msg:"حسابك قيد المراجعة",
+                rej_msg:"تم رفض طلبك", succ_title:"تم", saved_msg:"تم الحفظ بنجاح", sent_msg:"تم الارسال",
+                admin_panel:"لوحة الادمن", code:"الكود", role:"الدور", date:"التاريخ"
             },
             fr: {
                 menu:"Menu", home:"Accueil", login:"Connexion", dashboard:"Tableau de bord", profile:"Profil",
@@ -486,500 +459,246 @@
                 points:"Mes points", new_req:"Nouvelles", total:"Total", incoming:"Entrantes", client:"Patient",
                 accepted_clients:"Clients actuels", save:"Enregistrer", cancel:"Annuler", name:"Nom", photo:"Photo", password:"Mot de passe",
                 rate_pro:"Évaluer", send:"Envoyer", reviews:"Avis", request:"Demander", wait:"Attente", cert:"Certificat", kids:"Enfants?",
-                age:"Age", users:"Utilisateurs", pros:"Spécialistes", sessions:"Séances"
+                age:"Age", gender:"Sexe", phone:"Tél", email:"Email", desc:"Description",
+                users:"Utilisateurs", pros:"Spécialistes", sessions:"Séances", approvals:"Approbations", settings:"Paramètres",
+                visits_day:"Visites Jour", visits_month:"Visites Mois", banners:"Bannières", rejected:"Rejeté",
+                add_banner:"Ajouter Bannière", send_notif:"Envoyer Notif", points_manager:"Gérer Points",
+                logo:"Logo", bg:"Arrière-plan", male:"Homme", female:"Femme", single:"Célibataire", married:"Marié", divorced:"Divorcé", no:"Non", yes:"Oui",
+                req_ok_title:"Succès", req_ok_msg:"Votre demande a été envoyée avec succès",
+                err_title:"Erreur", login_err:"Données invalides", ban_msg:"Compte banni", pend_msg:"Compte en attente",
+                rej_msg:"Demande rejetée", succ_title:"Fait", saved_msg:"Enregistré avec succès", sent_msg:"Envoyé",
+                admin_panel:"Admin Panel", code:"Code", role:"Rôle", date:"Date"
             }
         };
 
         // --- CORE ---
         window.onload = async () => {
-            applyLang();
-            loadCMS();
-            trackVisit();
-            const uid = localStorage.getItem('uid');
+            applyLang(); loadCMS(); trackVisit();
+            const uid=localStorage.getItem('uid');
             if(uid) {
-                const d = await db.collection('users').doc(uid).get();
-                if(d.exists) { currentUser = {id:d.id, ...d.data()}; initApp(); }
+                const d=await db.collection('users').doc(uid).get();
+                if(d.exists) { currentUser={id:d.id,...d.data()}; initApp(); }
                 else hideLoader();
             } else hideLoader();
         }
 
-        function hideLoader() { document.getElementById('loader').classList.add('hidden'); }
-        function switchLang() { lang = lang==='ar'?'fr':'ar'; localStorage.setItem('lang',lang); location.reload(); }
-        function applyLang() {
-            document.documentElement.dir = lang==='ar'?'rtl':'ltr';
-            document.querySelectorAll('[data-t]').forEach(e => {
-                const k = e.getAttribute('data-t');
-                if(tD[lang][k]) e.innerText = tD[lang][k];
+        function hideLoader(){document.getElementById('loader').classList.add('hidden');}
+        function switchLang(){lang=lang==='ar'?'fr':'ar'; localStorage.setItem('lang',lang); location.reload();}
+        function applyLang(){
+            document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+            document.querySelectorAll('[data-t]').forEach(e=>e.innerText=tD[lang][e.getAttribute('data-t')]||e.innerText);
+            document.querySelectorAll('[data-p]').forEach(e=>e.placeholder=tD[lang][e.getAttribute('data-p')]||e.placeholder);
+        }
+        function t(k){return tD[lang][k]||k;}
+        function sAlert(icon,kTitle,kText){ Swal.fire({icon:icon, title:t(kTitle), text:t(kText), timer:2000, showConfirmButton:false}); }
+
+        function loadCMS(){
+            db.collection('settings').doc('config').onSnapshot(s=>{
+                if(s.exists){ const d=s.data(); if(d.logo)document.getElementById('nav-logo').innerHTML=`<img src="${d.logo}">`; if(d.bg)document.querySelector('.hero-bg').style.backgroundImage=`url('${d.bg}')`; window.cms=d; }
             });
         }
-        function t(k) { return tD[lang][k]||k; }
-
-        function loadCMS() {
-            db.collection('settings').doc('config').onSnapshot(s => {
-                if(s.exists) {
-                    const d = s.data();
-                    if(d.logo) document.getElementById('nav-logo').innerHTML = `<img src="${d.logo}">`;
-                    if(d.bg) document.querySelector('.hero-bg').style.backgroundImage = `url('${d.bg}')`;
-                    window.cmsData = d;
-                }
-            });
-        }
-        function trackVisit() {
-            const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-            const month = date.substring(0,7);
-            const ref = db.collection('stats').doc('visits');
-            ref.set({ [date]: firebase.firestore.FieldValue.increment(1), [month]: firebase.firestore.FieldValue.increment(1) }, {merge:true});
-        }
-
-        function nav(id) {
-            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            toggleSidebar(false);
-            window.scrollTo(0,0);
-        }
-        function toggleSidebar(f) {
-            const s = document.getElementById('sidebar');
-            const o = document.querySelector('.overlay');
-            if(f===false) { s.classList.remove('active'); o.classList.remove('active'); }
-            else { s.classList.toggle('active'); o.classList.toggle('active'); }
-        }
-        const toBase64 = f => new Promise((r,j)=>{ const rd=new FileReader(); rd.readAsDataURL(f); rd.onload=()=>r(rd.result); rd.onerror=j; });
-
-        // --- AUTH ---
-        function setRole(r) {
-            regRole = r;
-            document.getElementById('role-user').style.background = r==='user'?'white':'transparent';
-            document.getElementById('role-pro').style.background = r==='pro'?'white':'transparent';
-            if(r==='pro') document.getElementById('pro-fields').classList.remove('hidden');
-            else document.getElementById('pro-fields').classList.add('hidden');
-        }
-        function toggleKids(v) { document.getElementById('kids-div').style.display = (v==='married'||v==='divorced')?'block':'none'; }
-
-        async function doRegister() {
-            const n = document.getElementById('r-name').value;
-            const e = document.getElementById('r-email').value;
-            const p = document.getElementById('r-pass').value;
-            if(!n || !e || !p) return Swal.fire('Error','Missing Fields','error');
-
-            let d = {
-                name:n, email:e, pass:p, 
-                phone: document.getElementById('r-phone').value,
-                gender: document.getElementById('r-gender').value,
-                age: document.getElementById('r-age').value,
-                role: regRole, status: regRole==='user'?'active':'pending',
-                joined: Date.now(), img: 'https://via.placeholder.com/150'
-            };
-            
-            if(regRole === 'pro') {
-                d.wilaya = document.getElementById('r-wilaya').value;
-                d.marital = document.getElementById('r-social').value;
-                d.code = 'T'+Math.floor(10000+Math.random()*90000);
-                d.lastAccepted = 0; d.points = 0;
-                const f = document.getElementById('r-cert').files[0];
-                if(f) d.cert = await toBase64(f);
-            }
-
-            try {
-                await db.collection('users').add(d);
-                Swal.fire('OK','Registered','success');
-                nav('login');
-            } catch(e) { Swal.fire('Error',e.message,'error'); }
-        }
-
-        async function doLogin() {
-            const e = document.getElementById('l-email').value;
-            const p = document.getElementById('l-pass').value;
-
-            if(e === 'admin' && p === 'abobob123') {
-                currentUser = {role:'admin', name:'Admin'};
-                initApp(); return;
-            }
-
-            const q = await db.collection('users').where('email','==',e).where('pass','==',p).get();
-            if(q.empty) return Swal.fire('Error','Invalid','error');
-            const u = {id:q.docs[0].id, ...q.docs[0].data()};
-
-            if(u.status === 'banned') return Swal.fire('Banned','','error');
-            if(u.status === 'pending') return Swal.fire('Pending','','warning');
-            if(u.status === 'rejected') return Swal.fire('Rejected','','error');
-
-            currentUser = u;
-            localStorage.setItem('uid', u.id);
-            initApp();
-        }
-
-        function logout() {
-            currentUser=null; localStorage.removeItem('uid');
-            document.getElementById('menu-public').classList.remove('hidden');
-            document.getElementById('menu-private').classList.add('hidden');
-            document.getElementById('btn-logout').classList.add('hidden');
-            document.getElementById('notif-box').classList.add('hidden');
-            nav('login');
-        }
-
-        // --- APP LOGIC ---
-        function initApp() {
-            hideLoader();
-            document.getElementById('menu-public').classList.add('hidden');
-            document.getElementById('menu-private').classList.remove('hidden');
-            document.getElementById('btn-logout').classList.remove('hidden');
-            document.getElementById('notif-box').classList.remove('hidden');
-            navDash();
-            checkNotifs();
-        }
-
-        function navDash() {
-            if(!currentUser) return nav('login');
-            if(currentUser.role === 'admin') initAdmin();
-            else if(currentUser.role === 'pro') initPro();
-            else initUser();
-        }
-
-        function checkNotifs() {
-            const role = currentUser.role==='admin'?'admin':currentUser.role;
-            db.collection('notifs').where('target','in',['all',role]).onSnapshot(snap => {
-                let c=0;
-                snap.forEach(d => { if(!localStorage.getItem('read_'+d.id)) c++; });
-                const b = document.getElementById('notif-badge');
-                b.innerText = c;
-                b.style.display = c>0?'block':'none';
-            });
+        function trackVisit(){
+            const d=new Date().toISOString().split('T')[0];
+            db.collection('stats').doc('visits').set({[d]:firebase.firestore.FieldValue.increment(1),[d.substring(0,7)]:firebase.firestore.FieldValue.increment(1)},{merge:true});
         }
         
-        function showNotifs() {
-            const role = currentUser.role==='admin'?'admin':currentUser.role;
-            db.collection('notifs').where('target','in',['all',role]).get().then(snap => {
-                let html = "";
-                snap.forEach(d => {
-                    localStorage.setItem('read_'+d.id, '1');
-                    const txt = lang==='ar' ? d.data().ar : d.data().fr;
-                    html += `<div style="padding:10px; border-bottom:1px solid #eee">${txt}</div>`;
-                });
-                document.getElementById('notif-badge').style.display='none';
-                document.getElementById('info-t').innerText = t('notifications') || "الاشعارات";
-                document.getElementById('info-c').innerHTML = html || "Empty";
-                document.getElementById('mod-info').style.display = 'flex';
-            });
+        function nav(id){ document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); toggleSidebar(false); window.scrollTo(0,0); }
+        function toggleSidebar(f){ const s=document.getElementById('sidebar'), o=document.querySelector('.overlay'); if(f===false){s.classList.remove('active');o.classList.remove('active')}else{s.classList.toggle('active');o.classList.toggle('active')} }
+        const toBase64=f=>new Promise((r,j)=>{const rd=new FileReader();rd.readAsDataURL(f);rd.onload=()=>r(rd.result);rd.onerror=j;});
+
+        // --- AUTH ---
+        function setRole(r){ regRole=r; document.getElementById('role-user').style.background=r==='user'?'white':'transparent'; document.getElementById('role-pro').style.background=r==='pro'?'white':'transparent'; document.getElementById('pro-fields').style.display=r==='pro'?'block':'none'; }
+        
+        async function doRegister(){
+            const n=document.getElementById('r-name').value, e=document.getElementById('r-email').value, p=document.getElementById('r-pass').value;
+            if(!n||!e||!p) return sAlert('error','err_title','login_err');
+            let d={name:n, email:e, pass:p, phone:document.getElementById('r-phone').value, gender:document.getElementById('r-gender').value, age:document.getElementById('r-age').value, role:regRole, status:regRole==='user'?'active':'pending', joined:Date.now(), img:'https://via.placeholder.com/150'};
+            if(regRole==='pro'){ d.wilaya=document.getElementById('r-wilaya').value; d.marital=document.getElementById('r-social').value; d.code='T'+Math.floor(10000+Math.random()*90000); d.lastAccepted=0; d.points=0; const f=document.getElementById('r-cert').files[0]; if(f)d.cert=await toBase64(f); }
+            try{ await db.collection('users').add(d); sAlert('success','succ_title','saved_msg'); nav('login'); } catch(e){ Swal.fire('Error',e.message,'error'); }
         }
 
-        async function loadBanners(eid, role) {
-            db.collection('banners').where('target','in',['all',role]).onSnapshot(snap => {
-                const el = document.getElementById(eid);
-                el.innerHTML = "";
-                snap.forEach((d,i) => {
-                    const dd = d.data();
-                    const disp = i===0?'block':'none';
-                    el.innerHTML += `<img src="${dd.img}" style="width:100%; height:100%; object-fit:cover; display:${disp}" onclick="window.open('${dd.link}')">`;
-                });
-                // Simple rotate
-                if(snap.size > 1) {
-                    let idx = 0;
-                    setInterval(() => {
-                        const imgs = el.querySelectorAll('img');
-                        imgs.forEach(m => m.style.display='none');
-                        idx = (idx+1)%imgs.length;
-                        imgs[idx].style.display='block';
-                    }, 4000);
-                }
-            });
+        async function doLogin(){
+            const e=document.getElementById('l-email').value, p=document.getElementById('l-pass').value;
+            if(e==='admin' && p==='abobob123'){ currentUser={role:'admin',name:'Admin'}; initApp(); return; }
+            const q=await db.collection('users').where('email','==',e).where('pass','==',p).get();
+            if(q.empty) return sAlert('error','err_title','login_err');
+            const u={id:q.docs[0].id, ...q.docs[0].data()};
+            if(u.status==='banned') return sAlert('error','err_title','ban_msg');
+            if(u.status==='pending') return sAlert('warning','err_title','pend_msg');
+            if(u.status==='rejected') return sAlert('error','err_title','rej_msg');
+            currentUser=u; localStorage.setItem('uid',u.id); initApp();
         }
+        function logout(){ currentUser=null; localStorage.removeItem('uid'); window.location.reload(); }
+
+        // --- APP ---
+        function initApp(){
+            hideLoader(); document.getElementById('menu-public').classList.add('hidden'); document.getElementById('menu-private').classList.remove('hidden'); document.getElementById('btn-logout').classList.remove('hidden'); document.getElementById('notif-btn').classList.remove('hidden');
+            navDash(); checkNotifs();
+        }
+        function navDash(){ if(!currentUser)nav('login'); else if(currentUser.role==='admin')initAdm(); else if(currentUser.role==='pro')initPro(); else initUser(); }
 
         // --- USER ---
-        function initUser() {
-            nav('dash-user');
-            document.getElementById('u-name').innerText = currentUser.name;
-            document.getElementById('u-img').src = currentUser.img;
-            loadBanners('u-slider', 'user');
-
-            // Pros Logic (Rotation)
-            db.collection('users').where('role','==','pro').where('status','==','active').onSnapshot(snap => {
-                const list = document.getElementById('pros-list');
-                list.innerHTML = "";
-                let pros = [];
-                snap.forEach(d => pros.push({id:d.id, ...d.data()}));
+        function initUser(){
+            nav('dash-user'); document.getElementById('u-name').innerText=currentUser.name; document.getElementById('u-img').src=currentUser.img; loadBans('u-slider','user');
+            db.collection('users').where('role','==','pro').where('status','==','active').onSnapshot(s=>{
+                const l=document.getElementById('pros-list'); l.innerHTML="";
+                let arr=[]; s.forEach(d=>arr.push({id:d.id,...d.data()}));
+                const now=Date.now();
+                // Filter hidden pros (1 hour)
+                arr = arr.filter(p => (now - (p.lastAccepted||0)) > 3600000);
+                // Then sort if needed (newly appeared ones at bottom?)
+                arr.sort((a,b)=>(a.lastAccepted||0)-(b.lastAccepted||0)); 
                 
-                const now = Date.now();
-                // 1 hour = 3600000 ms
-                pros.sort((a,b) => {
-                    const hideA = (now - (a.lastAccepted||0)) < 3600000;
-                    const hideB = (now - (b.lastAccepted||0)) < 3600000;
-                    if(hideA && !hideB) return 1; // A to bottom
-                    if(!hideA && hideB) return -1;
-                    return 0;
-                });
-
-                pros.forEach(p => {
-                    const stars = p.rateCount ? (p.rateSum/p.rateCount).toFixed(1) : 0;
-                    list.innerHTML += `
-                    <div class="pro-card">
-                        <img src="${p.img}" style="width:70px; height:70px; border-radius:50%; object-fit:cover">
-                        <h4>${p.name}</h4>
-                        <div style="color:gold; cursor:pointer" onclick="viewReviews('${p.id}')">
-                            ${'⭐'.repeat(Math.round(stars))} (${p.rateCount||0})
-                        </div>
-                        <small>${p.wilaya||''}</small>
-                        <button class="btn-glow mt-2" style="padding:5px 20px; font-size:0.8rem; animation:none" onclick="reqAppt('${p.id}','${p.name}')">${t('request')}</button>
-                    </div>`;
+                arr.forEach(p=>{
+                    const rt = p.rc ? (p.rs/p.rc).toFixed(1) : 0;
+                    l.innerHTML+=`<div class="pro-item"><img src="${p.img}" style="width:70px;height:70px;border-radius:50%;object-fit:cover"><h4>${p.name}</h4><div style="color:gold;cursor:pointer" onclick="viewRev('${p.id}')">${'⭐'.repeat(Math.round(rt))} (${p.rc||0})</div><small>${p.wilaya||''}</small><button class="btn-glow mt-2" style="padding:5px 20px;font-size:0.8rem;animation:none" onclick="req('${p.id}','${p.name}')">${t('request')}</button></div>`;
                 });
             });
-
-            // History
-            db.collection('apps').where('uid','==',currentUser.id).orderBy('date','desc').onSnapshot(snap => {
-                const b = document.getElementById('u-hist');
-                b.innerHTML = "";
-                let c = {tot:0, pen:0, acc:0};
-                snap.forEach(d => {
-                    const dd = d.data();
-                    c.tot++;
-                    if(dd.status === 'pending') c.pen++;
-                    if(dd.status === 'accepted') c.acc++;
-                    
-                    let act = `<span style="color:#aaa">${t('wait')}</span>`;
-                    if(dd.status === 'accepted') {
-                        if(dd.rated) act = "✅";
-                        else act = `<button onclick="openRate('${dd.pid}','${d.id}')" style="background:gold; border:none; padding:5px; border-radius:5px">⭐</button>`;
-                    } else if(dd.status === 'rejected') act = "❌";
-                    
-                    b.innerHTML += `<tr><td>${dd.pName}</td><td>${dd.status}</td><td>${act}</td></tr>`;
+            db.collection('apps').where('uid','==',currentUser.id).onSnapshot(s=>{
+                const b=document.getElementById('u-hist'); b.innerHTML="";
+                s.forEach(d=>{
+                    const x=d.data();
+                    let act = `<span style="color:#888">${t('wait')}</span>`;
+                    if(x.status==='accepted'){ act = x.rated?'✅':`<button onclick="openRate('${x.pid}','${d.id}')">⭐</button>`; }
+                    else if(x.status==='rejected') act='❌';
+                    b.innerHTML+=`<tr><td>${x.pName}</td><td>${t(x.status)}</td><td>${act}</td></tr>`;
                 });
-                document.getElementById('u-total').innerText = c.tot;
-                document.getElementById('u-pending').innerText = c.pen;
-                document.getElementById('u-accepted').innerText = c.acc;
             });
         }
-
-        async function reqAppt(pid, pname) {
-            await db.collection('apps').add({
-                uid: currentUser.id, uName: currentUser.name, uAge: currentUser.age, uGender: currentUser.gender,
-                pid: pid, pName: pname, status: 'pending', date: Date.now()
-            });
-            Swal.fire('OK', t('wait'), 'success');
+        async function req(pid,pnm){
+            await db.collection('apps').add({uid:currentUser.id, uName:currentUser.name, uAge:currentUser.age, uGen:currentUser.gender, pid:pid, pName:pnm, status:'pending', date:Date.now()});
+            sAlert('success','req_ok_title','req_ok_msg');
         }
 
         // --- PRO ---
-        function initPro() {
-            nav('dash-pro');
-            document.getElementById('p-name').innerText = currentUser.name;
-            document.getElementById('p-code').innerText = "Code: " + currentUser.code;
-            document.getElementById('p-points').innerText = currentUser.points || 0;
-            document.getElementById('p-img').src = currentUser.img;
-            loadBanners('p-slider', 'pro');
-
-            db.collection('apps').where('pid','==',currentUser.id).onSnapshot(snap => {
-                const req = document.getElementById('p-req');
-                const cli = document.getElementById('p-cli');
-                req.innerHTML = ""; cli.innerHTML = "";
-                let s = {new:0, tot:0, rej:0, cli:0};
-                let clientsSet = new Set();
-
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    s.tot++;
-                    if(d.status === 'pending') {
-                        s.new++;
-                        req.innerHTML += `<tr><td>${d.uName}</td><td>${d.uAge}</td><td>${d.uGender}</td>
-                        <td><button onclick="ans('${doc.id}',true,'${d.uid}')" style="color:green; border:none; background:none; font-size:1.2rem">✔</button> 
-                        <button onclick="ans('${doc.id}',false)" style="color:red; border:none; background:none; font-size:1.2rem">✖</button></td></tr>`;
-                    } else if(d.status === 'rejected') s.rej++;
-                    else if(d.status === 'accepted') {
-                        if(!clientsSet.has(d.uid)) {
-                            clientsSet.add(d.uid);
-                            // Fetch client info for email/phone
-                            db.collection('users').doc(d.uid).get().then(u => {
-                                const ud = u.data();
-                                cli.innerHTML += `<tr><td>${ud.name}</td><td>${ud.phone}</td><td>${ud.email}</td></tr>`;
-                            });
-                        }
+        function initPro(){
+            nav('dash-pro'); document.getElementById('p-name').innerText=currentUser.name; document.getElementById('p-code').innerText="Code: "+currentUser.code; document.getElementById('p-points').innerText=currentUser.points||0; document.getElementById('p-img').src=currentUser.img; loadBans('p-slider','pro');
+            db.collection('apps').where('pid','==',currentUser.id).onSnapshot(s=>{
+                const r=document.getElementById('p-req'), c=document.getElementById('p-cli'); r.innerHTML=""; c.innerHTML="";
+                let st={n:0,t:0,r:0,c:0}, cSet=new Set();
+                s.forEach(d=>{
+                    const x=d.data(); st.t++;
+                    if(x.status==='pending'){
+                        st.n++;
+                        r.innerHTML+=`<tr><td>${x.uName}</td><td>${x.uAge}</td><td>${t(x.uGen=='M'?'male':'female')}</td><td><button onclick="ans('${d.id}',1)" style="color:green">✔</button> <button onclick="ans('${d.id}',0)" style="color:red">✖</button></td></tr>`;
+                    } else if(x.status==='rejected') st.r++;
+                    else if(x.status==='accepted'){
+                        if(!cSet.has(x.uid)){ cSet.add(x.uid); db.collection('users').doc(x.uid).get().then(u=>{const ud=u.data(); c.innerHTML+=`<tr><td>${ud.name}</td><td>${ud.phone}</td><td>${ud.email}</td></tr>`;}); }
                     }
                 });
-                document.getElementById('stat-new').innerText = s.new;
-                document.getElementById('stat-tot').innerText = s.tot;
-                document.getElementById('stat-rej').innerText = s.rej;
-                document.getElementById('stat-cli').innerText = clientsSet.size;
+                document.getElementById('stat-new').innerText=st.n; document.getElementById('stat-tot').innerText=st.t; document.getElementById('stat-rej').innerText=st.r; document.getElementById('stat-cli').innerText=cSet.size;
             });
         }
-
-        async function ans(aid, ok, uid) {
-            await db.collection('apps').doc(aid).update({status: ok?'accepted':'rejected'});
-            if(ok) await db.collection('users').doc(currentUser.id).update({lastAccepted: Date.now()});
+        async function ans(aid,ok){
+            await db.collection('apps').doc(aid).update({status:ok?'accepted':'rejected'});
+            if(ok) await db.collection('users').doc(currentUser.id).update({lastAccepted:Date.now()});
         }
 
         // --- ADMIN ---
-        function initAdmin() {
+        function initAdm(){
             nav('dash-admin');
-            
-            // Stats
-            db.collection('users').onSnapshot(s => {
-                usersCache = [];
-                let u=0, p=0;
-                s.forEach(d => {
-                    const x = {id:d.id, ...d.data()};
-                    usersCache.push(x);
-                    if(x.role==='user') u++; else if(x.role==='pro') p++;
-                });
-                document.getElementById('adm-users').innerText = u;
-                document.getElementById('adm-pros').innerText = p;
-                renderAdmUsers(usersCache);
-                renderAdmApps();
-                document.getElementById('adm-pend').innerText = usersCache.filter(x=>x.status==='pending').length;
+            db.collection('users').onSnapshot(s=>{
+                uCache=[]; let u=0,p=0;
+                s.forEach(d=>{ const x={id:d.id,...d.data()}; uCache.push(x); if(x.role==='user')u++; else if(x.role==='pro')p++; });
+                document.getElementById('adm-users').innerText=u; document.getElementById('adm-pros').innerText=p; document.getElementById('adm-pend').innerText=uCache.filter(z=>z.status==='pending').length;
+                renderAdmU(uCache); renderAdmA();
             });
-            
-            // Sessions/Clients
-            db.collection('apps').where('status','==','accepted').onSnapshot(s => {
-                document.getElementById('adm-sess').innerText = s.size;
-                const c = new Set();
-                const tb = document.querySelector('#tbl-sess tbody');
-                tb.innerHTML = "";
-                s.forEach(d => {
-                    const dd = d.data();
-                    c.add(dd.uid);
-                    tb.innerHTML += `<tr><td>${dd.uName}</td><td>${dd.pName}</td><td>${new Date(dd.date).toLocaleDateString()}</td></tr>`;
-                });
-                document.getElementById('adm-clients').innerText = c.size;
+            db.collection('apps').where('status','==','accepted').onSnapshot(s=>{
+                document.getElementById('adm-sess').innerText=s.size; document.getElementById('adm-c').innerText=new Set(s.docs.map(d=>d.data().uid)).size;
+                const t=document.querySelector('#tbl-sess tbody'); t.innerHTML="";
+                s.forEach(d=>{ const x=d.data(); t.innerHTML+=`<tr><td>${x.uName}</td><td>${x.pName}</td><td>${new Date(x.date).toLocaleDateString()}</td></tr>`; });
             });
-
-            // Visits
-            db.collection('stats').doc('visits').onSnapshot(d => {
-                if(d.exists) {
-                    const dd = d.data();
-                    const now = new Date().toISOString().split('T')[0];
-                    const mon = now.substring(0,7);
-                    document.getElementById('adm-v-day').innerText = dd[now] || 0;
-                    document.getElementById('adm-v-mon').innerText = dd[mon] || 0;
-                }
-            });
-
-            // Reports
-            db.collection('reports').onSnapshot(s => {
-                document.getElementById('adm-rep').innerText = s.size;
-                const l = document.getElementById('rep-list');
-                l.innerHTML = "";
-                s.forEach(d => {
-                    const x = d.data();
-                    l.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:5px"><b>${x.name}</b> (${x.email})<br>${x.desc}</div>`;
-                });
-            });
-
-            // Banners Count
-            db.collection('banners').onSnapshot(s => document.getElementById('adm-ban').innerText = s.size);
-        }
-
-        function admTab(id) {
-            document.querySelectorAll('.adm-view').forEach(e => e.classList.add('hidden'));
-            document.getElementById('view-'+id).classList.remove('hidden');
-        }
-
-        function renderAdmUsers(arr) {
-            const t = document.querySelector('#tbl-users tbody');
-            t.innerHTML = "";
-            arr.forEach(u => {
-                if(u.role==='admin') return;
-                const btn = u.status==='banned' ? 'Unban' : 'Ban';
-                t.innerHTML += `<tr><td>${u.name}</td><td>${u.role}</td><td>${u.code||'-'}</td><td><button onclick="ban('${u.id}','${u.status}')">${btn}</button></td></tr>`;
+            db.collection('stats').doc('visits').onSnapshot(d=>{ if(d.exists){ const dt=d.data(), k=new Date().toISOString().split('T')[0]; document.getElementById('adm-v-day').innerText=dt[k]||0; document.getElementById('adm-v-mon').innerText=dt[k.substring(0,7)]||0; }});
+            db.collection('banners').onSnapshot(s=>document.getElementById('adm-b').innerText=s.size);
+            db.collection('reports').onSnapshot(s=>{
+                document.getElementById('adm-r').innerText=s.size;
+                const l=document.getElementById('rep-list'); l.innerHTML="";
+                s.forEach(d=>{const x=d.data(); l.innerHTML+=`<div style="border-bottom:1px solid #ddd;padding:5px"><b>${x.name}</b> (${x.email})<br>${x.desc}</div>`;});
             });
         }
-        function renderAdmApps() {
-            const t = document.querySelector('#tbl-apps tbody');
-            t.innerHTML = "";
-            usersCache.filter(x=>x.status==='pending').forEach(u => {
-                const cert = u.cert ? `<button onclick="winOpen('${u.cert}')">View</button>` : '-';
-                t.innerHTML += `<tr><td>${u.name}</td><td>${cert}</td><td><button onclick="appr('${u.id}',1)">✔</button> <button onclick="appr('${u.id}',0)">✖</button></td></tr>`;
+        function admTab(i){ document.querySelectorAll('.adm-view').forEach(e=>e.classList.add('hidden')); document.getElementById('view-'+i).classList.remove('hidden'); }
+        function renderAdmU(arr){
+            const t=document.querySelector('#tbl-users tbody'); t.innerHTML="";
+            arr.forEach(u=>{ if(u.role!='admin')t.innerHTML+=`<tr><td>${u.name}</td><td>${t(u.role=='pro'?'role_pro':'role_user')}</td><td>${u.code||'-'}</td><td><button class="btn-admin" onclick="ban('${u.id}','${u.status}')" style="padding:5px;font-size:0.7rem">${u.status=='banned'?'Unban':'Ban'}</button></td></tr>`; });
+        }
+        function renderAdmA(){
+            const t=document.querySelector('#tbl-apps tbody'); t.innerHTML="";
+            uCache.filter(x=>x.status==='pending').forEach(u=>{
+                const c=u.cert?`<button class="btn-admin" onclick="wOpen('${u.cert}')" style="padding:5px">View</button>`:'-';
+                t.innerHTML+=`<tr><td>${u.name}</td><td>${c}</td><td><button onclick="appr('${u.id}',1)">✔</button> <button onclick="appr('${u.id}',0)">✖</button></td></tr>`;
+            });
+        }
+        function filterUsers(v){ v=v.toLowerCase(); renderAdmU(uCache.filter(u=>u.name?.toLowerCase().includes(v)||u.email?.toLowerCase().includes(v)||u.code?.toLowerCase().includes(v))); }
+        async function ban(id,s){ await db.collection('users').doc(id).update({status:s==='banned'?'active':'banned'}); }
+        async function appr(id,o){ await db.collection('users').doc(id).update({status:o?'active':'rejected'}); }
+        function wOpen(u){const w=window.open();w.document.write(`<img src="${u}">`);}
+
+        // --- CMS ---
+        async function updLogo(){const f=document.getElementById('adm-logo').files[0];if(f){const b=await toBase64(f);db.collection('settings').doc('config').set({logo:b},{merge:true});sAlert('success','succ_title','saved_msg');}}
+        async function updBg(){const f=document.getElementById('adm-bg').files[0];if(f){const b=await toBase64(f);db.collection('settings').doc('config').set({bg:b},{merge:true});sAlert('success','succ_title','saved_msg');}}
+        async function setPts(){const c=document.getElementById('pt-code').value,v=parseInt(document.getElementById('pt-val').value),u=uCache.find(x=>x.code==c);if(u){await db.collection('users').doc(u.id).update({points:v});sAlert('success','succ_title','saved_msg');}}
+        async function addBan(){const f=document.getElementById('ban-img').files[0],l=document.getElementById('ban-link').value,r=document.getElementById('ban-role').value;if(f){const b=await toBase64(f);await db.collection('banners').add({img:b,link:l,target:r});sAlert('success','succ_title','saved_msg');}}
+        async function sndNot(){const a=document.getElementById('nt-ar').value,f=document.getElementById('nt-fr').value,t=document.getElementById('nt-tar').value;await db.collection('notifs').add({ar:a,fr:f,target:t,date:Date.now()});sAlert('success','succ_title','sent_msg');}
+        
+        async function loadBans(eid,r){
+            db.collection('banners').where('target','in',['all',r]).onSnapshot(s=>{
+                const e=document.getElementById(eid); e.innerHTML="";
+                s.forEach((d,i)=>e.innerHTML+=`<img src="${d.data().img}" style="width:100%;height:100%;object-fit:cover;display:${i==0?'block':'none'}" onclick="window.open('${d.data().link}')">`);
+                if(s.size>1){let x=0;setInterval(()=>{const m=e.querySelectorAll('img');m.forEach(z=>z.style.display='none');x=(x+1)%m.length;m[x].style.display='block';},4000);}
+            });
+        }
+
+        // --- COMMON UI ---
+        function checkNotifs(){
+            const r=currentUser.role=='admin'?'admin':currentUser.role;
+            db.collection('notifs').where('target','in',['all',r]).onSnapshot(s=>{
+                let c=0; s.forEach(d=>{if(!localStorage.getItem('rn_'+d.id))c++});
+                const b=document.getElementById('notif-badge'); b.innerText=c; b.style.display=c>0?'block':'none';
+            });
+        }
+        function showNotifs(){
+            const r=currentUser.role=='admin'?'admin':currentUser.role;
+            db.collection('notifs').where('target','in',['all',r]).get().then(s=>{
+                let h=""; s.forEach(d=>{localStorage.setItem('rn_'+d.id,'1'); h+=`<div style="padding:10px;border-bottom:1px solid #eee">${lang=='ar'?d.data().ar:d.data().fr}</div>`});
+                document.getElementById('inf-t').innerText=t('report'); /* Using existing modal */
+                document.getElementById('inf-c').innerHTML=h||"Empty"; document.getElementById('mod-info').style.display='flex'; document.getElementById('notif-badge').style.display='none';
             });
         }
         
-        function winOpen(c) { const w=window.open(); w.document.write(`<img src="${c}">`); }
-        async function ban(id, st) { await db.collection('users').doc(id).update({status: st==='banned'?'active':'banned'}); }
-        async function appr(id, ok) { await db.collection('users').doc(id).update({status: ok?'active':'rejected'}); }
-        function filterUsers(v) {
-            v=v.toLowerCase();
-            renderAdmUsers(usersCache.filter(u=>u.name?.toLowerCase().includes(v)||u.email?.toLowerCase().includes(v)||u.code?.toLowerCase().includes(v)));
+        function openProfile(){ document.getElementById('ped-name').value=currentUser.name; document.getElementById('mod-profile').style.display='flex'; }
+        async function saveProf(){
+            const n=document.getElementById('ped-name').value, p=document.getElementById('ped-pass').value, f=document.getElementById('ped-img').files[0];
+            let u={name:n}; if(p)u.pass=p; if(f)u.img=await toBase64(f);
+            await db.collection('users').doc(currentUser.id).update(u); currentUser={...currentUser,...u};
+            if(document.getElementById('u-name'))document.getElementById('u-name').innerText=n;
+            if(document.getElementById('p-name'))document.getElementById('p-name').innerText=n;
+            closeMod('mod-profile'); sAlert('success','succ_title','saved_msg');
         }
 
-        async function updLogo() { const f=document.getElementById('adm-logo').files[0]; if(f) { const b=await toBase64(f); db.collection('settings').doc('config').set({logo:b},{merge:true}); Swal.fire('OK','Logo set','success'); }}
-        async function updBg() { const f=document.getElementById('adm-bg').files[0]; if(f) { const b=await toBase64(f); db.collection('settings').doc('config').set({bg:b},{merge:true}); Swal.fire('OK','BG set','success'); }}
-        async function setPoints() {
-            const c = document.getElementById('pt-code').value;
-            const v = parseInt(document.getElementById('pt-val').value);
-            const u = usersCache.find(x=>x.code==c);
-            if(u) { await db.collection('users').doc(u.id).update({points:v}); Swal.fire('OK','Points updated','success'); }
-            else Swal.fire('Error','Code not found','error');
+        function openRate(pid,aid){ rateM={pid,aid}; document.getElementById('mod-rate').style.display='flex'; rate(0); }
+        function rate(n){ document.getElementById('rate-v').value=n; document.querySelectorAll('#star-box i').forEach((s,i)=>s.className=i<n?'fas fa-star active':'fas fa-star'); }
+        async function subRate(){
+            const v=parseInt(document.getElementById('rate-v').value), c=document.getElementById('rate-c').value; if(!v)return;
+            await db.collection('reviews').add({pid:rateM.pid, stars:v, comment:c, u:currentUser.name});
+            const r=db.collection('users').doc(rateM.pid); await db.runTransaction(async t=>{const d=await t.get(r);const dd=d.data();t.update(r,{rc:(dd.rc||0)+1, rs:(dd.rs||0)+v})});
+            await db.collection('apps').doc(rateM.aid).update({rated:true});
+            closeMod('mod-rate'); sAlert('success','succ_title','saved_msg');
         }
-        async function addBanner() {
-            const f=document.getElementById('ban-img').files[0];
-            const l=document.getElementById('ban-link').value;
-            const r=document.getElementById('ban-role').value;
-            if(f) { const b=await toBase64(f); await db.collection('banners').add({img:b, link:l, target:r}); Swal.fire('OK','Banner added','success'); }
-        }
-        async function sendNotif() {
-            const ar=document.getElementById('nt-ar').value;
-            const fr=document.getElementById('nt-fr').value;
-            const t=document.getElementById('nt-tar').value;
-            await db.collection('notifs').add({ar, fr, target:t, date:Date.now()});
-            Swal.fire('OK','Sent','success');
-        }
-
-        // --- UTILS ---
-        function openProfile() {
-            document.getElementById('p-edit-name').value = currentUser.name;
-            document.getElementById('mod-profile').style.display = 'flex';
-        }
-        async function saveProfile() {
-            const n = document.getElementById('p-edit-name').value;
-            const p = document.getElementById('p-edit-pass').value;
-            const f = document.getElementById('p-edit-img').files[0];
-            let u = {name:n};
-            if(p) u.pass=p;
-            if(f) u.img=await toBase64(f);
-            await db.collection('users').doc(currentUser.id).update(u);
-            currentUser = {...currentUser, ...u};
-            if(document.getElementById('u-name')) { document.getElementById('u-name').innerText=n; document.getElementById('u-img').src=currentUser.img; }
-            if(document.getElementById('p-name')) { document.getElementById('p-name').innerText=n; document.getElementById('p-img').src=currentUser.img; }
-            closeMod('mod-profile'); Swal.fire('OK','Saved','success');
-        }
-
-        function openRate(pid, aid) { rateMeta = {pid, aid}; document.getElementById('mod-rate').style.display='flex'; rate(0); }
-        function rate(n) { document.getElementById('rate-v').value=n; document.querySelectorAll('#star-box i').forEach((s,i) => i<n?s.classList.add('active'):s.classList.remove('active')); }
-        async function submitRate() {
-            const v=parseInt(document.getElementById('rate-v').value);
-            const c=document.getElementById('rate-c').value;
-            if(!v) return;
-            await db.collection('reviews').add({pid:rateMeta.pid, stars:v, comment:c, user:currentUser.name, date:Date.now()});
-            const rRef = db.collection('users').doc(rateMeta.pid);
-            await db.runTransaction(async t=>{ const doc=await t.get(rRef); const d=doc.data(); t.update(rRef,{rateCount:(d.rateCount||0)+1, rateSum:(d.rateSum||0)+v}); });
-            await db.collection('apps').doc(rateMeta.aid).update({rated:true});
-            closeMod('mod-rate'); Swal.fire('OK','Thanks','success');
-        }
-        function viewReviews(pid) {
-            db.collection('reviews').where('pid','==',pid).get().then(s => {
-                let h=""; s.forEach(d=>{ const x=d.data(); h+=`<div style="border-bottom:1px solid #eee; padding:5px"><b>${x.user}</b> ${'⭐'.repeat(x.stars)}<br>${x.comment}</div>` });
-                document.getElementById('info-t').innerText = t('reviews');
-                document.getElementById('info-c').innerHTML = h||"No reviews";
-                document.getElementById('mod-info').style.display='flex';
+        function viewRev(pid){
+            db.collection('reviews').where('pid','==',pid).get().then(s=>{
+                let h=""; s.forEach(d=>{const x=d.data();h+=`<div style="padding:5px;border-bottom:1px solid #eee"><b>${x.u}</b> ${'⭐'.repeat(x.stars)}<br>${x.comment}</div>`});
+                document.getElementById('inf-t').innerText=t('reviews'); document.getElementById('inf-c').innerHTML=h||"No reviews"; document.getElementById('mod-info').style.display='flex';
             });
         }
-        
-        function openReportModal() { document.getElementById('mod-report').style.display='flex'; }
-        async function sendReport() {
-            const n=document.getElementById('rp-name').value;
-            const e=document.getElementById('rp-email').value;
-            const d=document.getElementById('rp-desc').value;
-            if(!d) return;
-            await db.collection('reports').add({name:n, email:e, desc:d, date:Date.now()});
-            closeMod('mod-report'); Swal.fire('OK','Report Sent','success');
-        }
 
-        function openStatic(k) {
-            document.getElementById('info-t').innerText = t(k);
-            document.getElementById('info-c').innerText = (window.cmsData && window.cmsData[k+'_'+lang]) || "Loading...";
-            document.getElementById('mod-info').style.display='flex';
+        function openReportModal(){document.getElementById('mod-rep').style.display='flex';}
+        async function subRep(){
+            const n=document.getElementById('rp-name').value,e=document.getElementById('rp-mail').value,d=document.getElementById('rp-desc').value; if(!d)return;
+            await db.collection('reports').add({name:n,email:e,desc:d}); closeMod('mod-rep'); sAlert('success','succ_title','sent_msg');
         }
-        function openLoc() {
-            document.getElementById('info-t').innerText = t('location');
-            document.getElementById('info-c').innerHTML = `<iframe src="https://maps.google.com/maps?q=Algiers&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="250" style="border:0"></iframe>`;
-            document.getElementById('mod-info').style.display='flex';
-        }
-        function closeMod(i) { document.getElementById(i).style.display='none'; }
-
+        function openStatic(k){ document.getElementById('inf-t').innerText=t(k); document.getElementById('inf-c').innerText=window.cms?window.cms[k+'_'+lang]||"Loading...":"Loading..."; document.getElementById('mod-info').style.display='flex'; }
+        function openLoc(){ document.getElementById('inf-t').innerText=t('location'); document.getElementById('inf-c').innerHTML=`<iframe src="https://maps.google.com/maps?q=Algiers&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="250" style="border:0"></iframe>`; document.getElementById('mod-info').style.display='flex'; }
+        function closeMod(i){document.getElementById(i).style.display='none';}
     </script>
 </body>
 </html>
