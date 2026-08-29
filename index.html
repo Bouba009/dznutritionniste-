@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutritionniste | عيادة الاستشارات الغذائية والطبية</title>
+    <title>Nutritionniste | منصة التغذية العلاجية والاستشارات الطبية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -68,9 +68,6 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
             50% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
         }
-        .slider-slide {
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
-        }
         ::-webkit-scrollbar {
             width: 5px;
         }
@@ -85,91 +82,52 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
 
-    <!-- 1. شريط التنقل العلوي -->
+    <!-- 1. شريط التنقل العلوي (تم تصغيره، حذف المتجر منه، وجعل الكتابة في سطر واحد) -->
     <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-brand-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-sm shadow-md shadow-brand-500/20 shrink-0">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
-                <div>
-                    <h1 class="text-2xl font-black text-slate-800 tracking-tight">Nutritionniste</h1>
-                    <p class="text-xs text-slate-400 font-medium">منصة التغذية العلاجية والاستشارات الطبية</p>
+                <!-- الاسم والوصف في سطر واحد -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <h1 class="text-lg font-black text-slate-800 tracking-tight">Nutritionniste</h1>
+                    <span class="text-slate-300 text-xs">|</span>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium truncate">منصة التغذية العلاجية والاستشارات الطبية</p>
                 </div>
             </div>
-
-            <a href="https://tirourda.store" target="_blank" class="flex items-center gap-2 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 px-4 py-2.5 rounded-xl text-xs font-bold transition">
-                <i class="fa-solid fa-store text-brand-600"></i> متجر tirourda.store
-            </a>
+            
+            <div class="flex items-center gap-1.5 text-xs text-brand-700 font-bold bg-brand-50 px-2.5 py-1 rounded-lg border border-brand-100 shrink-0">
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                <span>استشارات مباشرة</span>
+            </div>
         </div>
     </header>
 
-    <!-- 2. سلايدر صور بانر في الأعلى -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <div class="relative w-full h-52 sm:h-64 md:h-80 rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900 group">
-            
-            <div id="sliderWrapper" class="relative w-full h-full">
-                <!-- Slide 1 -->
-                <div class="slider-slide absolute inset-0 opacity-100 z-10">
-                    <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=1600" onerror="handleImageError(this, 'banner')" class="w-full h-full object-cover" alt="تغذية صحية">
-                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent flex items-center p-6 sm:p-12 text-white">
-                        <div class="max-w-xl space-y-2 animate-pop-in">
-                            <span class="bg-brand-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">استشارات تغذية سريرية</span>
-                            <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-tight">أنظمة غذائية موجهة لعلاج أمراضك بدقة</h2>
-                            <p class="text-xs sm:text-sm text-slate-200">فحص سريري ذكي خطوة بخطوة مع نخبة من أطباء التغذية.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="slider-slide absolute inset-0 opacity-0 z-0">
-                    <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=1600" onerror="handleImageError(this, 'banner')" class="w-full h-full object-cover" alt="منتجات طبيعية">
-                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent flex items-center p-6 sm:p-12 text-white">
-                        <div class="max-w-xl space-y-2">
-                            <span class="bg-emerald-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">منتجات طبيعية معتمدة</span>
-                            <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-tight">أغذية ومكملات علاجية من متجر tirourda.store</h2>
-                            <p class="text-xs sm:text-sm text-slate-200">حلول طبيعية مدروسة لدعم صحة القولون، الكبد، وخفض السكر التراكمي.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 3 -->
-                <div class="slider-slide absolute inset-0 opacity-0 z-0">
-                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1600" onerror="handleImageError(this, 'banner')" class="w-full h-full object-cover" alt="طاقم طبي">
-                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent flex items-center p-6 sm:p-12 text-white">
-                        <div class="max-w-xl space-y-2">
-                            <span class="bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">متابعة فردية</span>
-                            <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-tight">نتعرف على بياناتك وأعراضك أولاً لضمان سلامتك</h2>
-                            <p class="text-xs sm:text-sm text-slate-200">استمع لنصائح المختص واحصل على التوجيه الصحي الأنسب لك.</p>
-                        </div>
-                    </div>
-                </div>
+    <!-- 2. بانر الصورة في الأعلى -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5">
+        <a href="https://tirourda.store" target="_blank" class="block group relative w-full rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-900 transition duration-300 transform hover:scale-[1.005]">
+            <img 
+                src="https://tirourda.store/wp-content/uploads/2025/07/5.png" 
+                alt="بانر المتجر الطبي tirourda.store" 
+                class="w-full h-auto max-h-[360px] object-cover object-center transform group-hover:scale-105 transition duration-700"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=1600';"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                <span class="inline-flex items-center gap-2 bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg">
+                    <i class="fa-solid fa-cart-shopping"></i> تصفح المنتجات في tirourda.store
+                </span>
             </div>
-
-            <!-- Controls -->
-            <button onclick="prevSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/20 hover:bg-white text-slate-800 flex items-center justify-center backdrop-blur-md transition">
-                <i class="fa-solid fa-chevron-right text-sm"></i>
-            </button>
-            <button onclick="nextSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/20 hover:bg-white text-slate-800 flex items-center justify-center backdrop-blur-md transition">
-                <i class="fa-solid fa-chevron-left text-sm"></i>
-            </button>
-
-            <!-- Dots -->
-            <div id="sliderDots" class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-                <button onclick="goToSlide(0)" class="w-7 h-1.5 rounded-full bg-white transition"></button>
-                <button onclick="goToSlide(1)" class="w-2.5 h-1.5 rounded-full bg-white/40 transition"></button>
-                <button onclick="goToSlide(2)" class="w-2.5 h-1.5 rounded-full bg-white/40 transition"></button>
-            </div>
-        </div>
+        </a>
     </section>
 
-    <!-- 3. خانة البحث -->
-    <section class="py-8 bg-slate-50">
+    <!-- 3. خانة البحث والترحيب -->
+    <section class="py-6 sm:py-8 bg-slate-50">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mb-3 tracking-tight">
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mb-2.5 tracking-tight">
                 اختر استشاري التغذية <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-emerald-500">حسب حالتك الصحية</span>
             </h2>
-            <p class="text-slate-500 text-xs sm:text-sm mb-6 max-w-xl mx-auto">
+            <p class="text-slate-500 text-xs sm:text-sm mb-5 max-w-xl mx-auto">
                 سيبدأ معك الطبيب بمحادثة فردية يسألك فيها عن تفاصيلك بالترتيب ليمنحك التشخيص الدقيق.
             </p>
 
@@ -180,7 +138,7 @@
                         type="text" 
                         id="searchInput" 
                         placeholder="ابحث عن اختصاصك (مثال: القولون، السكري، دهون الكبد، السمنة، التنفس...)" 
-                        class="w-full pl-12 pr-14 py-4 rounded-2xl border-2 border-brand-200/80 bg-white focus:border-brand-600 focus:ring-4 focus:ring-brand-500/10 shadow-lg shadow-brand-500/5 text-slate-800 placeholder-slate-400 text-sm sm:text-base outline-none transition"
+                        class="w-full pl-12 pr-14 py-3.5 sm:py-4 rounded-2xl border-2 border-brand-200/80 bg-white focus:border-brand-600 focus:ring-4 focus:ring-brand-500/10 shadow-lg shadow-brand-500/5 text-slate-800 placeholder-slate-400 text-sm sm:text-base outline-none transition"
                         onkeyup="filterDoctors()"
                     >
                     <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute left-4 text-slate-400 hover:text-slate-600 p-1">
@@ -199,9 +157,9 @@
         </div>
     </section>
 
-    <!-- 4. بطاقات الأطباء مع أنيميشن الزر -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-1">
-        <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-200">
+    <!-- 4. بطاقات الأطباء -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex-1">
+        <div class="flex items-center justify-between mb-5 pb-2 border-b border-slate-200">
             <div>
                 <h3 class="text-xl font-black text-slate-800">طاقم الأطباء والاستشاريين</h3>
                 <p class="text-xs text-slate-500">اختر الطبيب المناسب لبدء الاستشارة المباشرة</p>
@@ -210,7 +168,7 @@
         </div>
 
         <div id="doctorsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- سيتم توليد البطاقات ديناميكياً -->
+            <!-- كروت الأطباء -->
         </div>
 
         <div id="noResults" class="hidden text-center py-16 animate-pop-in">
@@ -317,57 +275,15 @@
     <script>
         const OPENROUTER_API_KEY = "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";
 
-        // معالجة الصور البديلة تلقائياً لتفادي أي رابط معطل
+        // معالجة الصور البديلة تلقائياً
         function handleImageError(img, type) {
             img.onerror = null;
             if (type === 'doctor') {
                 img.src = `https://ui-avatars.com/api/?name=Dr+Doctor&background=16a34a&color=fff&size=512&font-size=0.33`;
-            } else {
-                img.src = `https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=1200`;
             }
         }
 
-        // 1. نظام السلايدر
-        let currentSlide = 0;
-        const slides = document.querySelectorAll(".slider-slide");
-        const dots = document.getElementById("sliderDots")?.querySelectorAll("button");
-        let sliderInterval = null;
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                if (i === index) {
-                    slide.classList.remove("opacity-0", "z-0");
-                    slide.classList.add("opacity-100", "z-10");
-                } else {
-                    slide.classList.remove("opacity-100", "z-10");
-                    slide.classList.add("opacity-0", "z-0");
-                }
-            });
-            if (dots) {
-                dots.forEach((dot, i) => {
-                    dot.className = (i === index) ? "w-7 h-1.5 rounded-full bg-white transition" : "w-2.5 h-1.5 rounded-full bg-white/40 transition";
-                });
-            }
-            currentSlide = index;
-        }
-
-        function nextSlide() {
-            showSlide((currentSlide + 1) % slides.length);
-        }
-
-        function prevSlide() {
-            showSlide((currentSlide - 1 + slides.length) % slides.length);
-        }
-
-        function goToSlide(index) {
-            showSlide(index);
-            clearInterval(sliderInterval);
-            sliderInterval = setInterval(nextSlide, 4500);
-        }
-
-        sliderInterval = setInterval(nextSlide, 4500);
-
-        // 2. نغمة الإشعار الطبية
+        // نغمة الإشعار الطبية
         function playMedicalChime() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -396,7 +312,7 @@
             } catch (e) {}
         }
 
-        // 3. بيانات الأطباء مع صور متينة ومحدثة
+        // بيانات الأطباء
         const specialists = [
             {
                 id: "colon",
@@ -486,10 +402,9 @@
 
         let activeDoctor = null;
         let chatHistories = {};
-        // حالة تتبع الأسئلة السريرية لكل طبيب (Intake State Machine)
         let sessionData = {};
 
-        // عرض بطاقات الأطباء مع أنيميشن الزر (btn-pulse)
+        // عرض بطاقات الأطباء
         function renderDoctors(docs = specialists) {
             const grid = document.getElementById("doctorsGrid");
             const noResults = document.getElementById("noResults");
@@ -533,7 +448,6 @@
                     </div>
 
                     <div class="mt-5 pt-3 border-t border-slate-100">
-                        <!-- زر بدء المحادثة مع أنيميشن نبض جذاب -->
                         <button onclick="openChatModal('${doc.id}')" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-brand-600/30 transition transform active:scale-95 animate-btn-pulse">
                             <i class="fa-solid fa-comments text-sm"></i> بدء المحادثة والاستشارة
                         </button>
@@ -572,7 +486,7 @@
             filterDoctors();
         }
 
-        // نظام المحادثة السريرية: سؤال واحد تلو الآخر بدقة
+        // برومبت الطبيب الممنهج
         function getSystemPrompt(doc) {
             return `أنت ${doc.name}، ${doc.title} في منصة nutritionniste.
 نطاقك الطبي محصور فقط في مجالك وتخصصك.
@@ -590,7 +504,7 @@
    - الخطوة 7: فقط إذا أجاب المريض بـ (نعم) أو وافق، تقترح عليه المنتج المناسب بهذا التنسيق الإلزامي: [PRODUCT: ${doc.productName} | https://tirourda.store/search?q=${doc.productKeyword}]`;
         }
 
-        // فتح نافذة المحادثة وبدء أول سؤال (الاسم فقط)
+        // فتح الشات وبدء التقييم
         function openChatModal(doctorId) {
             activeDoctor = specialists.find(d => d.id === doctorId);
             if (!activeDoctor) return;
@@ -611,7 +525,6 @@
                 };
             }
 
-            // الرسالة الأولى: الترحيب والسؤال عن الاسم فقط
             if (!chatHistories[doctorId]) {
                 const firstGreeting = `مرحباً بك! أنا **${activeDoctor.name}**، ${activeDoctor.title}.\n\nيسعدني جداً استقبالك والبدء في تقييم حالتك الغذائية والصحية.\n\nهل يمكنك إخباري **باسمك الكريم** أولاً؟`;
 
@@ -684,7 +597,6 @@
                 container.appendChild(msgWrapper);
             });
 
-            // إظهار أزرار نعم/لا إذا سأل الطبيب عن المنتجات
             if (lastAssistantMsg.includes("هل تود") && lastAssistantMsg.includes("tirourda.store") && !lastAssistantMsg.includes("[PRODUCT:")) {
                 quickChoice.classList.remove("hidden");
             } else {
@@ -694,11 +606,9 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // تحويل النصوص والأزرار
         function formatDoctorResponse(text) {
             let html = text;
 
-            // تحويل [PRODUCT: اسم المنتج | الرابط] إلى زر أنيق
             const productRegex = /\[PRODUCT:\s*([^\|\]]+)\s*\|\s*([^\]]+)\]/gi;
             html = html.replace(productRegex, function(_, name, url) {
                 return `
@@ -732,7 +642,6 @@
             document.getElementById("chatForm").dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }
 
-        // الاتصال بالذكاء الاصطناعي مع معالجة تسلسل الأسئلة خطوة بخطوة
         async function fetchAIResponse(messages) {
             const candidateModels = [
                 "openrouter/free",
@@ -774,7 +683,6 @@
             return generateStepByStepFallback(messages);
         }
 
-        // معالج محلي صارم يضمن سير الأسئلة خطوة بخطوة حتى في حال انقطاع الشبكة
         function generateStepByStepFallback(messages) {
             const doc = activeDoctor || specialists[0];
             const session = sessionData[doc.id];
@@ -784,7 +692,7 @@
             if (session.step === 1) {
                 session.patientName = lastUserText.replace(/(اسمي|أنا|هو)/g, "").trim() || "أخي/أختي";
                 session.step = 2;
-                return `أهلاً وسهلاً بك يا **${session.patientName}**، تشرفت بمعرفتك!\n\nللبدء في ملفك الصحي، **كم يبلغ عمرك**؟`;
+                return `أهلاً وسهلاً بك يا **${session.patientName}**، تشرفت بمعرفتك!\n\nللبدء في تقييم حالتك بدقة، **كم يبلغ عمرك**؟`;
             }
 
             if (session.step === 2) {
@@ -820,7 +728,6 @@
             }
         }
 
-        // إرسال الرسالة
         async function handleSendMessage(e) {
             e.preventDefault();
             const input = document.getElementById("chatInput");
@@ -854,7 +761,6 @@
             playMedicalChime();
         }
 
-        // تشغيل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             renderDoctors();
         });
