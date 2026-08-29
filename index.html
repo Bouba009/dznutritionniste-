@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutritionniste | منصة الاستشارات الغذائية الذكية</title>
+    <title>Nutritionniste | عيادة الاستشارات الغذائية والطبية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Tajawal & Cairo) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,508 +19,531 @@
                         sans: ['Tajawal', 'sans-serif'],
                     },
                     colors: {
-                        primary: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            800: '#065f46',
-                            900: '#064e3b',
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
                         }
+                    },
+                    keyframes: {
+                        popIn: {
+                            '0%': { transform: 'scale(0.88)', opacity: '0' },
+                            '70%': { transform: 'scale(1.02)', opacity: '1' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        btnGlow: {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 4px 15px rgba(22, 163, 74, 0.35)' },
+                            '50%': { transform: 'scale(1.02)', boxShadow: '0 8px 25px rgba(22, 163, 74, 0.65)' }
+                        },
+                        pulseFloat: {
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-6px) scale(1.05)' }
+                        }
+                    },
+                    animation: {
+                        'pop-in': 'popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'btn-pulse': 'btnGlow 2.5s infinite ease-in-out',
+                        'float-wa': 'pulseFloat 3s infinite ease-in-out',
                     }
                 }
             }
         }
     </script>
     <style>
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        .pop-card {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .animate-marquee {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marquee 25s linear infinite;
+        .pop-card:hover {
+            transform: translateY(-6px) scale(1.015);
         }
-        .animate-marquee:hover {
-            animation-play-state: paused;
+        .product-glow {
+            animation: glowPulse 2s infinite;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(16, 185, 129, 0.15);
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+            50% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
         }
-        .product-btn-glow {
-            animation: pulse-border 2s infinite;
+        .slider-slide {
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
         }
-        @keyframes pulse-border {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-        }
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #f8fafc;
         }
         ::-webkit-scrollbar-thumb {
-            background: #10b981;
-            border-radius: 4px;
+            background: #22c55e;
+            border-radius: 999px;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
 
-    <!-- 1. شريط الإعلان المتحرك في الأعلى (Top Slider / Ticker) -->
-    <div class="bg-primary-900 text-white text-sm py-2 overflow-hidden border-b border-primary-700 relative z-50">
-        <div class="flex items-center">
-            <div class="bg-primary-700 px-4 py-1 text-xs font-bold rounded-l-full z-10 flex items-center gap-1 shadow">
-                <i class="fa-solid fa-bullhorn text-yellow-300"></i> إعلانات
-            </div>
-            <div class="overflow-hidden w-full">
-                <div class="animate-marquee flex items-center gap-12 font-medium">
-                    <span>🌿 استشارات تغذية علاجية فورية مدعومة بالذكاء الاصطناعي على مدار الساعة!</span>
-                    <span>🛒 تسوق أفضل المكملات والأغذية الطبيعية عبر متجرنا الرسمي <strong>tirourda.store</strong></span>
-                    <span>📞 لمتابعة حالتك الصحية وتصميم برنامج مخصص، تواصل مع فريقنا عبر واتساب: <strong class="text-emerald-300" dir="ltr">0559293773</strong></span>
-                    <span>✨ استشر الآن نخبة من أطباء التغذية المتخصصين في القولون، السكري، تشحم الكبد والسمنة</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. رأس الصفحة (Navbar) -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100 shadow-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <!-- Logo -->
+    <!-- 1. شريط التنقل العلوي -->
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-600 to-emerald-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-primary-500/20">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-brand-500/20">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1">
-                        Nutritionniste <span class="text-xs px-2 py-0.5 bg-primary-100 text-primary-700 rounded-full font-bold">AI Health</span>
-                    </h1>
-                    <p class="text-xs text-slate-400 font-medium">منصة التغذية والعلاج الطبيعي الذكية</p>
+                    <h1 class="text-2xl font-black text-slate-800 tracking-tight">Nutritionniste</h1>
+                    <p class="text-xs text-slate-400 font-medium">منصة التغذية العلاجية والاستشارات الطبية</p>
                 </div>
             </div>
 
-            <!-- Header Quick Actions -->
-            <div class="flex items-center gap-3">
-                <a href="https://tirourda.store" target="_blank" class="hidden md:flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-bold transition">
-                    <i class="fa-solid fa-store text-primary-600"></i> متجر tirourda.store
-                </a>
-                <a href="https://wa.me/213559293773" target="_blank" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md shadow-emerald-500/20 transition transform hover:-translate-y-0.5">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> <span class="hidden sm:inline">متابعة خاصة: </span> 0559293773
-                </a>
-            </div>
+            <a href="https://tirourda.store" target="_blank" class="flex items-center gap-2 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 px-4 py-2.5 rounded-xl text-xs font-bold transition">
+                <i class="fa-solid fa-store text-brand-600"></i> متجر tirourda.store
+            </a>
         </div>
     </header>
 
-    <!-- 3. الواجهة الرئيسية (Hero Section & Search Bar) -->
-    <section class="relative py-14 bg-gradient-to-b from-primary-50/70 via-white to-slate-50 overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none"></div>
-        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
-            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold mb-4">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                أطباء ومختصون بالذكاء الاصطناعي متاحون الآن للإجابة فوراً
-            </span>
-            <h2 class="text-3xl sm:text-5xl font-black text-slate-900 leading-tight mb-4">
-                اختر مختص التغذية المناسب <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-emerald-500">لحالتك الصحية بدقة وتخصص</span>
+    <!-- 2. سلايدر صور بانر في الأعلى -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div class="relative w-full h-52 sm:h-64 md:h-80 rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900 group">
+            
+            <div id="sliderWrapper" class="relative w-full h-full">
+                <!-- Slide 1 -->
+                <div class="slider-slide absolute inset-0 opacity-100 z-10">
+                    <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=1600" onerror="handleImageError(this, 'banner')" class="w-full h-full object-cover" alt="تغذية صحية">
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent flex items-center p-6 sm:p-12 text-white">
+                        <div class="max-w-xl space-y-2 animate-pop-in">
+                            <span class="bg-brand-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">استشارات تغذية سريرية</span>
+                            <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-tight">أنظمة غذائية موجهة لعلاج أمراضك بدقة</h2>
+                            <p class="text-xs sm:text-sm text-slate-200">فحص سريري ذكي خطوة بخطوة مع نخبة من أطباء التغذية.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="slider-slide absolute inset-0 opacity-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=1600" onerror="handleImageError(this, 'banner')" class="w-full h-full object-cover" alt="منتجات طبيعية">
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent flex items-center p-6 sm:p-12 text-white">
+                        <div class="max-w-xl space-y-2">
+                            <span class="bg-emerald-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">منتجات طبيعية معتمدة</span>
+                            <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-tight">أغذية ومكملات علاجية من متجر tirourda.store</h2>
+                            <p class="text-xs sm:text-sm text-slate-200">حلول طبيعية مدروسة لدعم صحة القولون، الكبد، وخفض السكر التراكمي.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="slider-slide absolute inset-0 opacity-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1600" onerror="handleImageError(this, 'banner')" class="w-full h-full object-cover" alt="طاقم طبي">
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent flex items-center p-6 sm:p-12 text-white">
+                        <div class="max-w-xl space-y-2">
+                            <span class="bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase">متابعة فردية</span>
+                            <h2 class="text-xl sm:text-3xl md:text-4xl font-black leading-tight">نتعرف على بياناتك وأعراضك أولاً لضمان سلامتك</h2>
+                            <p class="text-xs sm:text-sm text-slate-200">استمع لنصائح المختص واحصل على التوجيه الصحي الأنسب لك.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <button onclick="prevSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/20 hover:bg-white text-slate-800 flex items-center justify-center backdrop-blur-md transition">
+                <i class="fa-solid fa-chevron-right text-sm"></i>
+            </button>
+            <button onclick="nextSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/20 hover:bg-white text-slate-800 flex items-center justify-center backdrop-blur-md transition">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </button>
+
+            <!-- Dots -->
+            <div id="sliderDots" class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                <button onclick="goToSlide(0)" class="w-7 h-1.5 rounded-full bg-white transition"></button>
+                <button onclick="goToSlide(1)" class="w-2.5 h-1.5 rounded-full bg-white/40 transition"></button>
+                <button onclick="goToSlide(2)" class="w-2.5 h-1.5 rounded-full bg-white/40 transition"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. خانة البحث -->
+    <section class="py-8 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mb-3 tracking-tight">
+                اختر استشاري التغذية <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-emerald-500">حسب حالتك الصحية</span>
             </h2>
-            <p class="text-slate-600 text-base sm:text-lg mb-8 max-w-2xl mx-auto">
-                كل طبيب ومختص هنا مبرمج وفق أحدث البروتوكولات الطبية في مجاله، ويقترح عليك الحميات الدقيقة والمنتجات الطبيعية الأنسب لحالتك.
+            <p class="text-slate-500 text-xs sm:text-sm mb-6 max-w-xl mx-auto">
+                سيبدأ معك الطبيب بمحادثة فردية يسألك فيها عن تفاصيلك بالترتيب ليمنحك التشخيص الدقيق.
             </p>
 
-            <!-- خانة البحث التفاعلية -->
-            <div class="relative max-w-2xl mx-auto">
+            <div class="relative max-w-2xl mx-auto animate-pop-in">
                 <div class="relative flex items-center">
-                    <i class="fa-solid fa-magnifying-glass absolute right-5 text-primary-600 text-lg"></i>
+                    <i class="fa-solid fa-magnifying-glass absolute right-5 text-brand-600 text-lg"></i>
                     <input 
                         type="text" 
                         id="searchInput" 
-                        placeholder="ابحث عن اختصاصك (مثلاً: سكري، قولون، تشحم الكبد، سمنة، تنفس...)" 
-                        class="w-full pl-12 pr-14 py-4 rounded-2xl border-2 border-primary-200 focus:border-primary-600 focus:ring-4 focus:ring-primary-500/10 shadow-lg text-slate-800 placeholder-slate-400 text-base outline-none transition"
+                        placeholder="ابحث عن اختصاصك (مثال: القولون، السكري، دهون الكبد، السمنة، التنفس...)" 
+                        class="w-full pl-12 pr-14 py-4 rounded-2xl border-2 border-brand-200/80 bg-white focus:border-brand-600 focus:ring-4 focus:ring-brand-500/10 shadow-lg shadow-brand-500/5 text-slate-800 placeholder-slate-400 text-sm sm:text-base outline-none transition"
                         onkeyup="filterDoctors()"
                     >
-                    <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute left-4 text-slate-400 hover:text-slate-600">
-                        <i class="fa-solid fa-circle-xmark"></i>
+                    <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute left-4 text-slate-400 hover:text-slate-600 p-1">
+                        <i class="fa-solid fa-circle-xmark text-lg"></i>
                     </button>
                 </div>
-                <div class="flex flex-wrap items-center justify-center gap-2 mt-3 text-xs text-slate-500">
-                    <span>الأكثر بحثاً:</span>
-                    <button onclick="setSearch('القولون')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary-500 hover:text-primary-600 transition">أمراض القولون</button>
-                    <button onclick="setSearch('السكري')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary-500 hover:text-primary-600 transition">السكري</button>
-                    <button onclick="setSearch('الكبد')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary-500 hover:text-primary-600 transition">تشحم الكبد</button>
-                    <button onclick="setSearch('السمنة')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-primary-500 hover:text-primary-600 transition">إنقاص الوزن</button>
+
+                <div class="flex flex-wrap items-center justify-center gap-1.5 mt-3 text-xs text-slate-500">
+                    <span class="font-bold">الحالات الأكثر طلباً:</span>
+                    <button onclick="setSearch('القولون')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">أمراض القولون</button>
+                    <button onclick="setSearch('السكري')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">السكري</button>
+                    <button onclick="setSearch('الكبد')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">تشحم الكبد</button>
+                    <button onclick="setSearch('السمنة')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">إنقاص الوزن</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. شبكة الأطباء والمختصين (Doctors Grid) -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="flex items-center justify-between mb-8">
+    <!-- 4. بطاقات الأطباء مع أنيميشن الزر -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-1">
+        <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-200">
             <div>
-                <h3 class="text-2xl font-bold text-slate-800">قائمة الأطباء والاستشاريين</h3>
-                <p class="text-sm text-slate-500">انقر على أي مختص لبدء محادثة واستشارة ذكية مخصصة</p>
+                <h3 class="text-xl font-black text-slate-800">طاقم الأطباء والاستشاريين</h3>
+                <p class="text-xs text-slate-500">اختر الطبيب المناسب لبدء الاستشارة المباشرة</p>
             </div>
-            <span id="doctorsCount" class="text-xs bg-primary-50 text-primary-700 font-bold px-3 py-1.5 rounded-xl border border-primary-200">7 مختصين متوفرين</span>
+            <span id="doctorsCount" class="text-xs bg-brand-50 text-brand-700 font-bold px-3 py-1 rounded-xl border border-brand-200">7 أطباء متاحين</span>
         </div>
 
         <div id="doctorsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- سيتم توليد البطاقات عبر JavaScript -->
+            <!-- سيتم توليد البطاقات ديناميكياً -->
         </div>
 
-        <!-- رسالة عدم وجود نتائج -->
-        <div id="noResults" class="hidden text-center py-16">
-            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-3">
+        <div id="noResults" class="hidden text-center py-16 animate-pop-in">
+            <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-2xl mb-3">
                 <i class="fa-solid fa-user-doctor"></i>
             </div>
-            <h4 class="text-lg font-bold text-slate-700">لم يتم العثور على مختص يطابق بحثك</h4>
-            <p class="text-sm text-slate-500 mt-1">جرب كلمات أخرى أو تواصل مباشرة معنا عبر واتساب</p>
+            <h4 class="text-lg font-bold text-slate-700">لم يتم العثور على مختص يطابق هذا البحث</h4>
         </div>
     </main>
 
-    <!-- 5. نافذة المحادثة الذكية (Interactive AI Chat Modal) -->
+    <!-- 5. نافذة المحادثة الذكية (Chat Modal) -->
     <div id="chatModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4">
-        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col h-[90vh] max-h-[750px] overflow-hidden border border-slate-100 transform transition-all">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col h-[90vh] max-h-[720px] overflow-hidden border border-slate-100 animate-pop-in">
             
             <!-- Chat Header -->
-            <div class="bg-gradient-to-r from-primary-700 to-emerald-600 text-white p-4 flex items-center justify-between">
+            <div class="bg-gradient-to-r from-brand-800 to-emerald-700 text-white p-4 flex items-center justify-between shadow-md">
                 <div class="flex items-center gap-3">
                     <div class="relative">
-                        <img id="chatDoctorImg" src="" alt="Doctor" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow">
+                        <img id="chatDoctorImg" src="" onerror="handleImageError(this, 'doctor')" alt="Doctor" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
                         <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full"></span>
                     </div>
                     <div>
-                        <h4 id="chatDoctorName" class="font-bold text-lg leading-snug">د. سليم بن عيسى</h4>
-                        <p id="chatDoctorRole" class="text-xs text-emerald-100 flex items-center gap-1">
-                            <i class="fa-solid fa-stethoscope"></i> مختص في أمراض القولون والجهاز الهضمي
-                        </p>
+                        <h4 id="chatDoctorName" class="font-bold text-base sm:text-lg leading-snug">د. سليم بوعزيز</h4>
+                        <p id="chatDoctorRole" class="text-xs text-emerald-100 flex items-center gap-1"></p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <a href="https://wa.me/213559293773" target="_blank" class="bg-emerald-500/30 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 transition" title="طلب متابعة عبر واتساب">
-                        <i class="fa-brands fa-whatsapp"></i> <span class="hidden sm:inline">واتساب</span>
-                    </a>
-                    <button onclick="closeChatModal()" class="w-8 h-8 rounded-full bg-black/10 hover:bg-black/25 flex items-center justify-center text-white text-lg transition">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
+                <button onclick="closeChatModal()" class="w-9 h-9 rounded-xl bg-black/15 hover:bg-black/30 flex items-center justify-center text-white text-base transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
-            <!-- System Info Alert -->
-            <div class="bg-emerald-50 border-b border-emerald-100 px-4 py-2 text-[11px] text-emerald-800 flex items-center justify-between">
-                <span>⚡ استشارة ذكية مدعومة بالذكاء الاصطناعي الطبي ومقترحات من متجر tirourda.store</span>
-                <span class="font-bold text-emerald-700">0559293773 📞</span>
+            <!-- Protocol Notice -->
+            <div class="bg-brand-50 border-b border-brand-100 px-4 py-2 text-[11px] text-brand-900 flex items-center justify-between">
+                <span class="flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid fa-user-check text-brand-600"></i> جلسة تشخيص سريري خطوة بخطوة
+                </span>
+                <span class="text-[10px] text-brand-700 font-bold">tirourda.store</span>
             </div>
 
-            <!-- Chat Messages Container -->
-            <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50">
-                <!-- الرسائل ستضاف هنا ديناميكياً -->
-            </div>
+            <!-- Messages Area -->
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/60"></div>
 
-            <!-- Typing Indicator (Hidden by default) -->
+            <!-- Typing Indicator -->
             <div id="typingIndicator" class="hidden px-4 py-2 bg-slate-50 flex items-center gap-2 text-xs text-slate-500">
-                <span class="w-2 h-2 rounded-full bg-primary-500 animate-bounce"></span>
-                <span class="w-2 h-2 rounded-full bg-primary-500 animate-bounce [animation-delay:0.2s]"></span>
-                <span class="w-2 h-2 rounded-full bg-primary-500 animate-bounce [animation-delay:0.4s]"></span>
-                <span>المختص يكتب رداً طبياً مخصصاً لك...</span>
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce"></span>
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce [animation-delay:0.2s]"></span>
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce [animation-delay:0.4s]"></span>
+                <span id="typingDoctorName" class="font-medium text-brand-700">المختص يقوم بالرد عليك...</span>
             </div>
 
-            <!-- Quick Suggestions Prompts -->
-            <div id="quickPrompts" class="px-4 py-2 bg-white border-t border-slate-100 flex items-center gap-2 overflow-x-auto text-xs whitespace-nowrap">
-                <span class="text-slate-400 font-bold">أسئلة شائعة:</span>
-                <!-- Generated dynamically based on doctor -->
+            <!-- Quick Choice Chips (إذا سأل عن المنتجات) -->
+            <div id="quickChoiceChips" class="hidden px-4 py-2.5 bg-emerald-50 border-t border-emerald-100 flex flex-wrap items-center gap-2 text-xs">
+                <span class="text-brand-900 font-bold">هل تود اقتراح منتجات طبيعية؟</span>
+                <button onclick="sendQuickPrompt('نعم، أرجو أن تقترح عليّ المنتجات الطبيعية المناسبة لحالتي من متجر tirourda.store')" class="bg-brand-600 hover:bg-brand-700 text-white px-3.5 py-1.5 rounded-lg font-bold transition shadow-sm">نعم، اقترح لي</button>
+                <button onclick="sendQuickPrompt('لا، شكراً أريد فقط النصائح الغذائية')" class="bg-white hover:bg-slate-100 text-slate-700 px-3.5 py-1.5 rounded-lg border border-slate-200 transition">لا، شكراً</button>
             </div>
 
-            <!-- Chat Input Bar -->
+            <!-- Input Bar -->
             <div class="p-3 bg-white border-t border-slate-100">
                 <form id="chatForm" onsubmit="handleSendMessage(event)" class="flex items-center gap-2">
                     <input 
                         type="text" 
                         id="chatInput" 
-                        placeholder="اكتب استشارتك أو الأعراض التي تشعر بها هنا..." 
-                        class="flex-1 px-4 py-3 bg-slate-100 focus:bg-white rounded-2xl border border-transparent focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 text-sm outline-none transition"
+                        placeholder="أدخل إجابتك هنا..." 
+                        class="flex-1 px-4 py-3 bg-slate-100 focus:bg-white rounded-2xl border border-transparent focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm outline-none transition"
                         autocomplete="off"
                         required
                     >
                     <button 
                         type="submit" 
                         id="sendBtn"
-                        class="bg-primary-600 hover:bg-primary-700 text-white w-12 h-11 rounded-2xl flex items-center justify-center shadow-md shadow-primary-500/30 transition transform active:scale-95"
+                        class="bg-brand-600 hover:bg-brand-700 text-white w-12 h-11 rounded-2xl flex items-center justify-center shadow-md shadow-brand-500/30 transition transform active:scale-90"
                     >
-                        <i class="fa-solid fa-paper-plane rotate-180"></i>
+                        <i class="fa-solid fa-paper-plane rotate-180 text-sm"></i>
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- 6. قسم المتجر والمتابعة عبر الواتساب (Footer Banner) -->
-    <section class="bg-gradient-to-r from-slate-900 to-emerald-950 text-white py-12 border-t border-slate-800 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <!-- 6. فوتر الموقع -->
+    <footer class="bg-slate-900 text-white py-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-right">
             <div>
-                <span class="text-primary-400 text-xs font-black uppercase tracking-wider">رعاية صحية ومتابعة فردية</span>
-                <h3 class="text-2xl sm:text-3xl font-black mt-2 leading-snug">هل ترغب في متابعة مستمرة وتفصيل دقيق لملفك الصحي؟</h3>
-                <p class="text-slate-300 text-sm mt-3 leading-relaxed">
-                    فريقنا الطبي متاح لمتابعتك خطوة بخطوة مع توفير أنظمة غذائية متكاملة وحزم علاجية طبيعية عبر متجرنا <strong>tirourda.store</strong>.
-                </p>
-                <div class="mt-6 flex flex-wrap items-center gap-4">
-                    <a href="https://wa.me/213559293773" target="_blank" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-xl shadow-emerald-500/20 transition transform hover:-translate-y-1">
-                        <i class="fa-brands fa-whatsapp text-xl"></i> تواصل معنا عبر واتساب (0559293773)
-                    </a>
-                    <a href="https://tirourda.store" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-2xl font-bold text-sm transition">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i> زيارة متجر tirourda.store
-                    </a>
+                <div class="flex items-center justify-center md:justify-start gap-2 text-xl font-black text-white">
+                    <i class="fa-solid fa-leaf text-brand-500"></i> Nutritionniste
                 </div>
+                <p class="text-xs text-slate-400 mt-1">المنصة التخصصية للتغذية العلاجية بالذكاء الاصطناعي والمكملات الطبيعية</p>
             </div>
-            <div class="bg-white/5 p-6 rounded-3xl border border-white/10 text-center">
-                <i class="fa-solid fa-shield-heart text-5xl text-emerald-400 mb-3"></i>
-                <h4 class="text-lg font-bold text-white">استشارات ذكية وموثوقة</h4>
-                <p class="text-xs text-slate-400 mt-2">
-                    الموقع يقدم نصائح وإرشادات غذائية علاجية قائمة على الذكاء الاصطناعي مع منتجات طبيعية مختارة بعناية. لا تغني الاستشارة عن زيارة الطبيب في الحالات الحرجة.
-                </p>
-            </div>
+            <a href="https://tirourda.store" target="_blank" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow transition">
+                <i class="fa-solid fa-store"></i> متجر tirourda.store
+            </a>
         </div>
-    </section>
+    </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/213559293773" target="_blank" class="fixed bottom-6 left-6 z-40 bg-emerald-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-emerald-600 transition transform hover:scale-110" title="تواصل عبر واتساب">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- 7. زر الواتساب العائم مع الرقم 0559293773 -->
+    <div class="fixed bottom-6 left-6 z-40 flex items-center gap-2 animate-float-wa">
+        <a href="https://wa.me/213559293773?text=مرحباً،%20أرغب%20في%20متابعة%20صحية%20واستشارة%20غذائية" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl transition transform hover:scale-110 product-glow" title="تواصل عبر واتساب: 0559293773">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- كود الجافاسكربت -->
     <script>
-        // مفتاح OpenRouter API المقدم
         const OPENROUTER_API_KEY = "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";
-        const WHATSAPP_NUM = "0559293773";
-        const STORE_URL = "https://tirourda.store";
 
-        // بيانات المختصين مع البرومبت المخصص لكل مرض وصور الأطباء
+        // معالجة الصور البديلة تلقائياً لتفادي أي رابط معطل
+        function handleImageError(img, type) {
+            img.onerror = null;
+            if (type === 'doctor') {
+                img.src = `https://ui-avatars.com/api/?name=Dr+Doctor&background=16a34a&color=fff&size=512&font-size=0.33`;
+            } else {
+                img.src = `https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=1200`;
+            }
+        }
+
+        // 1. نظام السلايدر
+        let currentSlide = 0;
+        const slides = document.querySelectorAll(".slider-slide");
+        const dots = document.getElementById("sliderDots")?.querySelectorAll("button");
+        let sliderInterval = null;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.remove("opacity-0", "z-0");
+                    slide.classList.add("opacity-100", "z-10");
+                } else {
+                    slide.classList.remove("opacity-100", "z-10");
+                    slide.classList.add("opacity-0", "z-0");
+                }
+            });
+            if (dots) {
+                dots.forEach((dot, i) => {
+                    dot.className = (i === index) ? "w-7 h-1.5 rounded-full bg-white transition" : "w-2.5 h-1.5 rounded-full bg-white/40 transition";
+                });
+            }
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            showSlide((currentSlide + 1) % slides.length);
+        }
+
+        function prevSlide() {
+            showSlide((currentSlide - 1 + slides.length) % slides.length);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+            clearInterval(sliderInterval);
+            sliderInterval = setInterval(nextSlide, 4500);
+        }
+
+        sliderInterval = setInterval(nextSlide, 4500);
+
+        // 2. نغمة الإشعار الطبية
+        function playMedicalChime() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                const playTone = (freq, start, duration) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+                    
+                    gain.gain.setValueAtTime(0.01, ctx.currentTime + start);
+                    gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + start + 0.04);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(ctx.currentTime + start);
+                    osc.stop(ctx.currentTime + start + duration);
+                };
+
+                playTone(523.25, 0, 0.25);
+                playTone(659.25, 0.1, 0.35);
+            } catch (e) {}
+        }
+
+        // 3. بيانات الأطباء مع صور متينة ومحدثة
         const specialists = [
             {
                 id: "colon",
                 name: "د. سليم بوعزيز",
-                title: "طبيب مختص في أمراض القولون والجهاز الهضمي",
-                tags: ["القولون العصبي", "الانتفاخ", "الهضم", "عسر الهضم", "حمية الفودماب"],
+                title: "استشاري أمراض القولون والجهاز الهضمي",
+                tags: ["القولون العصبي", "الغازات والانتفاخ", "عسر الهضم", "حمية الفودماب"],
                 image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-emerald-100 text-emerald-800",
                 experience: "14 سنة خبرة",
-                description: "علاج متلازمة القولون العصبي (IBS)، تقرحات المعدة، والغازات بأنظمة غذائية طبيعية ومكملات هضمية.",
-                quickPrompts: [
-                    "ما هو أفضل نظام لتهدئة القولون العصبي؟",
-                    "ما هي الأطعمة الممنوعة للقولون المنتفخ؟",
-                    "اقترح لي منتجاً طبيعياً لتسهيل الهضم من tirourda.store"
-                ],
-                systemPrompt: `أنت د. سليم بوعزيز، طبيب استشاري خبير في أمراض القولون العصبي والجهاز الهضمي والتغذية العلاجية في منصة nutritionniste.
-نطاقك الطبي محصور فقط في أمراض القولون، حمية الفودماب، الانتفاخ، تقرحات الأمعاء، وعسر الهضم.
-تعليمات الإجابة:
-1. أجب بأسلوب طبي احترافي، دافئ، ومشجع باللغة العربية.
-2. اقترح دوماً نصائح غذائية وأعشاب أو مكملات طبيعية متوفرة في متجر tirourda.store مثل (بذور القاطونة/السيليوم، شاي الأعشاب الهضمية، البروبيوتيك الطبيعي، زيت النعناع، الكركم العضوي).
-3. عند اقتراح أي منتج، ضعه في هذا القالب الإلزامي لكي يتحول لزر تفاعلي: [PRODUCT: اسم المنتج أو المكمل | https://tirourda.store/search?q=colon]
-4. إذا طلب المريض فحصاً دقيقاً أو متابعة لحالته، ذكّره بمراسلتنا على الواتساب على الرقم 0559293773 لمتابعة مخصصة لملفه الطبي.`
+                description: "علاج متلازمة القولون العصبي، تقرحات الأمعاء والانتفاخ بأنظمة غذائية طبيعية ومكملات هضمية.",
+                productKeyword: "colon",
+                productName: "ألياف وبذور القاطونة الطبيعية للقولون"
             },
             {
                 id: "diabetes",
                 name: "د. مريم القادري",
-                title: "مختصة في التغذية العلاجية لمرضى السكري ومقاومة الإنسولين",
-                tags: ["السكري", "مقاومة الإنسولين", "السكر التراكمي", "حمية اللوكارب", "كيتو دايت"],
+                title: "استشارية التغذية العلاجية للسكري ومقاومة الإنسولين",
+                tags: ["السكري", "مقاومة الإنسولين", "السكر التراكمي", "حمية اللوكارب"],
                 image: "https://images.unsplash.com/photo-1594824813583-78b17b6294eb?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-teal-100 text-teal-800",
                 experience: "11 سنة خبرة",
-                description: "تنظيم مستويات السكر في الدم، خفض السكر التراكمي، وعلاج مقاومة الإنسولين بتغذية علمية منخفضة المؤشر الجلايسيمي.",
-                quickPrompts: [
-                    "كيف أخفض السكر التراكمي في 3 أشهر؟",
-                    "ما هي بدائل السكر الصحية المتاحة في tirourda.store؟",
-                    "وجبات مثالية لعلاج مقاومة الإنسولين"
-                ],
-                systemPrompt: `أنت د. مريم القادري، طبيبة واستشارية التغذية العلاجية لمرضى السكري والنوع الأول والثاني ومقاومة الإنسولين.
-نطاقك محصور فقط في السكري، تنظيم الغلوكوز، المؤشر الجلايسيمي، وحميات خفض التراكمي.
-تعليمات الإجابة:
-1. قدمي نصائح دقيقة عن الوجبات منخفضة الكارب ومواعيد الأكل.
-2. اقترحي مكملات وأغذية صحية طبيعية من متجر tirourda.store مثل (خل التفاح الطبيعي العضوي، القرفة السيلانية، محلي ستيفيا النقي، بذور الشيا، مكملات البربرين أو المغنيسيوم).
-3. ضعي المنتجات المقترحة بالقالب: [PRODUCT: اسم المنتج | https://tirourda.store/search?q=diabetes]
-4. ذكّري بمراسلتنا على الواتساب 0559293773 لتصميم جدول وجبات يومي ومتابعة تحاليل السكر.`
+                description: "تنظيم مستوى السكر في الدم وخفض التراكمي وعلاج مقاومة الإنسولين بأنظمة غذائية منخفضة المؤشر الجلايسيمي.",
+                productKeyword: "diabetes",
+                productName: "خل التفاح الطبيعي العضوي ومحلي ستيفيا النقي"
             },
             {
                 id: "fatty-liver",
                 name: "د. طارق المنصوري",
-                title: "مختص في تشحم الكبد وصحة التمثيل الغذائي",
-                tags: ["تشحم الكبد", "الكبد الدهني", "الديتوكس الطبي", "إنزيمات الكبد", "الدهون الثلاثية"],
-                image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600",
+                title: "استشاري تشحم الكبد وصحة التمثيل الغذائي",
+                tags: ["تشحم الكبد", "الدهون الثلاثية", "إنزيمات الكبد", "الديتوكس الطبي"],
+                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-green-100 text-green-800",
                 experience: "16 سنة خبرة",
-                description: "عكس الكبد الدهني (Fatty Liver) والتخلص من السموم المتراكمة وتحسين إنزيمات الكبد بنمط حياة طبيعي.",
-                quickPrompts: [
-                    "كيف أتخلص من تشحم الكبد درجة ثانية؟",
-                    "مشروبات وأغذية لتنقية الكبد من الدهون",
-                    "أفضل مكملات للكبد متوفرة في tirourda.store"
-                ],
-                systemPrompt: `أنت د. طارق المنصوري، خبير تغذية علاجية متخصص في أمراض تشحم الكبد (Steatosis) وصحة الكبد والمرارة.
-نطاقك الطبي محصور فقط في الدهون الكبدية، إنزيمات الكبد، وتخفيض الدهون الثلاثية.
-تعليمات الإجابة:
-1. انصح بالصيام المتقطع وتجنب الفركتوز والزيوت المهدرجة.
-2. اقترح منتجات ومكملات طبيعية متوفرة في متجر tirourda.store مثل (عشبة شوك الحليب Milk Thistle، زيت الزيتون البكر الممتاز، مستخلص الخرشوف، الشاي الأخضر العضوي، ومكملات الأوميغا 3).
-3. ضعي كل منتج مقترح بالقالب: [PRODUCT: اسم المنتج | https://tirourda.store/search?q=liver]
-4. ذكّر المريض بالتواصل معنا على الواتساب 0559293773 لتقييم تحاليل وظائف الكبد ومتابعة الحالة.`
+                description: "عكس الكبد الدهني والتخلص من السموم والدهون الثلاثية بالصيام ومضادات الأكسدة الكبدية.",
+                productKeyword: "liver",
+                productName: "مكمل شوك الحليب (Milk Thistle) لدعم وظائف الكبد"
             },
             {
                 id: "respiratory",
                 name: "د. نسيمة العباسي",
-                title: "مختصة في التغذية الداعمة لأمراض الجهاز التنفسي والحساسية",
-                tags: ["حساسية الصدر", "الربو", "المناعة التنفسية", "البلغم", "الجيوب الأنفية"],
+                title: "استشارية التغذية الداعمة للجهاز التنفسي والحساسية",
+                tags: ["حساسية الصدر", "الربو والبلغم", "المناعة التنفسية", "مضادات الالتهاب"],
                 image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-sky-100 text-sky-800",
                 experience: "10 سنوات خبرة",
-                description: "تعزيز كفاءة الرئتين، تقليل الالتهابات الصدرية، والتحكم في حساسية القصبات عبر مضادات الأكسدة الطبيعية.",
-                quickPrompts: [
-                    "أغذية تقلل التهاب الشعب الهوائية والربو",
-                    "كيف أقوي مناعة الجهاز التنفسي طبيعياً؟",
-                    "منتجات طبيعية لتنقية الصدر من tirourda.store"
-                ],
-                systemPrompt: `أنت د. نسيمة العباسي، استشارية تغذية متخصصة في صحة الجهاز التنفسي، الربو، الحساسية ومناعة الرئتين.
-نطاقك محصور فقط في التغذية المضادة للالتهابات الصدرية والتنفسية.
-تعليمات الإجابة:
-1. انصحي بتجنب الأطعمة المسببة للهستامين والمخاط والبلغم.
-2. اقترحي منتجات طبيعية من متجر tirourda.store مثل (عسل السدر الحر، البروبوليس/عكبر النحل، زيت حبة البركة النقي، الزنجبيل العضوي، وفيتامين C مع الزنك).
-3. ضعي المنتج بالقالب: [PRODUCT: اسم المنتج | https://tirourda.store/search?q=respiratory]
-4. ذكّري بمراسلتنا على الواتساب 0559293773 للمتابعة الخاصة للبروتوكول التنفسي.`
+                description: "تقوية الرئتين وتخفيف حساسية القصبات والبلغم بالأغذية الطبيعية والمكملات المضادة للالتهاب.",
+                productKeyword: "respiratory",
+                productName: "عكبر النحل (البروبوليس) وعسل السدر الطبيعي"
             },
             {
                 id: "obesity",
                 name: "د. هدى التلمساني",
-                title: "مختصة في علاج السمنة ونحت القوام وإنقاص الوزن",
-                tags: ["إنقاص الوزن", "السمنة المفرطة", "حرق الدهون", "سد الشهية", "ثبات الوزن"],
+                title: "استشارية علاج السمنة ونحت القوام وإنقاص الوزن",
+                tags: ["إنقاص الوزن", "حرق الدهون", "كسر ثبات الوزن", "سد الشهية"],
                 image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-rose-100 text-rose-800",
                 experience: "13 سنة خبرة",
-                description: "برامج علمية مخصصة لحرق دهون البطن والخواصر، كسر ثبات الوزن، وتعديل الشهية دون حرمان أو ترهلات.",
-                quickPrompts: [
-                    "كيف أكسر ثبات الوزن في الرجيم؟",
-                    "منتجات طبيعية لسد الشهية وتسريع الأيض من متجركم",
-                    "برنامج غذائي سريع لحرق دهون البطن"
-                ],
-                systemPrompt: `أنت د. هدى التلمساني، خبيرة التغذية المتخصصة في علاج السمنة، خسارة الوزن، ونحت القوام.
-نطاقك محصور فقط في إنقاص الوزن، حرق الدهون، تسريع التمثيل الغذائي وسد الشهية.
-تعليمات الإجابة:
-1. قدمي خطط وجبات واقعية وصحية ومحسوبة السعرات.
-2. اقترحي منتجات تسريع الحرق الطبيعية من متجر tirourda.store مثل (شاي الماتشا الياباني العضوي، بذور الكتان، مكملات حوارق الدهون الطبيعية L-Carnitine، وألياف السيليوم لسد الشهية).
-3. استخدمي القالب للمنتجات: [PRODUCT: اسم المنتج | https://tirourda.store/search?q=slimming]
-4. وجهي دوماً للتواصل عبر الواتساب على 0559293773 للحصول على برنامج غذائي شخصي ومتابعة الوزن أسبوعياً.`
+                description: "خطط وجبات علمية لحرق دهون البطن والخواصر وكسر ثبات الوزن دون حرمان أو ترهلات.",
+                productKeyword: "slimming",
+                productName: "شاي الماتشا الياباني العضوي لحرق الدهون"
             },
             {
                 id: "general-nutrition",
                 name: "د. يوسف شريف",
-                title: "مختص في التغذية العامة والرياضية ونقص الفيتامينات",
-                tags: ["تغذية عامة", "نقص الفيتامينات", "التغذية الرياضية", "فقر الدم", "المناعة"],
-                image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600",
+                title: "استشاري التغذية العامة ونقص الفيتامينات والمعادن",
+                tags: ["نقص فيتامين د", "فقر الدم والحديد", "النشاط والمناعة", "التغذية الرياضية"],
+                image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-purple-100 text-purple-800",
                 experience: "9 سنوات خبرة",
-                description: "علاج نقص الفيتامينات (د، ب12، الحديد)، بناء الكتلة العضلية للرياضيين، وتغذية متوازنة لزيادة النشاط والتركيز.",
-                quickPrompts: [
-                    "أعاني من إرهاق ونقص فيتامين د ماذا آكل؟",
-                    "أفضل بروتين ومكملات طبيعية للرياضيين في tirourda.store",
-                    "نظام لعلاج فقر الدم والأنيميا بالأغذية"
-                ],
-                systemPrompt: `أنت د. يوسف شريف، طبيب واستشاري التغذية العامة والتغذية الرياضية وصحة الفيتامينات والمعادن.
-نطاقك الطبي محصور في نقص الفيتامينات، فقر الدم، النشاط البدني، والتغذية المتوازنة.
-تعليمات الإجابة:
-1. قدّم تحليلاً لأسباب الإرهاق وضعف الطاقة وكيفية تعويض الفيتامينات.
-2. اقترح مكملات وأغذية من متجر tirourda.store مثل (سبيرولينا Spirulina، المغنيسيوم المخلبي، الواي بروتين النقي، حبوب اللقاح وغذاء الملكات).
-3. ضعي المنتج بالقالب: [PRODUCT: اسم المنتج | https://tirourda.store/search?q=vitamins]
-4. اطلب منهم مراسلتنا على الواتساب 0559293773 لتفسير نتائج التحاليل المخبرية بدقة.`
+                description: "علاج الإجهاد المزمن ونقص الحديد والفيتامينات وتصميم برامج التغذية الرياضية والمتوازنة.",
+                productKeyword: "vitamins",
+                productName: "طحالب السبيرولينا العضوية الغنية بالمعادن والفيتامينات"
             },
             {
                 id: "coach",
                 name: "كوتش ريان مهدي",
-                title: "كوتش حمية غذائية ونمط حياة صحي وسلوكيات الأكل",
-                tags: ["كوتشينغ صحي", "تثبيت الوزن", "علاج الأكل العاطفي", "جدول غذائي", "عادات يومية"],
+                title: "استشاري السلوك الغذائي ونمط الحياة الصحي",
+                tags: ["علاج الأكل العاطفي", "بناء العادات", "سناكات صحية", "تعديل الشهية"],
                 image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-amber-100 text-amber-800",
                 experience: "8 سنوات خبرة",
-                description: "كوتشينغ تحفيزي لبناء عادات صحية مستدامة، التخلص من الأكل العاطفي والسكريات، والالتزام بحمية تناسب يومك.",
-                quickPrompts: [
-                    "كيف أوقف رغبتي الشديدة في أكل الحلويات ليلاً؟",
-                    "كيف أبدأ بتغيير عاداتي الغذائية دون ملل؟",
-                    "أغذية وسناكات صحية بديلة متوفرة في tirourda.store"
-                ],
-                systemPrompt: `أنت كوتش ريان مهدي، مدرب صحي معتمد في هندسة العادات الغذائية والتغذية الإيجابية ونمط الحياة الصحي.
-نطاقك محصور في التحفيز، تنظيم الوجبات، عادات الشرب والنوم، والتغلب على إدمان السكريات.
-تعليمات الإجابة:
-1. تحدث بنبرة إيجابية، مشجعة، وعملية جداً.
-2. اقترح بدائل صحية وسناكات طبيعية من متجر tirourda.store مثل (زبدة الفول السوداني الطبيعية، الشوكولاتة الداكنة الخالية من السكر، ألواح البروتين الصحية، شاي الديتوكس والبابونج للاسترخاء).
-3. استخدم القالب: [PRODUCT: اسم المنتج | https://tirourda.store/search?q=healthy-snacks]
-4. شجع المستشير على المتابعة الفردية الأسبوعية عبر الواتساب على الرقم 0559293773 لمرافقة تدريبية مستمرة.`
+                description: "كوتشينغ مخصص للتخلص من إدمان السكريات، بناء عادات يومية مستدامة، وتثبيت الوزن المثالي.",
+                productKeyword: "healthy-snacks",
+                productName: "زبدة الفول السوداني الطبيعية 100% بدون سكر"
             }
         ];
 
         let activeDoctor = null;
-        let chatHistories = {}; // لتخزين محادثة كل طبيب بشكل منفصل
+        let chatHistories = {};
+        // حالة تتبع الأسئلة السريرية لكل طبيب (Intake State Machine)
+        let sessionData = {};
 
-        // عرض بطاقات الأطباء في الصفحة
+        // عرض بطاقات الأطباء مع أنيميشن الزر (btn-pulse)
         function renderDoctors(docs = specialists) {
             const grid = document.getElementById("doctorsGrid");
             const noResults = document.getElementById("noResults");
             const countLabel = document.getElementById("doctorsCount");
 
             grid.innerHTML = "";
-            countLabel.innerText = `${docs.length} مختصين متوفرين`;
+            countLabel.innerText = `${docs.length} أطباء متاحين`;
 
             if (docs.length === 0) {
                 noResults.classList.remove("hidden");
                 return;
-            } else {
-                noResults.classList.add("hidden");
             }
+            noResults.classList.add("hidden");
 
             docs.forEach(doc => {
                 const card = document.createElement("div");
-                card.className = "glass-card rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between border border-slate-200/80";
+                card.className = "pop-card bg-white rounded-3xl p-5 shadow-sm hover:shadow-xl border border-slate-200/80 flex flex-col justify-between";
                 
                 card.innerHTML = `
                     <div>
-                        <div class="relative mb-5 overflow-hidden rounded-2xl">
-                            <img src="${doc.image}" alt="${doc.name}" class="w-full h-56 object-cover object-top rounded-2xl transform hover:scale-105 transition duration-500">
-                            <div class="absolute top-3 right-3">
-                                <span class="text-[11px] font-bold px-3 py-1 rounded-full shadow-md ${doc.badgeColor}">
-                                    ${doc.experience}
-                                </span>
-                            </div>
-                            <div class="absolute bottom-3 left-3 bg-emerald-600/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-md flex items-center gap-1.5 shadow">
-                                <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span> متصل الآن (ذكاء اصطناعي)
+                        <div class="relative mb-4 overflow-hidden rounded-2xl">
+                            <img src="${doc.image}" onerror="handleImageError(this, 'doctor')" alt="${doc.name}" class="w-full h-52 object-cover object-top rounded-2xl transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 text-[11px] font-bold px-3 py-1 rounded-full shadow-md ${doc.badgeColor}">
+                                ${doc.experience}
+                            </span>
+                            <div class="absolute bottom-2.5 left-2.5 bg-brand-700/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-md flex items-center gap-1.5 shadow">
+                                <span class="w-2 h-2 rounded-full bg-brand-300 animate-pulse"></span> متصل الآن
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap gap-1.5 mb-2">
+                        <div class="flex flex-wrap gap-1 mb-2">
                             ${doc.tags.map(t => `<span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-md font-medium">#${t}</span>`).join('')}
                         </div>
 
                         <h3 class="text-xl font-black text-slate-800">${doc.name}</h3>
-                        <p class="text-xs font-bold text-primary-700 mt-0.5">${doc.title}</p>
+                        <p class="text-xs font-bold text-brand-700 mt-0.5">${doc.title}</p>
                         
-                        <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+                        <p class="text-xs text-slate-500 mt-2.5 leading-relaxed">
                             ${doc.description}
                         </p>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center gap-2">
-                        <button onclick="openChatModal('${doc.id}')" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20 transition transform active:scale-95">
-                            <i class="fa-solid fa-comments"></i> استشر المختص الآن
+                    <div class="mt-5 pt-3 border-t border-slate-100">
+                        <!-- زر بدء المحادثة مع أنيميشن نبض جذاب -->
+                        <button onclick="openChatModal('${doc.id}')" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-brand-600/30 transition transform active:scale-95 animate-btn-pulse">
+                            <i class="fa-solid fa-comments text-sm"></i> بدء المحادثة والاستشارة
                         </button>
-                        <a href="https://wa.me/213559293773?text=${encodeURIComponent('مرحباً، أود استشارة ومتابعة حالة مع: ' + doc.name)}" target="_blank" class="w-11 h-11 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 border border-emerald-200 rounded-xl flex items-center justify-center text-lg transition" title="واتساب مباشر">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // فلترة الأطباء بالبحث
+        // فلترة الأطباء
         function filterDoctors() {
             const query = document.getElementById("searchInput").value.trim().toLowerCase();
             const clearBtn = document.getElementById("clearSearch");
@@ -532,8 +555,8 @@
             }
 
             const filtered = specialists.filter(d => {
-                const searchCorpus = `${d.name} ${d.title} ${d.description} ${d.tags.join(' ')}`.toLowerCase();
-                return searchCorpus.includes(query);
+                const searchStr = `${d.name} ${d.title} ${d.description} ${d.tags.join(' ')}`.toLowerCase();
+                return searchStr.includes(query);
             });
 
             renderDoctors(filtered);
@@ -549,36 +572,57 @@
             filterDoctors();
         }
 
-        // فتح نافذة المحادثة
+        // نظام المحادثة السريرية: سؤال واحد تلو الآخر بدقة
+        function getSystemPrompt(doc) {
+            return `أنت ${doc.name}، ${doc.title} في منصة nutritionniste.
+نطاقك الطبي محصور فقط في مجالك وتخصصك.
+
+بروتوكول المحادثة الصارم مع المريض:
+1. أنت طبيب استشاري خبير تتحدث بوقار ولطف وعلمية.
+2. نادِ المريض دائماً باسمه بعد أن يخبرك به.
+3. التزم بالإجابة على السؤال الحالي وطرح السؤال التالي فقط بالترتيب التالي دون دمج الأسئلة:
+   - الخطوة 1: السؤال عن الاسم (تم بالفعل).
+   - الخطوة 2: الترحيب باسمه والسؤال عن العمر (كم يبلغ عمرك؟).
+   - الخطوة 3: السؤال عن الأعراض بالتفصيل (ما هي الأعراض الدقيقة أو الاضطرابات التي تعاني منها؟).
+   - الخطوة 4: السؤال عن المتابعة الطبية (هل تتابع مع طبيب مختص بانتظام لهذه الحالة؟).
+   - الخطوة 5: السؤال عن الأدوية الحالية (ما هي الأدوية أو العلاجات التي تستعملها بانتظام؟).
+   - الخطوة 6: تقديم التحليل الطبي الكامل، النظام الغذائي المقترح، ثم سؤال المريض في نهاية الرد حصراً: "هل تود يا [اسم المريض] أن أقترح عليك بعض المنتجات والمكملات الطبيعية المناسبة لحالتك من متجرنا tirourda.store؟"
+   - الخطوة 7: فقط إذا أجاب المريض بـ (نعم) أو وافق، تقترح عليه المنتج المناسب بهذا التنسيق الإلزامي: [PRODUCT: ${doc.productName} | https://tirourda.store/search?q=${doc.productKeyword}]`;
+        }
+
+        // فتح نافذة المحادثة وبدء أول سؤال (الاسم فقط)
         function openChatModal(doctorId) {
             activeDoctor = specialists.find(d => d.id === doctorId);
             if (!activeDoctor) return;
 
             document.getElementById("chatDoctorImg").src = activeDoctor.image;
             document.getElementById("chatDoctorName").innerText = activeDoctor.name;
-            document.getElementById("chatDoctorRole").innerHTML = `<i class="fa-solid fa-stethoscope"></i> ${activeDoctor.title}`;
+            document.getElementById("chatDoctorRole").innerHTML = `<i class="fa-solid fa-stethoscope text-emerald-300"></i> ${activeDoctor.title}`;
+            document.getElementById("typingDoctorName").innerText = `${activeDoctor.name} يكتب رداً...`;
 
-            // تجهيز الأسئلة السريعة
-            const promptsBox = document.getElementById("quickPrompts");
-            promptsBox.innerHTML = `<span class="text-slate-400 font-bold ml-1">أسئلة شائعة:</span>`;
-            activeDoctor.quickPrompts.forEach(p => {
-                const btn = document.createElement("button");
-                btn.className = "bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 px-3 py-1 rounded-full text-xs border border-slate-200 transition shrink-0";
-                btn.innerText = p;
-                btn.onclick = () => sendQuickPrompt(p);
-                promptsBox.appendChild(btn);
-            });
+            if (!sessionData[doctorId]) {
+                sessionData[doctorId] = {
+                    step: 1,
+                    patientName: "",
+                    age: "",
+                    symptoms: "",
+                    doctorFollowup: "",
+                    medications: ""
+                };
+            }
 
-            // تهيئة سجل المحادثة
+            // الرسالة الأولى: الترحيب والسؤال عن الاسم فقط
             if (!chatHistories[doctorId]) {
+                const firstGreeting = `مرحباً بك! أنا **${activeDoctor.name}**، ${activeDoctor.title}.\n\nيسعدني جداً استقبالك والبدء في تقييم حالتك الغذائية والصحية.\n\nهل يمكنك إخباري **باسمك الكريم** أولاً؟`;
+
                 chatHistories[doctorId] = [
                     {
                         role: "system",
-                        content: activeDoctor.systemPrompt
+                        content: getSystemPrompt(activeDoctor)
                     },
                     {
                         role: "assistant",
-                        content: `أهلاً بك! أنا **${activeDoctor.name}**، ${activeDoctor.title}.\n\nأنا هنا لمساعدتك في كل ما يخص حالتك الغذائية وتقديم الإرشادات الدقيقة، واقتراح أفضل المنتجات الطبيعية المتوفرة في **tirourda.store**.\n\nتفضل، كيف يمكنني مساعدتك اليوم؟`
+                        content: firstGreeting
                     }
                 ];
             }
@@ -586,7 +630,7 @@
             renderChatMessages();
             document.getElementById("chatModal").classList.remove("hidden");
             document.body.classList.add("overflow-hidden");
-            setTimeout(() => document.getElementById("chatInput").focus(), 300);
+            setTimeout(() => document.getElementById("chatInput").focus(), 250);
         }
 
         function closeChatModal() {
@@ -594,80 +638,83 @@
             document.body.classList.remove("overflow-hidden");
         }
 
-        // إغلاق النافذة عند النقر خارجها
-        window.onclick = function(event) {
+        window.onclick = function(e) {
             const modal = document.getElementById("chatModal");
-            if (event.target === modal) {
-                closeChatModal();
-            }
-        }
+            if (e.target === modal) closeChatModal();
+        };
 
-        // رسم رسائل الشات
+        // رسم الرسائل داخل الشات
         function renderChatMessages() {
             const container = document.getElementById("chatMessages");
+            const quickChoice = document.getElementById("quickChoiceChips");
             container.innerHTML = "";
 
             if (!activeDoctor || !chatHistories[activeDoctor.id]) return;
 
             const messages = chatHistories[activeDoctor.id].filter(m => m.role !== 'system');
+            let lastAssistantMsg = "";
 
-            messages.forEach(msg => {
+            messages.forEach((msg) => {
                 const isUser = msg.role === 'user';
-                const msgWrapper = document.createElement("div");
-                msgWrapper.className = `flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}`;
+                if (!isUser) lastAssistantMsg = msg.content;
 
-                // معالجة الروابط وأزرار المنتجات من النص
+                const msgWrapper = document.createElement("div");
+                msgWrapper.className = `flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} animate-pop-in`;
+
                 const formattedHtml = formatDoctorResponse(msg.content);
 
                 if (isUser) {
                     msgWrapper.innerHTML = `
-                        <div class="bg-primary-600 text-white rounded-3xl rounded-tr-none px-4 py-3 max-w-[85%] text-sm shadow-md leading-relaxed">
+                        <div class="bg-brand-600 text-white rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[85%] text-xs sm:text-sm shadow-md leading-relaxed">
                             ${escapeHtml(msg.content)}
                         </div>
                     `;
                 } else {
                     msgWrapper.innerHTML = `
-                        <img src="${activeDoctor.image}" class="w-8 h-8 rounded-full object-cover shrink-0 border border-emerald-300 mt-1">
-                        <div class="bg-white text-slate-800 rounded-3xl rounded-tl-none px-4 py-3.5 max-w-[88%] text-sm shadow-sm border border-slate-100 leading-relaxed">
-                            <div class="font-bold text-[11px] text-emerald-700 mb-1">${activeDoctor.name}</div>
-                            <div class="prose text-sm text-slate-700">${formattedHtml}</div>
+                        <img src="${activeDoctor.image}" onerror="handleImageError(this, 'doctor')" class="w-8 h-8 rounded-full object-cover shrink-0 border border-brand-200 mt-1">
+                        <div class="bg-white text-slate-800 rounded-2xl rounded-tl-none px-4 py-3 max-w-[88%] text-xs sm:text-sm shadow-sm border border-slate-200/80 leading-relaxed">
+                            <div class="font-bold text-[11px] text-brand-700 mb-1 flex items-center justify-between">
+                                <span>${activeDoctor.name}</span>
+                                <span class="text-[9px] text-slate-400 font-normal">استشارة تخصصية</span>
+                            </div>
+                            <div class="prose text-slate-700 text-xs sm:text-sm">${formattedHtml}</div>
                         </div>
                     `;
                 }
                 container.appendChild(msgWrapper);
             });
 
+            // إظهار أزرار نعم/لا إذا سأل الطبيب عن المنتجات
+            if (lastAssistantMsg.includes("هل تود") && lastAssistantMsg.includes("tirourda.store") && !lastAssistantMsg.includes("[PRODUCT:")) {
+                quickChoice.classList.remove("hidden");
+            } else {
+                quickChoice.classList.add("hidden");
+            }
+
             container.scrollTop = container.scrollHeight;
         }
 
-        // تحويل أزرار المنتجات والمحتوى لـ HTML جذاب
+        // تحويل النصوص والأزرار
         function formatDoctorResponse(text) {
             let html = text;
 
-            // 1. تحويل الرموز [PRODUCT: اسم المنتج | الرابط] إلى زر متجر أنيق
+            // تحويل [PRODUCT: اسم المنتج | الرابط] إلى زر أنيق
             const productRegex = /\[PRODUCT:\s*([^\|\]]+)\s*\|\s*([^\]]+)\]/gi;
-            html = html.replace(productRegex, function(match, productName, productUrl) {
+            html = html.replace(productRegex, function(_, name, url) {
                 return `
-                    <div class="my-3 p-3 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl shadow-sm">
-                        <div class="text-xs text-emerald-800 font-bold mb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-basket-shopping text-emerald-600"></i> منتج طبيعي مقترح من متجر tirourda.store:
+                    <div class="my-3 p-3.5 bg-gradient-to-r from-brand-50 to-emerald-50 border border-brand-200 rounded-2xl shadow-sm animate-pop-in">
+                        <div class="text-[11px] text-brand-900 font-bold mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-basket-shopping text-brand-600"></i> منتج طبيعي موصى به من متجر tirourda.store:
                         </div>
-                        <a href="${productUrl.trim()}" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow product-btn-glow transition duration-300 transform hover:scale-105">
-                            <i class="fa-solid fa-cart-arrow-down"></i> طلب ${productName.trim()} الآن من tirourda.store
+                        <a href="${url.trim()}" target="_blank" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow product-glow transition transform hover:scale-102">
+                            <i class="fa-solid fa-cart-shopping text-xs"></i> زيارة وطلب ${name.trim()} الآن
                         </a>
                     </div>
                 `;
             });
 
-            // 2. تحويل أرقام الواتساب لأزرار اتصال سريعة إن وجدت
-            if (html.includes("0559293773")) {
-                html = html.replace(/0559293773/g, `<a href="https://wa.me/213559293773" target="_blank" class="inline-flex items-center gap-1 text-emerald-600 font-bold bg-emerald-100 hover:bg-emerald-200 px-2.5 py-0.5 rounded-lg text-xs mx-1 transition"><i class="fa-brands fa-whatsapp"></i> 0559293773 (تواصل لمتابعة حالتك)</a>`);
-            }
-
-            // 3. تحويل التنسيق البسيط للخط العريض والأسطر
             html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             html = html.replace(/\n/g, '<br>');
-
             return html;
         }
 
@@ -685,14 +732,101 @@
             document.getElementById("chatForm").dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }
 
-        // إرسال الرسالة إلى الـ AI عبر OpenRouter
+        // الاتصال بالذكاء الاصطناعي مع معالجة تسلسل الأسئلة خطوة بخطوة
+        async function fetchAIResponse(messages) {
+            const candidateModels = [
+                "openrouter/free",
+                "meta-llama/llama-3.3-70b-instruct:free",
+                "google/gemini-2.0-flash-lite-001",
+                "deepseek/deepseek-chat"
+            ];
+
+            for (const model of candidateModels) {
+                try {
+                    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+                            "HTTP-Referer": window.location.href || "https://tirourda.store",
+                            "X-Title": "Nutritionniste Clinical Platform",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: messages,
+                            temperature: 0.5,
+                            max_tokens: 800
+                        })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        const reply = data.choices?.[0]?.message?.content;
+                        if (reply && reply.trim().length > 0) {
+                            return reply;
+                        }
+                    }
+                } catch (err) {
+                    console.warn(`Model ${model} failed, trying next...`, err);
+                }
+            }
+
+            return generateStepByStepFallback(messages);
+        }
+
+        // معالج محلي صارم يضمن سير الأسئلة خطوة بخطوة حتى في حال انقطاع الشبكة
+        function generateStepByStepFallback(messages) {
+            const doc = activeDoctor || specialists[0];
+            const session = sessionData[doc.id];
+            const userMessages = messages.filter(m => m.role === 'user');
+            const lastUserText = userMessages[userMessages.length - 1]?.content || "";
+
+            if (session.step === 1) {
+                session.patientName = lastUserText.replace(/(اسمي|أنا|هو)/g, "").trim() || "أخي/أختي";
+                session.step = 2;
+                return `أهلاً وسهلاً بك يا **${session.patientName}**، تشرفت بمعرفتك!\n\nللبدء في ملفك الصحي، **كم يبلغ عمرك**؟`;
+            }
+
+            if (session.step === 2) {
+                session.age = lastUserText;
+                session.step = 3;
+                return `تمام يا **${session.patientName}**، بارك الله في عمرك.\n\nحدثني بالتفصيل: **ما هي الأعراض الدقيقة أو الاضطرابات الصحية التي تواجهها حالياً**؟`;
+            }
+
+            if (session.step === 3) {
+                session.symptoms = lastUserText;
+                session.step = 4;
+                return `شكراً لتوضيحك يا **${session.patientName}**.\n\nسؤالي التالي لك: **هل تتابع مع طبيب مختص بانتظام لهذه الحالة**؟`;
+            }
+
+            if (session.step === 4) {
+                session.doctorFollowup = lastUserText;
+                session.step = 5;
+                return `حسناً يا **${session.patientName}**.\n\nالسؤال الأخير قبل وضع التوصيات: **ما هي الأدوية أو العلاجات التي تستعملها بانتظام حالياً**؟`;
+            }
+
+            if (session.step === 5) {
+                session.medications = lastUserText;
+                session.step = 6;
+                return `شكراً جزيلاً لك يا **${session.patientName}** على مشاركتي كامل هذه البيانات الهامة.\n\nبناءً على الأعراض التي ذكرتها وفي إطار تخصصي في **${doc.title}**:\n\n1. أوصيك بتنظيم مواعيد الوجبات والابتعاد عن الأطعمة المهيجة والسكريات المكررة.\n2. شرب كميات كافية من الماء بمعدل 2 إلى 3 لترات يومياً لتحسين التمثيل الغذائي.\n3. التركيز على الألياف الطبيعية ومضادات الأكسدة.\n\n**هل تود يا ${session.patientName} أن أقترح عليك بعض المنتجات والمكملات الطبيعية المناسبة لحالتك من متجرنا tirourda.store؟**`;
+            }
+
+            if (session.step >= 6) {
+                if (lastUserText.includes("نعم") || lastUserText.includes("اقترح") || lastUserText.includes("منتج")) {
+                    return `يسعدني تزويدك بالمنتج الطبيعي المعتمد والمناسب لخطتك العلاجية يا **${session.patientName}**:\n\n[PRODUCT: ${doc.productName} | https://tirourda.store/search?q=${doc.productKeyword}]\n\nيمكنك الضغط على الزر أعلاه للانتقال المباشر لمتجرنا tirourda.store والطلب الآن.`;
+                } else {
+                    return `على الرحب والسعة يا **${session.patientName}**. أتمنى لك دوام الصحة والعافية، وأنا دائماً في خدمتك لأي استفسار غذائي إضافي!`;
+                }
+            }
+        }
+
+        // إرسال الرسالة
         async function handleSendMessage(e) {
             e.preventDefault();
             const input = document.getElementById("chatInput");
             const text = input.value.trim();
             if (!text || !activeDoctor) return;
 
-            // إضافة رسالة المستخدم
             chatHistories[activeDoctor.id].push({
                 role: "user",
                 content: text
@@ -701,56 +835,26 @@
             input.value = "";
             renderChatMessages();
 
-            // إظهار مؤشر الكتابة
             const typing = document.getElementById("typingIndicator");
             const sendBtn = document.getElementById("sendBtn");
             typing.classList.remove("hidden");
             sendBtn.disabled = true;
 
-            try {
-                // الاتصال بـ OpenRouter API
-                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-                        "HTTP-Referer": window.location.href,
-                        "X-Title": "Nutritionniste AI Platform",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: "google/gemini-2.0-flash-lite-001",
-                        messages: chatHistories[activeDoctor.id],
-                        temperature: 0.6,
-                        max_tokens: 800
-                    })
-                });
+            const aiReply = await fetchAIResponse(chatHistories[activeDoctor.id]);
 
-                if (!response.ok) {
-                    throw new Error(`خطأ في استجابة الخادم: ${response.status}`);
-                }
+            chatHistories[activeDoctor.id].push({
+                role: "assistant",
+                content: aiReply
+            });
 
-                const data = await response.json();
-                const aiReply = data.choices[0]?.message?.content || "عذراً، لم أتمكن من معالجة الرد الآن. يمكنك التواصل معنا مباشرة على الواتساب 0559293773.";
-
-                chatHistories[activeDoctor.id].push({
-                    role: "assistant",
-                    content: aiReply
-                });
-
-            } catch (err) {
-                console.error("AI Fetch Error:", err);
-                chatHistories[activeDoctor.id].push({
-                    role: "assistant",
-                    content: `عذراً، حدث انقطاع مؤقت في الاتصال بالذكاء الاصطناعي.\n\nيمكنك مراسلتنا مباشرة عبر الواتساب على الرقم **0559293773** أو زيارة متجرنا [PRODUCT: تصفح المنتجات الصحية الطبيعية | https://tirourda.store].`
-                });
-            } finally {
-                typing.classList.add("hidden");
-                sendBtn.disabled = false;
-                renderChatMessages();
-            }
+            typing.classList.add("hidden");
+            sendBtn.disabled = false;
+            
+            renderChatMessages();
+            playMedicalChime();
         }
 
-        // تشغيل الصفحة عند التحميل
+        // تشغيل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             renderDoctors();
         });
