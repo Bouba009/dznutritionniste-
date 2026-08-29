@@ -2,9 +2,89 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutritionniste | منصة التغذية العلاجية والاستشارات الطبية</title>
-    <!-- Tailwind CSS CDN -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    
+    <!-- ==================== SEO META TAGS ==================== -->
+    <title>Nutritionniste AI | أفضل مختص واخصائي في التغذية بالجزائر - د. خديجة بن علال & Tirourda</title>
+    <meta name="description" content="منصة Nutritionniste AI الذكية: استشارات فورية مع أفضل أطباء واخصائيي التغذية العلاجية في الجزائر، بإشراف د. خديجة بن علال. علاج القولون، السكري، الكبد، والسمنة مع منتجات متجر tirourda.store الطبيعية.">
+    <meta name="keywords" content="مختص التغذية الجزائر, اخصائي التغذية, مختص في التغذية, خديجة بن علال, tirourda, الاخصائي في التغذية الذكي, nutritionniste, smart nutritionniste, nutritionniste ai, اخصائي تغذية الجزائر, حمية غذائية الجزائر, علاج القولون بالاعشاب, دايت السكري, tirourda.store">
+    <meta name="author" content="Nutritionniste AI - Tirourda Health">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://tirourda.store">
+    
+    <!-- Open Graph / Facebook / WhatsApp SEO -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tirourda.store">
+    <meta property="og:title" content="Nutritionniste AI | أفضل مختص في التغذية بالجزائر - د. خديجة بن علال">
+    <meta property="og:description" content="استشر الآن الاخصائي في التغذية الذكي لعلاج القولون، السكري، دهون الكبد والسمنة مع منتجات متجر Tirourda المعتمدة.">
+    <meta property="og:image" content="https://tirourda.store/wp-content/uploads/2025/07/5.png">
+    <meta property="og:locale" content="ar_DZ">
+    <meta property="og:site_name" content="Nutritionniste Tirourda">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nutritionniste AI | اخصائي التغذية الذكي في الجزائر">
+    <meta name="twitter:description" content="استشارات تغذية سريرية فورية بالذكاء الاصطناعي مع د. خديجة بن علال ونخبة أطباء التغذية.">
+    <meta name="twitter:image" content="https://tirourda.store/wp-content/uploads/2025/07/5.png">
+    
+    <meta name="theme-color" content="#16a34a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- ==================== SCHEMA.ORG STRUCTURED DATA (JSON-LD) ==================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "MedicalOrganization",
+          "@id": "https://tirourda.store/#organization",
+          "name": "Nutritionniste AI - Tirourda",
+          "url": "https://tirourda.store",
+          "logo": "https://tirourda.store/wp-content/uploads/2025/07/5.png",
+          "description": "عيادة واستشارات التغذية العلاجية بالذكاء الاصطناعي في الجزائر",
+          "telephone": "+213559293773",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "DZ"
+          }
+        },
+        {
+          "@type": "Physician",
+          "@id": "https://tirourda.store/#physician",
+          "name": "د. خديجة بن علال",
+          "jobTitle": "مختصة واستشارية التغذية العلاجية في الجزائر",
+          "worksFor": {
+            "@id": "https://tirourda.store/#organization"
+          },
+          "medicalSpecialty": "DietNutrition"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "من هو أفضل مختص في التغذية في الجزائر؟",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "توفر منصة Nutritionniste AI بالتعاون مع د. خديجة بن علال ومتجر Tirourda أفضل استشارات التغذية العلاجية المخصصة لعلاج القولون، السكري، تشحم الكبد والسمنة."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "كيف يعمل الاخصائي في التغذية الذكي (Smart Nutritionniste AI)؟",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "يقوم النظام الذكي بجمع بيانات المريض وأعراضه خطوة بخطوة وتقديم خطة غذائية سريرية متوافقة مع مكملات متجر tirourda.store الطبيعية."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -32,44 +112,56 @@
                     },
                     keyframes: {
                         popIn: {
-                            '0%': { transform: 'scale(0.88)', opacity: '0' },
+                            '0%': { transform: 'scale(0.92)', opacity: '0' },
                             '70%': { transform: 'scale(1.02)', opacity: '1' },
                             '100%': { transform: 'scale(1)', opacity: '1' },
                         },
                         btnGlow: {
-                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 4px 15px rgba(22, 163, 74, 0.35)' },
-                            '50%': { transform: 'scale(1.02)', boxShadow: '0 8px 25px rgba(22, 163, 74, 0.65)' }
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 4px 14px rgba(22, 163, 74, 0.35)' },
+                            '50%': { transform: 'scale(1.02)', boxShadow: '0 6px 20px rgba(22, 163, 74, 0.65)' }
                         },
-                        pulseFloat: {
+                        floatWa: {
                             '0%, 100%': { transform: 'translateY(0) scale(1)' },
                             '50%': { transform: 'translateY(-6px) scale(1.05)' }
                         }
                     },
                     animation: {
-                        'pop-in': 'popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                         'btn-pulse': 'btnGlow 2.5s infinite ease-in-out',
-                        'float-wa': 'pulseFloat 3s infinite ease-in-out',
+                        'float-wa': 'floatWa 3s infinite ease-in-out',
                     }
                 }
             }
         }
     </script>
+
     <style>
-        .pop-card {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        /* Mobile Performance & UX Optimization */
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
         }
-        .pop-card:hover {
-            transform: translateY(-6px) scale(1.015);
+        .pop-card {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @media (hover: hover) {
+            .pop-card:hover {
+                transform: translateY(-5px) scale(1.01);
+            }
         }
         .product-glow {
             animation: glowPulse 2s infinite;
         }
         @keyframes glowPulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
-            50% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+        }
+        /* Mobile Inputs 16px to prevent iOS auto-zoom */
+        input[type="text"] {
+            font-size: 16px !important;
         }
         ::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
             background: #f8fafc;
@@ -82,165 +174,201 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
 
-    <!-- 1. شريط التنقل العلوي (تم تصغيره، حذف المتجر منه، وجعل الكتابة في سطر واحد) -->
+    <!-- 1. شريط التنقل العلوي المتوافق مع الهواتف والحواسيب -->
     <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2.5">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 h-14 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 overflow-hidden">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-sm shadow-md shadow-brand-500/20 shrink-0">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
-                <!-- الاسم والوصف في سطر واحد -->
-                <div class="flex items-center gap-2 flex-wrap">
-                    <h1 class="text-lg font-black text-slate-800 tracking-tight">Nutritionniste</h1>
+                <!-- اسم الموقع ووصفه بسطر واحد متجاوب -->
+                <div class="flex items-center gap-1.5 sm:gap-2 truncate">
+                    <h1 class="text-base sm:text-lg font-black text-slate-800 tracking-tight shrink-0">Nutritionniste</h1>
                     <span class="text-slate-300 text-xs">|</span>
-                    <p class="text-xs sm:text-sm text-slate-500 font-medium truncate">منصة التغذية العلاجية والاستشارات الطبية</p>
+                    <p class="text-[11px] sm:text-xs text-slate-500 font-medium truncate">مختص التغذية الذكي في الجزائر</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-1.5 text-xs text-brand-700 font-bold bg-brand-50 px-2.5 py-1 rounded-lg border border-brand-100 shrink-0">
+            <div class="flex items-center gap-1 text-[10px] sm:text-xs text-brand-700 font-bold bg-brand-50 px-2 py-1 rounded-lg border border-brand-100 shrink-0">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span>استشارات مباشرة</span>
+                <span>متصل الآن</span>
             </div>
         </div>
     </header>
 
-    <!-- 2. بانر الصورة في الأعلى -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5">
-        <a href="https://tirourda.store" target="_blank" class="block group relative w-full rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-900 transition duration-300 transform hover:scale-[1.005]">
+    <!-- 2. بانر الصورة المتجاوب بدقة مع شاشات الهواتف -->
+    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-5 w-full">
+        <a href="https://tirourda.store" target="_blank" rel="noopener" title="متجر tirourda للمنتجات الطبيعية" class="block group relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200/80 bg-slate-900 transition duration-300 transform active:scale-[0.99]">
             <img 
                 src="https://tirourda.store/wp-content/uploads/2025/07/5.png" 
-                alt="بانر المتجر الطبي tirourda.store" 
-                class="w-full h-auto max-h-[360px] object-cover object-center transform group-hover:scale-105 transition duration-700"
-                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=1600';"
+                alt="Nutritionniste AI - اخصائي التغذية في الجزائر متجر tirourda" 
+                width="1200"
+                height="360"
+                loading="eager"
+                class="w-full h-auto max-h-[220px] sm:max-h-[340px] md:max-h-[380px] object-cover object-center transform group-hover:scale-105 transition duration-700"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=1200';"
             >
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
-                <span class="inline-flex items-center gap-2 bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg">
-                    <i class="fa-solid fa-cart-shopping"></i> تصفح المنتجات في tirourda.store
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4 sm:p-6">
+                <span class="inline-flex items-center gap-2 bg-brand-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg">
+                    <i class="fa-solid fa-cart-shopping"></i> تصفح منتجات متجر tirourda.store
                 </span>
             </div>
         </a>
     </section>
 
-    <!-- 3. خانة البحث والترحيب -->
-    <section class="py-6 sm:py-8 bg-slate-50">
+    <!-- 3. خانة البحث والكلمات المفتاحية الذكية -->
+    <section class="py-5 sm:py-7 bg-slate-50">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 mb-2.5 tracking-tight">
-                اختر استشاري التغذية <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-emerald-500">حسب حالتك الصحية</span>
+            <h2 class="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-2 leading-tight">
+                اختر <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-emerald-500">مختص التغذية في الجزائر</span> المناسب لحالتك
             </h2>
-            <p class="text-slate-500 text-xs sm:text-sm mb-5 max-w-xl mx-auto">
-                سيبدأ معك الطبيب بمحادثة فردية يسألك فيها عن تفاصيلك بالترتيب ليمنحك التشخيص الدقيق.
+            <p class="text-slate-500 text-xs sm:text-sm mb-4 max-w-xl mx-auto leading-relaxed">
+                استشارات سريرية ذكية مع نخبة الأطباء بإشراف <strong>د. خديجة بن علال</strong>. تشخيص سريري خطوة بخطوة.
             </p>
 
             <div class="relative max-w-2xl mx-auto animate-pop-in">
                 <div class="relative flex items-center">
-                    <i class="fa-solid fa-magnifying-glass absolute right-5 text-brand-600 text-lg"></i>
+                    <i class="fa-solid fa-magnifying-glass absolute right-4 sm:right-5 text-brand-600 text-base sm:text-lg"></i>
                     <input 
                         type="text" 
                         id="searchInput" 
-                        placeholder="ابحث عن اختصاصك (مثال: القولون، السكري، دهون الكبد، السمنة، التنفس...)" 
-                        class="w-full pl-12 pr-14 py-3.5 sm:py-4 rounded-2xl border-2 border-brand-200/80 bg-white focus:border-brand-600 focus:ring-4 focus:ring-brand-500/10 shadow-lg shadow-brand-500/5 text-slate-800 placeholder-slate-400 text-sm sm:text-base outline-none transition"
+                        placeholder="ابحث عن اختصاصك (خديجة بن علال، قولون، سكري، كبد، سمنة...)" 
+                        class="w-full pl-10 pr-12 sm:pr-14 py-3 sm:py-3.5 rounded-2xl border-2 border-brand-200 bg-white focus:border-brand-600 focus:ring-4 focus:ring-brand-500/10 shadow-md text-slate-800 placeholder-slate-400 text-sm outline-none transition"
                         onkeyup="filterDoctors()"
                     >
-                    <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute left-4 text-slate-400 hover:text-slate-600 p-1">
-                        <i class="fa-solid fa-circle-xmark text-lg"></i>
+                    <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute left-3 text-slate-400 hover:text-slate-600 p-1">
+                        <i class="fa-solid fa-circle-xmark text-base"></i>
                     </button>
                 </div>
 
-                <div class="flex flex-wrap items-center justify-center gap-1.5 mt-3 text-xs text-slate-500">
-                    <span class="font-bold">الحالات الأكثر طلباً:</span>
-                    <button onclick="setSearch('القولون')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">أمراض القولون</button>
-                    <button onclick="setSearch('السكري')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">السكري</button>
-                    <button onclick="setSearch('الكبد')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">تشحم الكبد</button>
-                    <button onclick="setSearch('السمنة')" class="bg-white px-3 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 shadow-sm transition">إنقاص الوزن</button>
+                <!-- اختصارات سريعة للهاتف -->
+                <div class="flex flex-wrap items-center justify-center gap-1.5 mt-3 text-[11px] sm:text-xs text-slate-600">
+                    <span class="font-bold text-slate-400">الأكثر بحثاً:</span>
+                    <button onclick="setSearch('خديجة بن علال')" class="bg-brand-50 text-brand-800 border border-brand-200 px-2.5 py-1 rounded-lg font-bold hover:bg-brand-100 transition">د. خديجة بن علال</button>
+                    <button onclick="setSearch('القولون')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition">القولون</button>
+                    <button onclick="setSearch('السكري')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition">السكري</button>
+                    <button onclick="setSearch('الكبد')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition">تشحم الكبد</button>
+                    <button onclick="setSearch('السمنة')" class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 hover:border-brand-500 hover:text-brand-700 transition">السمنة</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. بطاقات الأطباء -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex-1">
-        <div class="flex items-center justify-between mb-5 pb-2 border-b border-slate-200">
+    <!-- 4. شبكة الأطباء والمختصين (Mobile Grid) -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex-1 w-full">
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
             <div>
-                <h3 class="text-xl font-black text-slate-800">طاقم الأطباء والاستشاريين</h3>
-                <p class="text-xs text-slate-500">اختر الطبيب المناسب لبدء الاستشارة المباشرة</p>
+                <h3 class="text-lg sm:text-xl font-black text-slate-800">طاقم أطباء واخصائيي التغذية</h3>
+                <p class="text-[11px] sm:text-xs text-slate-500">اختر الطبيب لبدء التقييم السريري الفوري</p>
             </div>
-            <span id="doctorsCount" class="text-xs bg-brand-50 text-brand-700 font-bold px-3 py-1 rounded-xl border border-brand-200">7 أطباء متاحين</span>
+            <span id="doctorsCount" class="text-xs bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-xl border border-brand-200">8 أطباء متاحين</span>
         </div>
 
-        <div id="doctorsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="doctorsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             <!-- كروت الأطباء -->
         </div>
 
-        <div id="noResults" class="hidden text-center py-16 animate-pop-in">
-            <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-2xl mb-3">
+        <div id="noResults" class="hidden text-center py-12 animate-pop-in">
+            <div class="w-14 h-14 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-xl mb-2">
                 <i class="fa-solid fa-user-doctor"></i>
             </div>
-            <h4 class="text-lg font-bold text-slate-700">لم يتم العثور على مختص يطابق هذا البحث</h4>
+            <h4 class="text-base font-bold text-slate-700">لم يتم العثور على مختص يطابق بحثك</h4>
+            <p class="text-xs text-slate-500 mt-1">جرب كلمات أخرى مثل: خديجة بن علال، قولون، سمنة، كبد...</p>
         </div>
     </main>
 
-    <!-- 5. نافذة المحادثة الذكية (Chat Modal) -->
-    <div id="chatModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4">
-        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col h-[90vh] max-h-[720px] overflow-hidden border border-slate-100 animate-pop-in">
+    <!-- 5. قسم المحتوى المقالي والـ SEO لرفع تصنيف الموقع في جوجل -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-6 bg-white rounded-3xl border border-slate-200/80 shadow-sm">
+        <article class="prose prose-slate max-w-none text-right">
+            <h2 class="text-lg sm:text-2xl font-black text-slate-800 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-notes-medical text-brand-600"></i>
+                منصة Nutritionniste AI: ثورة في استشارات التغذية العلاجية في الجزائر
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                تعد منصة <strong>Nutritionniste</strong> المرجع الرقمي الأول لكل من يبحث عن <strong>مختص التغذية في الجزائر</strong> أو <strong>اخصائي في التغذية</strong> معتمد. نوفر بالتعاون مع <strong>د. خديجة بن علال</strong> وخبراء العلاج الطبيعي عبر متجر <strong>tirourda.store</strong> أنظمة غذائية طبية مخصصة لعلاج متلازمة القولون العصبي، مقاومة الإنسولين، داء السكري، تشحم الكبد، وحالات السمنة المزمنة.
+            </p>
+            
+            <!-- أسئلة شائعة FAQ مهيأة لمحركات البحث -->
+            <div class="mt-6 pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/60">
+                    <h3 class="font-bold text-xs sm:text-sm text-slate-800 mb-1">🌿 من هي د. خديجة بن علال؟</h3>
+                    <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed">
+                        د. خديجة بن علال هي استشارية التغذية العلاجية الرائدة، المشرفة على خطط التغذية السريرية وحميات الأيض في منصة nutritionniste ai.
+                    </p>
+                </div>
+                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/60">
+                    <h3 class="font-bold text-xs sm:text-sm text-slate-800 mb-1">🛒 ما هي علاقة المنصة بمتجر tirourda.store؟</h3>
+                    <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed">
+                        متجر tirourda هو المورد الرسمي المعتمد لتوفير المكملات الغذائية العضوية والأعشاب الطبيعية 100% الموصى بها في الخطط العلاجية.
+                    </p>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <!-- 6. نافذة المحادثة الذكية المجهزة 100% للهاتف والكمبيوتر -->
+    <div id="chatModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-0 sm:p-4">
+        <!-- على الهواتف تأخذ الشاشة كاملة h-[100dvh] لتفادي انكماش الكيبورد -->
+        <div class="bg-white w-full h-[100dvh] sm:h-[90vh] sm:max-h-[720px] sm:max-w-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border-0 sm:border border-slate-100 animate-pop-in">
             
             <!-- Chat Header -->
-            <div class="bg-gradient-to-r from-brand-800 to-emerald-700 text-white p-4 flex items-center justify-between shadow-md">
-                <div class="flex items-center gap-3">
+            <div class="bg-gradient-to-r from-brand-800 to-emerald-700 text-white p-3.5 sm:p-4 flex items-center justify-between shadow-md shrink-0">
+                <div class="flex items-center gap-2.5">
                     <div class="relative">
-                        <img id="chatDoctorImg" src="" onerror="handleImageError(this, 'doctor')" alt="Doctor" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full"></span>
+                        <img id="chatDoctorImg" src="" onerror="handleImageError(this, 'doctor')" alt="Doctor" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-white rounded-full"></span>
                     </div>
                     <div>
-                        <h4 id="chatDoctorName" class="font-bold text-base sm:text-lg leading-snug">د. سليم بوعزيز</h4>
-                        <p id="chatDoctorRole" class="text-xs text-emerald-100 flex items-center gap-1"></p>
+                        <h4 id="chatDoctorName" class="font-bold text-sm sm:text-base leading-snug">د. خديجة بن علال</h4>
+                        <p id="chatDoctorRole" class="text-[10px] sm:text-xs text-emerald-100 flex items-center gap-1"></p>
                     </div>
                 </div>
-                <button onclick="closeChatModal()" class="w-9 h-9 rounded-xl bg-black/15 hover:bg-black/30 flex items-center justify-center text-white text-base transition">
+                <button onclick="closeChatModal()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-black/15 hover:bg-black/30 flex items-center justify-center text-white text-base transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             <!-- Protocol Notice -->
-            <div class="bg-brand-50 border-b border-brand-100 px-4 py-2 text-[11px] text-brand-900 flex items-center justify-between">
-                <span class="flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-user-check text-brand-600"></i> جلسة تشخيص سريري خطوة بخطوة
+            <div class="bg-brand-50 border-b border-brand-100 px-3.5 py-1.5 text-[10px] sm:text-[11px] text-brand-900 flex items-center justify-between shrink-0">
+                <span class="flex items-center gap-1 font-medium">
+                    <i class="fa-solid fa-user-check text-brand-600"></i> جلسة فحص وتشخيص سريري مباشر
                 </span>
                 <span class="text-[10px] text-brand-700 font-bold">tirourda.store</span>
             </div>
 
             <!-- Messages Area -->
-            <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/60"></div>
+            <div id="chatMessages" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 bg-slate-50/70"></div>
 
             <!-- Typing Indicator -->
-            <div id="typingIndicator" class="hidden px-4 py-2 bg-slate-50 flex items-center gap-2 text-xs text-slate-500">
+            <div id="typingIndicator" class="hidden px-3.5 py-2 bg-slate-50 flex items-center gap-2 text-xs text-slate-500 shrink-0">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce"></span>
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce [animation-delay:0.2s]"></span>
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce [animation-delay:0.4s]"></span>
-                <span id="typingDoctorName" class="font-medium text-brand-700">المختص يقوم بالرد عليك...</span>
+                <span id="typingDoctorName" class="font-medium text-brand-700 text-[11px]">المختص يقوم بصياغة التشخيص الطبي...</span>
             </div>
 
-            <!-- Quick Choice Chips (إذا سأل عن المنتجات) -->
-            <div id="quickChoiceChips" class="hidden px-4 py-2.5 bg-emerald-50 border-t border-emerald-100 flex flex-wrap items-center gap-2 text-xs">
-                <span class="text-brand-900 font-bold">هل تود اقتراح منتجات طبيعية؟</span>
-                <button onclick="sendQuickPrompt('نعم، أرجو أن تقترح عليّ المنتجات الطبيعية المناسبة لحالتي من متجر tirourda.store')" class="bg-brand-600 hover:bg-brand-700 text-white px-3.5 py-1.5 rounded-lg font-bold transition shadow-sm">نعم، اقترح لي</button>
-                <button onclick="sendQuickPrompt('لا، شكراً أريد فقط النصائح الغذائية')" class="bg-white hover:bg-slate-100 text-slate-700 px-3.5 py-1.5 rounded-lg border border-slate-200 transition">لا، شكراً</button>
+            <!-- Quick Choice Chips (للمنتجات) -->
+            <div id="quickChoiceChips" class="hidden px-3 py-2 bg-emerald-50 border-t border-emerald-100 flex flex-wrap items-center gap-1.5 text-xs shrink-0">
+                <span class="text-brand-900 font-bold text-[11px]">هل تود اقتراح منتجات طبيعية؟</span>
+                <button onclick="sendQuickPrompt('نعم، أرجو أن تقترح عليّ المنتجات الطبيعية المناسبة لحالتي من متجر tirourda.store')" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-1 rounded-lg font-bold text-[11px] transition shadow-sm">نعم، اقترح لي</button>
+                <button onclick="sendQuickPrompt('لا، شكراً أريد فقط النصائح الغذائية')" class="bg-white hover:bg-slate-100 text-slate-700 px-3 py-1 rounded-lg border border-slate-200 text-[11px] transition">لا، شكراً</button>
             </div>
 
-            <!-- Input Bar -->
-            <div class="p-3 bg-white border-t border-slate-100">
+            <!-- Input Bar المريح للهواتف -->
+            <div class="p-2.5 sm:p-3 bg-white border-t border-slate-100 shrink-0">
                 <form id="chatForm" onsubmit="handleSendMessage(event)" class="flex items-center gap-2">
                     <input 
                         type="text" 
                         id="chatInput" 
                         placeholder="أدخل إجابتك هنا..." 
-                        class="flex-1 px-4 py-3 bg-slate-100 focus:bg-white rounded-2xl border border-transparent focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm outline-none transition"
+                        class="flex-1 px-3.5 py-2.5 sm:py-3 bg-slate-100 focus:bg-white rounded-2xl border border-transparent focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm outline-none transition"
                         autocomplete="off"
                         required
                     >
                     <button 
                         type="submit" 
                         id="sendBtn"
-                        class="bg-brand-600 hover:bg-brand-700 text-white w-12 h-11 rounded-2xl flex items-center justify-center shadow-md shadow-brand-500/30 transition transform active:scale-90"
+                        class="bg-brand-600 hover:bg-brand-700 text-white w-11 h-10 sm:w-12 sm:h-11 rounded-2xl flex items-center justify-center shadow-md shadow-brand-500/30 transition transform active:scale-90 shrink-0"
                     >
                         <i class="fa-solid fa-paper-plane rotate-180 text-sm"></i>
                     </button>
@@ -249,41 +377,41 @@
         </div>
     </div>
 
-    <!-- 6. فوتر الموقع -->
+    <!-- 7. فوتر الموقع المطور -->
     <footer class="bg-slate-900 text-white py-8 border-t border-slate-800 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-right">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
             <div>
-                <div class="flex items-center justify-center md:justify-start gap-2 text-xl font-black text-white">
-                    <i class="fa-solid fa-leaf text-brand-500"></i> Nutritionniste
+                <div class="flex items-center justify-center sm:justify-start gap-2 text-lg sm:text-xl font-black text-white">
+                    <i class="fa-solid fa-leaf text-brand-500"></i> Nutritionniste AI Algerie
                 </div>
-                <p class="text-xs text-slate-400 mt-1">المنصة التخصصية للتغذية العلاجية بالذكاء الاصطناعي والمكملات الطبيعية</p>
+                <p class="text-xs text-slate-400 mt-1">المنصة الطبية الرائدة في التغذية العلاجية بالذكاء الاصطناعي في الجزائر و tirourda.store</p>
             </div>
-            <a href="https://tirourda.store" target="_blank" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow transition">
-                <i class="fa-solid fa-store"></i> متجر tirourda.store
+            <a href="https://tirourda.store" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition">
+                <i class="fa-solid fa-store"></i> زيارة متجر tirourda.store
             </a>
         </div>
     </footer>
 
-    <!-- 7. زر الواتساب العائم مع الرقم 0559293773 -->
-    <div class="fixed bottom-6 left-6 z-40 flex items-center gap-2 animate-float-wa">
-        <a href="https://wa.me/213559293773?text=مرحباً،%20أرغب%20في%20متابعة%20صحية%20واستشارة%20غذائية" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl transition transform hover:scale-110 product-glow" title="تواصل عبر واتساب: 0559293773">
+    <!-- 8. زر الواتساب العائم -->
+    <div class="fixed bottom-5 left-4 sm:bottom-6 sm:left-6 z-40 flex items-center animate-float-wa">
+        <a href="https://wa.me/213559293773?text=مرحباً،%20أرغب%20في%20استشارة%20تغذية%20علاجية%20مع%20د.%20خديجة%20بن%20علال%20ومتجر%20tirourda" target="_blank" rel="noopener" class="bg-emerald-500 hover:bg-emerald-600 text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-2xl sm:text-3xl shadow-2xl transition transform hover:scale-110 product-glow" title="تواصل عبر واتساب">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
     </div>
 
-    <!-- كود الجافاسكربت -->
+    <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
     <script>
         const OPENROUTER_API_KEY = "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";
 
-        // معالجة الصور البديلة تلقائياً
+        // معالجة الصور البديلة
         function handleImageError(img, type) {
             img.onerror = null;
             if (type === 'doctor') {
-                img.src = `https://ui-avatars.com/api/?name=Dr+Doctor&background=16a34a&color=fff&size=512&font-size=0.33`;
+                img.src = `https://ui-avatars.com/api/?name=Dr+Nutrition&background=16a34a&color=fff&size=512&font-size=0.33`;
             }
         }
 
-        // نغمة الإشعار الطبية
+        // نغمة إشعار طبية ناعمة عبر Web Audio API
         function playMedicalChime() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -295,14 +423,11 @@
                     const gain = ctx.createGain();
                     osc.type = "sine";
                     osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
-                    
                     gain.gain.setValueAtTime(0.01, ctx.currentTime + start);
                     gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + start + 0.04);
                     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
-                    
                     osc.connect(gain);
                     gain.connect(ctx.destination);
-                    
                     osc.start(ctx.currentTime + start);
                     osc.stop(ctx.currentTime + start + duration);
                 };
@@ -312,41 +437,53 @@
             } catch (e) {}
         }
 
-        // بيانات الأطباء
+        // طاقم الأطباء والمختصين (يتضمن د. خديجة بن علال في الصدارة)
         const specialists = [
+            {
+                id: "khadidja-benallal",
+                name: "د. خديجة بن علال",
+                title: "كبيرة استشاريي التغذية العلاجية والأيض بالجزائر",
+                tags: ["خديجة بن علال", "مختص التغذية الجزائر", "مقاومة الإنسولين", "حميات علاجية", "tirourda"],
+                image: "https://images.unsplash.com/photo-1594824813583-78b17b6294eb?auto=format&fit=crop&q=80&w=600",
+                badgeColor: "bg-emerald-100 text-emerald-800",
+                experience: "18 سنة خبرة",
+                description: "الاستشارية الأولى بالجزائر في علاج اضطرابات الأيض، مقاومة الإنسولين، وتصميم الحميات السريرية الدقيقة.",
+                productKeyword: "metabolism",
+                productName: "الباقة الشاملة لصحة التمثيل الغذائي وخل التفاح العضوي"
+            },
             {
                 id: "colon",
                 name: "د. سليم بوعزيز",
                 title: "استشاري أمراض القولون والجهاز الهضمي",
-                tags: ["القولون العصبي", "الغازات والانتفاخ", "عسر الهضم", "حمية الفودماب"],
+                tags: ["القولون العصبي", "الغازات والانتفاخ", "عسر الهضم", "فودماب"],
                 image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600",
-                badgeColor: "bg-emerald-100 text-emerald-800",
+                badgeColor: "bg-teal-100 text-teal-800",
                 experience: "14 سنة خبرة",
-                description: "علاج متلازمة القولون العصبي، تقرحات الأمعاء والانتفاخ بأنظمة غذائية طبيعية ومكملات هضمية.",
+                description: "علاج متلازمة القولون العصبي، تقرحات الأمعاء والانتفاخ بأنظمة طبيعية ومكملات هضمية.",
                 productKeyword: "colon",
                 productName: "ألياف وبذور القاطونة الطبيعية للقولون"
             },
             {
                 id: "diabetes",
                 name: "د. مريم القادري",
-                title: "استشارية التغذية العلاجية للسكري ومقاومة الإنسولين",
-                tags: ["السكري", "مقاومة الإنسولين", "السكر التراكمي", "حمية اللوكارب"],
-                image: "https://images.unsplash.com/photo-1594824813583-78b17b6294eb?auto=format&fit=crop&q=80&w=600",
-                badgeColor: "bg-teal-100 text-teal-800",
+                title: "استشارية التغذية لمرضى السكري والنوع 2",
+                tags: ["السكري", "السكر التراكمي", "حمية اللوكارب", "كيتو دايت"],
+                image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600",
+                badgeColor: "bg-sky-100 text-sky-800",
                 experience: "11 سنة خبرة",
-                description: "تنظيم مستوى السكر في الدم وخفض التراكمي وعلاج مقاومة الإنسولين بأنظمة غذائية منخفضة المؤشر الجلايسيمي.",
+                description: "تنظيم مستويات السكر في الدم وخفض التراكمي بالأغذية منخفضة المؤشر الجلايسيمي.",
                 productKeyword: "diabetes",
-                productName: "خل التفاح الطبيعي العضوي ومحلي ستيفيا النقي"
+                productName: "مكمل القرفة السيلانية ومحلي ستيفيا العضوي"
             },
             {
                 id: "fatty-liver",
                 name: "د. طارق المنصوري",
                 title: "استشاري تشحم الكبد وصحة التمثيل الغذائي",
-                tags: ["تشحم الكبد", "الدهون الثلاثية", "إنزيمات الكبد", "الديتوكس الطبي"],
+                tags: ["تشحم الكبد", "الدهون الثلاثية", "إنزيمات الكبد", "الديتوكس"],
                 image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-green-100 text-green-800",
                 experience: "16 سنة خبرة",
-                description: "عكس الكبد الدهني والتخلص من السموم والدهون الثلاثية بالصيام ومضادات الأكسدة الكبدية.",
+                description: "عكس الكبد الدهني والتخلص من السموم والدهون الثلاثية بالصيام ومضادات الأكسدة.",
                 productKeyword: "liver",
                 productName: "مكمل شوك الحليب (Milk Thistle) لدعم وظائف الكبد"
             },
@@ -354,11 +491,11 @@
                 id: "respiratory",
                 name: "د. نسيمة العباسي",
                 title: "استشارية التغذية الداعمة للجهاز التنفسي والحساسية",
-                tags: ["حساسية الصدر", "الربو والبلغم", "المناعة التنفسية", "مضادات الالتهاب"],
-                image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600",
-                badgeColor: "bg-sky-100 text-sky-800",
+                tags: ["حساسية الصدر", "الربو والبلغم", "المناعة", "مضادات الالتهاب"],
+                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600",
+                badgeColor: "bg-blue-100 text-blue-800",
                 experience: "10 سنوات خبرة",
-                description: "تقوية الرئتين وتخفيف حساسية القصبات والبلغم بالأغذية الطبيعية والمكملات المضادة للالتهاب.",
+                description: "تقوية الرئتين وتخفيف حساسية القصبات والبلغم بالأغذية والمكملات الطبيعية.",
                 productKeyword: "respiratory",
                 productName: "عكبر النحل (البروبوليس) وعسل السدر الطبيعي"
             },
@@ -367,7 +504,7 @@
                 name: "د. هدى التلمساني",
                 title: "استشارية علاج السمنة ونحت القوام وإنقاص الوزن",
                 tags: ["إنقاص الوزن", "حرق الدهون", "كسر ثبات الوزن", "سد الشهية"],
-                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600",
+                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-rose-100 text-rose-800",
                 experience: "13 سنة خبرة",
                 description: "خطط وجبات علمية لحرق دهون البطن والخواصر وكسر ثبات الوزن دون حرمان أو ترهلات.",
@@ -378,11 +515,11 @@
                 id: "general-nutrition",
                 name: "د. يوسف شريف",
                 title: "استشاري التغذية العامة ونقص الفيتامينات والمعادن",
-                tags: ["نقص فيتامين د", "فقر الدم والحديد", "النشاط والمناعة", "التغذية الرياضية"],
+                tags: ["نقص فيتامين د", "فقر الدم والحديد", "النشاط", "تغذية رياضية"],
                 image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-purple-100 text-purple-800",
                 experience: "9 سنوات خبرة",
-                description: "علاج الإجهاد المزمن ونقص الحديد والفيتامينات وتصميم برامج التغذية الرياضية والمتوازنة.",
+                description: "علاج الإجهاد المزمن ونقص الحديد والفيتامينات وتصميم برامج التغذية الرياضية.",
                 productKeyword: "vitamins",
                 productName: "طحالب السبيرولينا العضوية الغنية بالمعادن والفيتامينات"
             },
@@ -390,11 +527,11 @@
                 id: "coach",
                 name: "كوتش ريان مهدي",
                 title: "استشاري السلوك الغذائي ونمط الحياة الصحي",
-                tags: ["علاج الأكل العاطفي", "بناء العادات", "سناكات صحية", "تعديل الشهية"],
-                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
+                tags: ["الأكل العاطفي", "بناء العادات", "سناكات صحية", "تعديل الشهية"],
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600",
                 badgeColor: "bg-amber-100 text-amber-800",
                 experience: "8 سنوات خبرة",
-                description: "كوتشينغ مخصص للتخلص من إدمان السكريات، بناء عادات يومية مستدامة، وتثبيت الوزن المثالي.",
+                description: "مرافقة كوتشينغ للتخلص من إدمان السكريات، بناء عادات يومية مستدامة، وتثبيت الوزن.",
                 productKeyword: "healthy-snacks",
                 productName: "زبدة الفول السوداني الطبيعية 100% بدون سكر"
             }
@@ -404,7 +541,7 @@
         let chatHistories = {};
         let sessionData = {};
 
-        // عرض بطاقات الأطباء
+        // رسم كروت الأطباء
         function renderDoctors(docs = specialists) {
             const grid = document.getElementById("doctorsGrid");
             const noResults = document.getElementById("noResults");
@@ -420,36 +557,36 @@
             noResults.classList.add("hidden");
 
             docs.forEach(doc => {
-                const card = document.createElement("div");
-                card.className = "pop-card bg-white rounded-3xl p-5 shadow-sm hover:shadow-xl border border-slate-200/80 flex flex-col justify-between";
+                const card = document.createElement("article");
+                card.className = "pop-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-xl border border-slate-200/80 flex flex-col justify-between";
                 
                 card.innerHTML = `
                     <div>
-                        <div class="relative mb-4 overflow-hidden rounded-2xl">
-                            <img src="${doc.image}" onerror="handleImageError(this, 'doctor')" alt="${doc.name}" class="w-full h-52 object-cover object-top rounded-2xl transform hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 right-3 text-[11px] font-bold px-3 py-1 rounded-full shadow-md ${doc.badgeColor}">
+                        <div class="relative mb-3 sm:mb-4 overflow-hidden rounded-xl sm:rounded-2xl">
+                            <img src="${doc.image}" onerror="handleImageError(this, 'doctor')" alt="${doc.name} - ${doc.title}" class="w-full h-44 sm:h-52 object-cover object-top rounded-xl sm:rounded-2xl transform hover:scale-105 transition duration-500" loading="lazy">
+                            <span class="absolute top-2.5 right-2.5 text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-md ${doc.badgeColor}">
                                 ${doc.experience}
                             </span>
-                            <div class="absolute bottom-2.5 left-2.5 bg-brand-700/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg backdrop-blur-md flex items-center gap-1.5 shadow">
-                                <span class="w-2 h-2 rounded-full bg-brand-300 animate-pulse"></span> متصل الآن
+                            <div class="absolute bottom-2 left-2 bg-brand-700/90 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-lg backdrop-blur-md flex items-center gap-1 shadow">
+                                <span class="w-1.5 h-1.5 rounded-full bg-brand-300 animate-pulse"></span> متصل الآن
                             </div>
                         </div>
 
                         <div class="flex flex-wrap gap-1 mb-2">
-                            ${doc.tags.map(t => `<span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-md font-medium">#${t}</span>`).join('')}
+                            ${doc.tags.slice(0, 3).map(t => `<span class="bg-slate-100 text-slate-600 text-[9px] sm:text-[10px] px-2 py-0.5 rounded-md font-medium">#${t}</span>`).join('')}
                         </div>
 
-                        <h3 class="text-xl font-black text-slate-800">${doc.name}</h3>
-                        <p class="text-xs font-bold text-brand-700 mt-0.5">${doc.title}</p>
+                        <h3 class="text-base sm:text-lg font-black text-slate-800">${doc.name}</h3>
+                        <p class="text-[11px] sm:text-xs font-bold text-brand-700 mt-0.5">${doc.title}</p>
                         
-                        <p class="text-xs text-slate-500 mt-2.5 leading-relaxed">
+                        <p class="text-[11px] sm:text-xs text-slate-500 mt-2 leading-relaxed line-clamp-3">
                             ${doc.description}
                         </p>
                     </div>
 
-                    <div class="mt-5 pt-3 border-t border-slate-100">
-                        <button onclick="openChatModal('${doc.id}')" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-brand-600/30 transition transform active:scale-95 animate-btn-pulse">
-                            <i class="fa-solid fa-comments text-sm"></i> بدء المحادثة والاستشارة
+                    <div class="mt-4 pt-3 border-t border-slate-100">
+                        <button onclick="openChatModal('${doc.id}')" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-brand-600/30 transition transform active:scale-95 animate-btn-pulse">
+                            <i class="fa-solid fa-comments text-xs"></i> بدء الاستشارة الفورية
                         </button>
                     </div>
                 `;
@@ -486,12 +623,12 @@
             filterDoctors();
         }
 
-        // برومبت الطبيب الممنهج
+        // برومبت الطبيب السريري
         function getSystemPrompt(doc) {
-            return `أنت ${doc.name}، ${doc.title} في منصة nutritionniste.
-نطاقك الطبي محصور فقط في مجالك وتخصصك.
+            return `أنت ${doc.name}، ${doc.title} في منصة nutritionniste (أفضل منصة تغذية علاجية في الجزائر بالتعاون مع متجر tirourda.store).
+نطاقك محصور في تخصصك الطبي.
 
-بروتوكول المحادثة الصارم مع المريض:
+بروتوكول المقابلة السريرية الصارم:
 1. أنت طبيب استشاري خبير تتحدث بوقار ولطف وعلمية.
 2. نادِ المريض دائماً باسمه بعد أن يخبرك به.
 3. التزم بالإجابة على السؤال الحالي وطرح السؤال التالي فقط بالترتيب التالي دون دمج الأسئلة:
@@ -504,7 +641,7 @@
    - الخطوة 7: فقط إذا أجاب المريض بـ (نعم) أو وافق، تقترح عليه المنتج المناسب بهذا التنسيق الإلزامي: [PRODUCT: ${doc.productName} | https://tirourda.store/search?q=${doc.productKeyword}]`;
         }
 
-        // فتح الشات وبدء التقييم
+        // فتح الشات
         function openChatModal(doctorId) {
             activeDoctor = specialists.find(d => d.id === doctorId);
             if (!activeDoctor) return;
@@ -512,7 +649,7 @@
             document.getElementById("chatDoctorImg").src = activeDoctor.image;
             document.getElementById("chatDoctorName").innerText = activeDoctor.name;
             document.getElementById("chatDoctorRole").innerHTML = `<i class="fa-solid fa-stethoscope text-emerald-300"></i> ${activeDoctor.title}`;
-            document.getElementById("typingDoctorName").innerText = `${activeDoctor.name} يكتب رداً...`;
+            document.getElementById("typingDoctorName").innerText = `${activeDoctor.name} يكتب رداً طبياً...`;
 
             if (!sessionData[doctorId]) {
                 sessionData[doctorId] = {
@@ -526,7 +663,7 @@
             }
 
             if (!chatHistories[doctorId]) {
-                const firstGreeting = `مرحباً بك! أنا **${activeDoctor.name}**، ${activeDoctor.title}.\n\nيسعدني جداً استقبالك والبدء في تقييم حالتك الغذائية والصحية.\n\nهل يمكنك إخباري **باسمك الكريم** أولاً؟`;
+                const firstGreeting = `مرحباً بك! أنا **${activeDoctor.name}**، ${activeDoctor.title}.\n\nيسعدني جداً استقبالك في منصة **Nutritionniste AI** لبدء التقييم الغذائي السليم لحالتك.\n\nهل يمكنك إخباري **باسمك الكريم** أولاً؟`;
 
                 chatHistories[doctorId] = [
                     {
@@ -572,23 +709,23 @@
                 if (!isUser) lastAssistantMsg = msg.content;
 
                 const msgWrapper = document.createElement("div");
-                msgWrapper.className = `flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} animate-pop-in`;
+                msgWrapper.className = `flex gap-2 sm:gap-2.5 ${isUser ? 'justify-end' : 'justify-start'} animate-pop-in`;
 
                 const formattedHtml = formatDoctorResponse(msg.content);
 
                 if (isUser) {
                     msgWrapper.innerHTML = `
-                        <div class="bg-brand-600 text-white rounded-2xl rounded-tr-none px-4 py-2.5 max-w-[85%] text-xs sm:text-sm shadow-md leading-relaxed">
+                        <div class="bg-brand-600 text-white rounded-2xl rounded-tr-none px-3.5 py-2 sm:py-2.5 max-w-[88%] text-xs sm:text-sm shadow-md leading-relaxed">
                             ${escapeHtml(msg.content)}
                         </div>
                     `;
                 } else {
                     msgWrapper.innerHTML = `
-                        <img src="${activeDoctor.image}" onerror="handleImageError(this, 'doctor')" class="w-8 h-8 rounded-full object-cover shrink-0 border border-brand-200 mt-1">
-                        <div class="bg-white text-slate-800 rounded-2xl rounded-tl-none px-4 py-3 max-w-[88%] text-xs sm:text-sm shadow-sm border border-slate-200/80 leading-relaxed">
-                            <div class="font-bold text-[11px] text-brand-700 mb-1 flex items-center justify-between">
+                        <img src="${activeDoctor.image}" onerror="handleImageError(this, 'doctor')" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover shrink-0 border border-brand-200 mt-1">
+                        <div class="bg-white text-slate-800 rounded-2xl rounded-tl-none px-3.5 py-2.5 sm:py-3 max-w-[90%] text-xs sm:text-sm shadow-sm border border-slate-200/80 leading-relaxed">
+                            <div class="font-bold text-[10px] sm:text-[11px] text-brand-700 mb-1 flex items-center justify-between">
                                 <span>${activeDoctor.name}</span>
-                                <span class="text-[9px] text-slate-400 font-normal">استشارة تخصصية</span>
+                                <span class="text-[9px] text-slate-400 font-normal">استشارة معتمدة</span>
                             </div>
                             <div class="prose text-slate-700 text-xs sm:text-sm">${formattedHtml}</div>
                         </div>
@@ -612,12 +749,12 @@
             const productRegex = /\[PRODUCT:\s*([^\|\]]+)\s*\|\s*([^\]]+)\]/gi;
             html = html.replace(productRegex, function(_, name, url) {
                 return `
-                    <div class="my-3 p-3.5 bg-gradient-to-r from-brand-50 to-emerald-50 border border-brand-200 rounded-2xl shadow-sm animate-pop-in">
-                        <div class="text-[11px] text-brand-900 font-bold mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-basket-shopping text-brand-600"></i> منتج طبيعي موصى به من متجر tirourda.store:
+                    <div class="my-2.5 p-3 bg-gradient-to-r from-brand-50 to-emerald-50 border border-brand-200 rounded-2xl shadow-sm animate-pop-in">
+                        <div class="text-[10px] sm:text-[11px] text-brand-900 font-bold mb-1.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-basket-shopping text-brand-600"></i> منتج طبيعي موصى به من tirourda.store:
                         </div>
-                        <a href="${url.trim()}" target="_blank" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow product-glow transition transform hover:scale-102">
-                            <i class="fa-solid fa-cart-shopping text-xs"></i> زيارة وطلب ${name.trim()} الآن
+                        <a href="${url.trim()}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-[11px] sm:text-xs font-bold px-3.5 py-2 rounded-xl shadow product-glow transition transform active:scale-95">
+                            <i class="fa-solid fa-cart-shopping text-xs"></i> طلب ${name.trim()} الآن
                         </a>
                     </div>
                 `;
@@ -657,7 +794,7 @@
                         headers: {
                             "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
                             "HTTP-Referer": window.location.href || "https://tirourda.store",
-                            "X-Title": "Nutritionniste Clinical Platform",
+                            "X-Title": "Nutritionniste Clinical Platform Algeria",
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
@@ -676,7 +813,7 @@
                         }
                     }
                 } catch (err) {
-                    console.warn(`Model ${model} failed, trying next...`, err);
+                    console.warn(`Model ${model} fallback...`, err);
                 }
             }
 
@@ -698,7 +835,7 @@
             if (session.step === 2) {
                 session.age = lastUserText;
                 session.step = 3;
-                return `تمام يا **${session.patientName}**، بارك الله في عمرك.\n\nحدثني بالتفصيل: **ما هي الأعراض الدقيقة أو الاضطرابات الصحية التي تواجهها حالياً**؟`;
+                return `تمام يا **${session.patientName}**، بارك الله في عمرك.\n\nحدثني بالتفصيل: **ما هي الأعراض الدقيقة أو المشاكل الصحية التي تواجهها حالياً**؟`;
             }
 
             if (session.step === 3) {
@@ -710,7 +847,7 @@
             if (session.step === 4) {
                 session.doctorFollowup = lastUserText;
                 session.step = 5;
-                return `حسناً يا **${session.patientName}**.\n\nالسؤال الأخير قبل وضع التوصيات: **ما هي الأدوية أو العلاجات التي تستعملها بانتظام حالياً**؟`;
+                return `حسناً يا **${session.patientName}**.\n\nالسؤال الأخير قبل وضع التوصيات: **ما هي الأدوية أو المكملات التي تستعملها بانتظام حالياً**؟`;
             }
 
             if (session.step === 5) {
@@ -723,7 +860,7 @@
                 if (lastUserText.includes("نعم") || lastUserText.includes("اقترح") || lastUserText.includes("منتج")) {
                     return `يسعدني تزويدك بالمنتج الطبيعي المعتمد والمناسب لخطتك العلاجية يا **${session.patientName}**:\n\n[PRODUCT: ${doc.productName} | https://tirourda.store/search?q=${doc.productKeyword}]\n\nيمكنك الضغط على الزر أعلاه للانتقال المباشر لمتجرنا tirourda.store والطلب الآن.`;
                 } else {
-                    return `على الرحب والسعة يا **${session.patientName}**. أتمنى لك دوام الصحة والعافية، وأنا دائماً في خدمتك لأي استفسار غذائي إضافي!`;
+                    return `على الرحب والسعة يا **${session.patientName}**. نتمنى لك دوام الصحة والعافية!`;
                 }
             }
         }
